@@ -17,7 +17,7 @@ import {
 export const metadata = {
   title: "Boliger til salgs",
   description:
-    "Søk blant moderne villaer, nybygg og boliger i Pinoso-regionen.",
+    "Søk blant moderne villaer, nybygg og landlige boliger i Pinoso innland.",
   alternates: {
     canonical: "/eiendommer",
   },
@@ -79,9 +79,9 @@ export default async function PropertiesPage({
       <SiteHeader />
       <section className="page-hero compact-hero">
         <p className="eyebrow">Boligsøk</p>
-        <h1>Nybygg i Spania</h1>
+        <h1>Innlandsboliger i Pinoso-regionen</h1>
         <p>
-          Utforsk prosjekter og boliger fra RealtyFlow.
+          Utforsk et spisset utvalg fra RealtyFlow for Pinoso, Aspe, Monforte og Hondon-dalen.
           {locationLabel ? ` Viser ${locationLabel}.` : " Velg region med ett klikk."}
         </p>
         <div className="quick-filters">
@@ -142,7 +142,6 @@ export default async function PropertiesPage({
           <select name="lifestyle" defaultValue={params.lifestyle || ""}>
             <option value="">Livsstil</option>
             <option value="pool">Basseng</option>
-            <option value="sea">Nær sjø / havutsikt</option>
             <option value="golf">Golf</option>
           </select>
           <button type="submit">Søk</button>

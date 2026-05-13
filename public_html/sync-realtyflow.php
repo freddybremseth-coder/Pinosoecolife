@@ -11,12 +11,16 @@ require_once __DIR__ . '/database/Database.php';
 
 $config = require __DIR__ . '/config.php';
 $endpoint = $config['realtyflow_properties_endpoint'] ?? '';
+$brandId = $config['realtyflow_brand_id'] ?? 'pinosoecolife';
 
 if (!$endpoint || !function_exists('curl_init')) {
     http_response_code(500);
     echo "RealtyFlow-endepunkt eller cURL mangler.";
     exit;
 }
+
+$separator = strpos($endpoint, '?') === false ? '?' : '&';
+$endpoint .= $separator . 'brandId=' . urlencode($brandId);
 
 $ch = curl_init($endpoint);
 curl_setopt_array($ch, [
@@ -62,8 +66,73 @@ $inserted = 0;
 $updated = 0;
 $skipped = 0;
 
+function normalizeInlandText($value) {
+    $value = strtolower((string)$value);
+    $value = strtr($value, [
+        'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a',
+        'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e',
+        'í' => 'i', 'ï' => 'i',
+        'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o',
+        'ú' => 'u', 'ü' => 'u',
+        'ñ' => 'n',
+    ]);
+    return preg_replace('/[^a-z0-9]+/', ' ', $value);
+}
+
+function isPinosoInlandProperty($item) {
+    $haystack = normalizeInlandText(implode(' ', [
+        $item['region'] ?? '',
+        $item['location'] ?? '',
+        $item['town'] ?? '',
+        $item['title_no'] ?? '',
+        $item['title'] ?? '',
+        $item['description_no'] ?? '',
+        $item['description'] ?? '',
+        $item['property_type'] ?? '',
+        $item['type'] ?? '',
+    ]));
+
+    $inlandTerms = [
+        'pinoso', 'pinos', 'el pinos', 'aspe', 'monforte', 'monforte del cid',
+        'novelda', 'la romana', 'hondon', 'hondon de las nieves',
+        'hondon de los frailes', 'monovar', 'sax', 'elda', 'petrer',
+        'villena', 'font del llop', 'barbarroja', 'barba roja',
+        'costa blanca inland', 'costa blanca south inland',
+        'costa blanca north inland', 'alicante inland'
+    ];
+    $coastalTerms = [
+        'torrevieja', 'orihuela costa', 'campoamor', 'la zenia', 'guardamar',
+        'santa pola', 'benidorm', 'calpe', 'altea', 'javea', 'xabia',
+        'denia', 'moraira', 'villajoyosa', 'playa', 'beach', 'seafront',
+        'sea front'
+    ];
+
+    $hasInland = false;
+    foreach ($inlandTerms as $term) {
+        if (strpos($haystack, normalizeInlandText($term)) !== false) {
+            $hasInland = true;
+            break;
+        }
+    }
+    if (!$hasInland) return false;
+
+    $explicitInland = strpos($haystack, 'inland') !== false || strpos($haystack, 'interior') !== false;
+    foreach ($coastalTerms as $term) {
+        if (strpos($haystack, normalizeInlandText($term)) !== false && !$explicitInland) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 foreach ($items as $item) {
     if (!is_array($item)) {
+        $skipped++;
+        continue;
+    }
+
+    if (!isPinosoInlandProperty($item)) {
         $skipped++;
         continue;
     }

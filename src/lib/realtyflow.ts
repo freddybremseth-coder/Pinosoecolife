@@ -95,6 +95,58 @@ export type LeadPayload = {
 };
 
 const REALTYFLOW_BASE = process.env.REALTYFLOW_BASE_URL || "https://realtyflow.chatgenius.pro";
+const REALTYFLOW_BRAND_ID = "pinosoecolife";
+
+const inlandLocationTerms = [
+  "pinoso",
+  "pinos",
+  "el pinos",
+  "aspe",
+  "monforte",
+  "monforte del cid",
+  "novelda",
+  "la romana",
+  "hondon",
+  "hondón",
+  "hondon de las nieves",
+  "hondón de las nieves",
+  "hondon de los frailes",
+  "hondón de los frailes",
+  "monovar",
+  "monóvar",
+  "sax",
+  "elda",
+  "petrer",
+  "villena",
+  "font del llop",
+  "barbarroja",
+  "barba-roja",
+  "costa blanca inland",
+  "costa blanca south inland",
+  "costa blanca north inland",
+  "alicante inland",
+];
+
+const coastalExclusionTerms = [
+  "torrevieja",
+  "orihuela costa",
+  "campoamor",
+  "la zenia",
+  "guardamar",
+  "santa pola",
+  "benidorm",
+  "calpe",
+  "altea",
+  "javea",
+  "xabia",
+  "denia",
+  "moraira",
+  "villajoyosa",
+  "playa",
+  "beach",
+  "seafront",
+  "sea front",
+];
 
 export function normalizeSearchText(value: string) {
   return value
@@ -251,6 +303,14 @@ export function getPropertySearchText(property: Property) {
   );
 }
 
+export function propertyMatchesInlandFocus(property: Property) {
+  const haystack = getPropertySearchText(property);
+  const explicitInland = haystack.includes("inland") || haystack.includes("interior");
+  const inlandMatch = inlandLocationTerms.some((term) => haystack.includes(normalizeSearchText(term)));
+  const coastalMatch = coastalExclusionTerms.some((term) => haystack.includes(normalizeSearchText(term)));
+  return inlandMatch && (!coastalMatch || explicitInland);
+}
+
 export function propertyMatchesRegion(property: Property, region?: string) {
   if (!region) return true;
   const selected = regions.find((item) => item.key === region);
@@ -309,17 +369,22 @@ export function areaMatchesRegion(profile: AreaProfile, region?: string) {
 
 export async function getProperties(limit?: number): Promise<Property[]> {
   try {
-    const res = await fetch(`${REALTYFLOW_BASE}/api/properties`, {
+    const url = new URL("/api/properties", REALTYFLOW_BASE);
+    url.searchParams.set("brandId", REALTYFLOW_BRAND_ID);
+
+    const res = await fetch(url.toString(), {
       cache: "no-store",
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return fallbackProperties.slice(0, limit);
     const data = await res.json();
-    const items = (Array.isArray(data) ? data : []).filter((property: Property) => {
-      if (typeof property.show_on_website === "boolean") return property.show_on_website;
-      if (typeof property.website_visible === "boolean") return property.website_visible;
-      return true;
-    });
+    const items = (Array.isArray(data) ? data : [])
+      .filter((property: Property) => {
+        if (typeof property.show_on_website === "boolean") return property.show_on_website;
+        if (typeof property.website_visible === "boolean") return property.website_visible;
+        return true;
+      })
+      .filter(propertyMatchesInlandFocus);
     return (limit ? items.slice(0, limit) : items) as Property[];
   } catch {
     return fallbackProperties.slice(0, limit);
@@ -351,7 +416,10 @@ export async function getAreaProfiles(): Promise<AreaProfile[]> {
 
 export async function getLandPlots(): Promise<LandPlot[]> {
   try {
-    const res = await fetch(`${REALTYFLOW_BASE}/api/plots`, {
+    const url = new URL("/api/plots", REALTYFLOW_BASE);
+    url.searchParams.set("brandId", REALTYFLOW_BRAND_ID);
+
+    const res = await fetch(url.toString(), {
       cache: "no-store",
       headers: { Accept: "application/json" },
     });

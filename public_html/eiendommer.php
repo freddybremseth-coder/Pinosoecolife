@@ -10,6 +10,35 @@ $conn = $db->getConnection();
 
 // --- 1. SØKELOGIKK (Uendret) ---
 $where = ["1=1"]; $params = []; $types = "";
+$inlandSql = "(
+    region LIKE '%Inland%'
+    OR region LIKE '%Interior%'
+    OR location IN (
+        'Pinoso','El Pinos','El Pinós','Aspe','Monforte','Monforte del Cid',
+        'Novelda','La Romana','Hondon','Hondón','Hondon de las Nieves',
+        'Hondón de las Nieves','Hondon de los Frailes','Hondón de los Frailes',
+        'Monovar','Monóvar','Sax','Elda','Petrer','Villena','Font del Llop',
+        'Barbarroja','Barba-roja'
+    )
+    OR title LIKE '%Pinoso%'
+    OR title LIKE '%Hondon%'
+    OR title LIKE '%Monforte%'
+    OR title LIKE '%La Romana%'
+    OR description LIKE '%Costa Blanca Inland%'
+    OR description LIKE '%Alicante Inland%'
+)";
+$coastalSql = "(
+    location NOT IN (
+        'Torrevieja','Orihuela Costa','Campoamor','La Zenia','Guardamar',
+        'Santa Pola','Benidorm','Calpe','Altea','Javea','Xabia','Denia',
+        'Moraira','Villajoyosa'
+    )
+    AND title NOT LIKE '%beach%'
+    AND title NOT LIKE '%playa%'
+    AND title NOT LIKE '%seafront%'
+)";
+$where[] = $inlandSql;
+$where[] = $coastalSql;
 
 // A. OMRÅDE
 $area = $_GET['area'] ?? '';
@@ -20,6 +49,10 @@ if (!empty($area) && $area !== 'Alle') {
         $where[] = "(region LIKE '%South%' OR location IN ('Torrevieja','Orihuela Costa','Ciudad Quesada','Villamartin','Guardamar','Alicante','Santa Pola','Rojales','San Miguel de Salinas'))";
     } elseif ($area === 'region_calida') {
         $where[] = "(region LIKE '%Calida%' OR region LIKE '%Murcia%' OR location IN ('La Manga','San Pedro del Pinatar','Pilar de la Horadada','Los Alcazares','Torre Pacheco','Cartagena','Murcia'))";
+    } elseif ($area === 'Hondon') {
+        $where[] = "(location LIKE '%Hondon%' OR location LIKE '%Hondón%')";
+    } elseif ($area === 'Monforte del Cid') {
+        $where[] = "(location LIKE '%Monforte%' OR location LIKE '%Font del Llop%')";
     } else {
         $where[] = "location = ?"; $params[] = $area; $types .= "s";
     }
@@ -66,7 +99,7 @@ $result = $stmt->get_result();
             Finn din drømmebolig i solen
         </h1>
         <p style="font-size: 1.2rem; opacity: 0.9; font-weight: 300;">
-            Vi har over 1500 boliger på Costa Blanca og Costa Calida
+            Håndplukkede innlandsboliger i Pinoso, Aspe, Monforte og Hondon-dalen
         </p>
     </div>
 </div>
@@ -88,15 +121,16 @@ $result = $stmt->get_result();
             <div style="position:relative;">
                 <i class="fas fa-map-marker-alt" style="position:absolute; left:12px; top:12px; color:#C5A059;"></i>
                 <select name="area" style="width:100%; padding:12px 12px 12px 40px; border:1px solid #e2e8f0; border-radius:8px; font-size:1rem; appearance:none; background:white url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E') no-repeat right 12px center; background-size:10px;">
-                    <option value="Alle">Hele Kysten</option>
+                    <option value="Alle">Pinoso innland</option>
                     <optgroup label="Regioner">
-                        <option value="region_north" <?= ($area=='region_north')?'selected':'' ?>>Costa Blanca Nord</option>
-                        <option value="region_south" <?= ($area=='region_south')?'selected':'' ?>>Costa Blanca Sør</option>
-                        <option value="region_calida" <?= ($area=='region_calida')?'selected':'' ?>>Costa Calida</option>
+                        <option value="Pinoso" <?= ($area=='Pinoso')?'selected':'' ?>>Pinoso</option>
+                        <option value="Aspe" <?= ($area=='Aspe')?'selected':'' ?>>Aspe</option>
+                        <option value="Monforte del Cid" <?= ($area=='Monforte del Cid')?'selected':'' ?>>Monforte del Cid</option>
+                        <option value="Hondon" <?= ($area=='Hondon')?'selected':'' ?>>Hondon-dalen</option>
                     </optgroup>
                     <optgroup label="Byer">
                         <?php 
-                        $locs = $conn->query("SELECT DISTINCT location FROM properties ORDER BY location ASC");
+                        $locs = $conn->query("SELECT DISTINCT location FROM properties WHERE $inlandSql AND $coastalSql ORDER BY location ASC");
                         while($l=$locs->fetch_assoc()) echo "<option value='{$l['location']}' ".($area==$l['location']?'selected':'').">{$l['location']}</option>";
                         ?>
                     </optgroup>

@@ -14,6 +14,35 @@ $clientId = $_SESSION['client_id'];
 $where = ["1=1"]; 
 $params = []; 
 $types = "";
+$inlandSql = "(
+    region LIKE '%Inland%'
+    OR region LIKE '%Interior%'
+    OR location IN (
+        'Pinoso','El Pinos','El Pinós','Aspe','Monforte','Monforte del Cid',
+        'Novelda','La Romana','Hondon','Hondón','Hondon de las Nieves',
+        'Hondón de las Nieves','Hondon de los Frailes','Hondón de los Frailes',
+        'Monovar','Monóvar','Sax','Elda','Petrer','Villena','Font del Llop',
+        'Barbarroja','Barba-roja'
+    )
+    OR title LIKE '%Pinoso%'
+    OR title LIKE '%Hondon%'
+    OR title LIKE '%Monforte%'
+    OR title LIKE '%La Romana%'
+    OR description LIKE '%Costa Blanca Inland%'
+    OR description LIKE '%Alicante Inland%'
+)";
+$coastalSql = "(
+    location NOT IN (
+        'Torrevieja','Orihuela Costa','Campoamor','La Zenia','Guardamar',
+        'Santa Pola','Benidorm','Calpe','Altea','Javea','Xabia','Denia',
+        'Moraira','Villajoyosa'
+    )
+    AND title NOT LIKE '%beach%'
+    AND title NOT LIKE '%playa%'
+    AND title NOT LIKE '%seafront%'
+)";
+$where[] = $inlandSql;
+$where[] = $coastalSql;
 
 // A. SØK (Fritekst/Ref)
 if (!empty($_GET['q'])) {
@@ -34,6 +63,10 @@ if (!empty($area) && $area !== 'Alle') {
     } elseif ($area === 'region_calida') {
         // Definisjon av CALIDA / MURCIA
         $where[] = "(region LIKE '%Calida%' OR region LIKE '%Murcia%' OR location IN ('La Manga','San Pedro del Pinatar','Pilar de la Horadada','Los Alcazares','Torre Pacheco','Cartagena','Murcia'))";
+    } elseif ($area === 'Hondon') {
+        $where[] = "(location LIKE '%Hondon%' OR location LIKE '%Hondón%')";
+    } elseif ($area === 'Monforte del Cid') {
+        $where[] = "(location LIKE '%Monforte%' OR location LIKE '%Font del Llop%')";
     } else {
         // Spesifikt sted
         $where[] = "location = ?";
@@ -90,17 +123,18 @@ $result = $stmt->get_result();
         <div>
             <label style="font-weight:600; font-size:0.9rem; display:block; margin-bottom:5px;">Område</label>
             <select name="area" class="form-control" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
-                <option value="Alle">Hele Kysten</option>
+                <option value="Alle">Pinoso innland</option>
                 
-                <optgroup label="Store Regioner">
-                    <option value="region_north" <?= ($area=='region_north')?'selected':'' ?>>Costa Blanca Nord</option>
-                    <option value="region_south" <?= ($area=='region_south')?'selected':'' ?>>Costa Blanca Sør</option>
-                    <option value="region_calida" <?= ($area=='region_calida')?'selected':'' ?>>Costa Calida (Murcia)</option>
+                <optgroup label="Innlandsområder">
+                    <option value="Pinoso" <?= ($area=='Pinoso')?'selected':'' ?>>Pinoso</option>
+                    <option value="Aspe" <?= ($area=='Aspe')?'selected':'' ?>>Aspe</option>
+                    <option value="Monforte del Cid" <?= ($area=='Monforte del Cid')?'selected':'' ?>>Monforte del Cid</option>
+                    <option value="Hondon" <?= ($area=='Hondon')?'selected':'' ?>>Hondon-dalen</option>
                 </optgroup>
 
                 <optgroup label="Alle Steder (A-Å)">
                     <?php 
-                    $locs = $conn->query("SELECT DISTINCT location FROM properties ORDER BY location ASC");
+                    $locs = $conn->query("SELECT DISTINCT location FROM properties WHERE $inlandSql AND $coastalSql ORDER BY location ASC");
                     while($l=$locs->fetch_assoc()) {
                         $sel = ($area == $l['location']) ? 'selected' : '';
                         echo "<option value='{$l['location']}' $sel>{$l['location']}</option>";
