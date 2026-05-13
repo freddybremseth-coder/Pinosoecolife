@@ -1,0 +1,13 @@
+config.local.php
+.env
+.env.*
+*.log
+*.zip
+*.bak
+*.old
+.DS_Store
+node_modules/
+vendor/
+.next/
+out/
+.vercel
