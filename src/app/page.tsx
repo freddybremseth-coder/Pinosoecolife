@@ -24,7 +24,15 @@ export default async function Home() {
             Vi realiserer drømmen om et moderne hjem med privatliv, sol og plass i Pinoso-området. Systemet bak siden
             håndterer boligsøk, tomter, boligmatch, booking, portal og oppfølging via RealtyFlow.
           </p>
-          <form className="search-card" action="/tomter">
+          <div className="hero-primary-actions">
+            <Link className="hero-primary-button" href="/eiendommer">
+              Se boliger <Building2 size={18} />
+            </Link>
+            <Link className="hero-secondary-button" href="/tomter">
+              Se tomter <MapPinned size={18} />
+            </Link>
+          </div>
+          <form className="search-card hero-search" action="/tomter">
             <input name="q" placeholder="Søk tomt, kommune eller område..." />
             <select name="type" defaultValue="">
               <option value="">Hva ser du etter?</option>
@@ -39,7 +47,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="trust-band">
+      <section className="trust-band home-trust">
         <div>
           <strong>Uavhengig rådgivning</strong>
           <span>Vi hjelper deg å sammenligne boliger, områder og utbyggere</span>
@@ -51,6 +59,27 @@ export default async function Home() {
         <div>
           <strong>Tomter først</strong>
           <span>Tomtelisten hentes direkte fra RealtyFlow med kart, areal og regulering</span>
+        </div>
+      </section>
+
+      <section className="section sales-section">
+        <div className="section-heading">
+          <p className="eyebrow">Eiendommer</p>
+          <h2>Aktuelle innlandsboliger og villaer</h2>
+          <p>Et spisset utvalg fra RealtyFlow for Pinoso, Aspe, Monforte og Hondon-dalen.</p>
+        </div>
+        <div className="property-grid">
+          {properties.map((property, index) => (
+            <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 3} />
+          ))}
+        </div>
+        <div className="center-action">
+          <Link className="text-button" href="/eiendommer">
+            Se alle boliger <ArrowRight size={18} />
+          </Link>
+          <Link className="text-button" href="/tomter">
+            Se tomter <MapPinned size={18} />
+          </Link>
         </div>
       </section>
 
@@ -79,27 +108,6 @@ export default async function Home() {
             <h3>Trygg prosess</h3>
             <p>Du får hjelp med tomtesjekk, prospekt, visning, kostnader, advokat og neste steg.</p>
           </article>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="section-heading">
-          <p className="eyebrow">Eiendommer</p>
-          <h2>Aktuelle boliger fra din egen import</h2>
-          <p>Boligene hentes fra RealtyFlow-importen din, mens Pinoso-siden legger ekstra vekt på tomter og områdevalg.</p>
-        </div>
-        <div className="property-grid">
-          {properties.map((property, index) => (
-            <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 3} />
-          ))}
-        </div>
-        <div className="center-action">
-          <Link className="text-button" href="/eiendommer">
-            Se alle boliger <ArrowRight size={18} />
-          </Link>
-          <Link className="text-button" href="/tomter">
-            Se tomter <MapPinned size={18} />
-          </Link>
         </div>
       </section>
 
