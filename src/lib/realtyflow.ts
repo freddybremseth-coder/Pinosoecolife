@@ -174,6 +174,7 @@ export const regions: Array<{ key: RegionKey; label: string; description: string
       "monforte",
       "monforte del cid",
       "novelda",
+      "petrer",
       "font del llop",
       "agost",
       "la romana",
@@ -359,7 +360,7 @@ export function areaMatchesRegion(profile: AreaProfile, region?: string) {
   const normalizedHaystack = normalizeSearchText(haystack);
 
   if (region === "pinoso" && /pinos|pinós/.test(normalizedHaystack)) return true;
-  if (region === "aspe-monforte" && /(aspe|monforte|novelda|font del llop)/.test(normalizedHaystack)) return true;
+  if (region === "aspe-monforte" && /(aspe|monforte|novelda|petrer|font del llop)/.test(normalizedHaystack)) return true;
   if (region === "hondon-dalen" && /(hondon|hondón|fondo|frailes|nieves)/.test(normalizedHaystack)) return true;
 
   return [...selected.aliases, ...selected.locations].some((location) =>
