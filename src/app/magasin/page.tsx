@@ -2,13 +2,14 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
-import { articles } from "@/lib/content";
+import { fetchPublishedPosts } from "@/lib/website-content";
 
 export const metadata = {
   title: "Magasin | Pinoso Eco Life",
 };
 
-export default function MagazinePage() {
+export default async function MagazinePage() {
+  const articles = await fetchPublishedPosts("magasin");
   return (
     <main>
       <SiteHeader />
@@ -20,10 +21,10 @@ export default function MagazinePage() {
       <section className="section article-grid">
         {articles.map((article) => (
           <article className="article-card" key={article.slug}>
-            <span>{new Intl.DateTimeFormat("nb-NO").format(new Date(article.date))}</span>
+            <span>{new Intl.DateTimeFormat("nb-NO").format(new Date(article.published_at || article.created_at))}</span>
             <h2>{article.title}</h2>
-            <p>{article.excerpt}</p>
-            <Link href={`/magasin#${article.slug}`}>
+            <p>{article.summary}</p>
+            <Link href={`/magasin/${article.slug}`}>
               Les mer <ArrowRight size={17} />
             </Link>
           </article>

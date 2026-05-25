@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getProperties, getPropertyRef, regions } from "@/lib/realtyflow";
+import { fetchPublishedPosts } from "@/lib/website-content";
 
 const baseUrl = "https://www.pinosoecolife.com";
 
@@ -32,5 +33,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  return [...staticRoutes, ...propertyRoutes];
+  const articleRoutes = (await fetchPublishedPosts("magasin")).map((post) => ({
+    url: `${baseUrl}/magasin/${post.slug}`,
+    lastModified: new Date(post.published_at || post.created_at || now),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...propertyRoutes, ...articleRoutes];
 }
