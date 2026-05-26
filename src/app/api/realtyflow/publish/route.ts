@@ -131,3 +131,44 @@ export async function POST(request: NextRequest) {
     published_at: data.published_at,
   });
 }
+
+export async function DELETE(request: NextRequest) {
+  const auth = isAuthorized(request);
+  if (!auth.ok) {
+    return NextResponse.json({ error: auth.reason }, { status: auth.reason.includes("configured") ? 500 : 401 });
+  }
+
+  const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase service role is not configured" }, { status: 500 });
+  }
+
+  const payload = await request.json().catch(() => null);
+  const sourceSystem = cleanString(payload?.source?.system) || "realtyflow";
+  const sourceType = cleanString(payload?.source?.type) || "content";
+  const sourceId = cleanString(payload?.source?.id || "");
+  const destination = payload?.destination || {};
+  const destinationId = cleanString(destination.id) || "magasin";
+  const brandId = cleanString(payload?.brand?.id) || "pinosoecolife";
+  const slug = slugify(cleanString(payload?.content?.slug) || cleanString(payload?.content?.title));
+
+  let query = supabase.from("website_posts").delete();
+  if (sourceId) {
+    query = query
+      .eq("source_system", sourceSystem)
+      .eq("source_type", sourceType)
+      .eq("source_id", sourceId);
+  } else {
+    query = query
+      .eq("brand_id", brandId)
+      .eq("destination_id", destinationId)
+      .eq("slug", slug);
+  }
+
+  const { error } = await query;
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true, deleted: true, slug });
+}
