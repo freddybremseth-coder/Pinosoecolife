@@ -71,6 +71,19 @@ export type LandPlot = {
   lat?: number;
   lng?: number;
   source?: string;
+  cadastral_reference?: string;
+  cadastralReference?: string;
+  referencia_catastral?: string;
+  referenciaCatastral?: string;
+  catastro_ref?: string;
+  catastroRef?: string;
+  polygon?: string | number;
+  poligono?: string | number;
+  polígono?: string | number;
+  parcel?: string | number;
+  parcela?: string | number;
+  registry_number?: string;
+  finca_registral?: string;
 };
 
 export type LeadPayload = {
@@ -368,7 +381,7 @@ export function areaMatchesRegion(profile: AreaProfile, region?: string) {
   );
 }
 
-export async function getProperties(limit?: number): Promise<Property[]> {
+export async function getProperties(limit = 12): Promise<Property[]> {
   try {
     const url = new URL("/api/properties", REALTYFLOW_BASE);
     url.searchParams.set("brandId", REALTYFLOW_BRAND_ID);
