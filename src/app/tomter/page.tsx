@@ -3,9 +3,25 @@ import { PlotsMap } from "@/components/PlotsMap";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getLandPlots, type LandPlot } from "@/lib/realtyflow";
 
+type PlotWithCatastro = LandPlot & {
+  cadastral_reference?: string;
+  cadastralReference?: string;
+  referencia_catastral?: string;
+  referenciaCatastral?: string;
+  catastro_ref?: string;
+  catastroRef?: string;
+  polygon?: string | number;
+  poligono?: string | number;
+  polígono?: string | number;
+  parcel?: string | number;
+  parcela?: string | number;
+  registry_number?: string;
+  finca_registral?: string;
+};
+
 export const metadata = {
   title: "Tomter i Pinoso-regionen",
-  description: "Se tomter i Pinoso-regionen fra RealtyFlow med kart, pris, størrelse og filtrering.",
+  description: "Se tomter i Pinoso-regionen fra RealtyFlow med kart, Catastro-lag, pris, størrelse og filtrering.",
   alternates: {
     canonical: "/tomter",
   },
@@ -23,8 +39,44 @@ function normalize(value?: string) {
     .toLowerCase();
 }
 
-function plotRef(plot: LandPlot) {
+function plotRef(plot: PlotWithCatastro) {
   return plot.plot_number || plot.plotNumber || plot.id || "Tomt";
+}
+
+function getCatastroRef(plot: PlotWithCatastro) {
+  return (
+    plot.cadastral_reference ||
+    plot.cadastralReference ||
+    plot.referencia_catastral ||
+    plot.referenciaCatastral ||
+    plot.catastro_ref ||
+    plot.catastroRef ||
+    ""
+  );
+}
+
+function getPolygon(plot: PlotWithCatastro) {
+  return plot.poligono || plot.polígono || plot.polygon || "";
+}
+
+function getParcel(plot: PlotWithCatastro) {
+  return plot.parcela || plot.parcel || "";
+}
+
+function getCatastroUrl(plot: PlotWithCatastro) {
+  const ref = getCatastroRef(plot);
+  if (ref) return `https://www1.sedecatastro.gob.es/Cartografia/mapa.aspx?refcat=${encodeURIComponent(ref)}`;
+
+  const query = [
+    plot.municipality || plot.location || "",
+    getPolygon(plot) ? `poligono ${getPolygon(plot)}` : "",
+    getParcel(plot) ? `parcela ${getParcel(plot)}` : "",
+    "Catastro",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 }
 
 const pinosoPlotTerms = [
@@ -42,11 +94,26 @@ const pinosoPlotTerms = [
   "font del llop",
 ];
 
-function plotText(plot: LandPlot) {
-  return normalize([plotRef(plot), plot.location, plot.municipality, plot.zoning, plot.notes].filter(Boolean).join(" "));
+function plotText(plot: PlotWithCatastro) {
+  return normalize(
+    [
+      plotRef(plot),
+      plot.location,
+      plot.municipality,
+      plot.zoning,
+      plot.notes,
+      getCatastroRef(plot),
+      getPolygon(plot),
+      getParcel(plot),
+      plot.registry_number,
+      plot.finca_registral,
+    ]
+      .filter(Boolean)
+      .join(" "),
+  );
 }
 
-function isPinosoRegionPlot(plot: LandPlot) {
+function isPinosoRegionPlot(plot: PlotWithCatastro) {
   const haystack = plotText(plot);
   return pinosoPlotTerms.some((term) => haystack.includes(normalize(term)));
 }
@@ -57,7 +124,7 @@ export default async function PlotsPage({
   searchParams: Promise<{ q?: string; minArea?: string; maxPrice?: string; zoning?: string }>;
 }) {
   const params = await searchParams;
-  const plots = await getLandPlots();
+  const plots = (await getLandPlots()) as PlotWithCatastro[];
   const q = normalize(params.q);
   const minArea = Number(params.minArea || 0);
   const maxPrice = Number(params.maxPrice || 0);
@@ -74,16 +141,20 @@ export default async function PlotsPage({
     );
   }).sort((a, b) => Number(isPinosoRegionPlot(b)) - Number(isPinosoRegionPlot(a)));
   const mapped = filtered.filter((plot) => plot.lat && plot.lng);
+  const withCatastro = filtered.filter((plot) => getCatastroRef(plot) || getPolygon(plot) || getParcel(plot));
 
   return (
     <main>
       <SiteHeader />
       <section className="page-hero compact-hero image-hero">
-        <p className="eyebrow">Tomter</p>
+        <p className="eyebrow">Tomter · Catastro · kart</p>
         <h1>Tomter i Pinoso-regionen</h1>
-        <p>Utforsk tomter med størrelse, pris, regulering og beliggenhet. Pinoso-relevante tomter vises først fra RealtyFlow.</p>
+        <p>
+          Utforsk tomter med størrelse, pris, regulering og beliggenhet. Kartet er utvidet med Catastro-lag slik at du kan se
+          parcelgrenser sammen med dine egne tomtedata fra RealtyFlow.
+        </p>
         <form className="search-card page-search plots-search" action="/tomter">
-          <input name="q" defaultValue={params.q || ""} placeholder="Søk sted, kommune eller ref" />
+          <input name="q" defaultValue={params.q || ""} placeholder="Søk sted, ref, Catastro, polígono eller parcela" />
           <select name="minArea" defaultValue={params.minArea || ""}>
             <option value="">Areal fra</option>
             <option value="800">800 m²</option>
@@ -108,6 +179,21 @@ export default async function PlotsPage({
         </form>
       </section>
 
+      <section className="catastro-summary" aria-label="Catastro-funksjoner">
+        <article>
+          <strong>{withCatastro.length}</strong>
+          <span>tomter med Catastro/polígono/parcela</span>
+        </article>
+        <article>
+          <strong>{mapped.length}</strong>
+          <span>tomter med kartposisjon</span>
+        </article>
+        <article>
+          <strong>WMS</strong>
+          <span>offentlig Catastro-kartlag med parcelgrenser</span>
+        </article>
+      </section>
+
       <section className="plots-layout">
         <div className="plots-map">
           <PlotsMap plots={mapped} />
@@ -118,22 +204,35 @@ export default async function PlotsPage({
             <h2>{filtered.length} tomter</h2>
             <span>{mapped.length} med kartposisjon</span>
           </div>
-          {filtered.map((plot) => (
-            <article className="plot-card" id={`plot-${plot.id || encodeURIComponent(plotRef(plot))}`} key={plot.id || plotRef(plot)}>
-              <div>
-                <p>{plot.municipality || plot.location || "Spania"}</p>
-                <h2>{plotRef(plot)}</h2>
-                <strong>{formatEuro(plot.price)}</strong>
-              </div>
-              <dl>
-                <div><dt>Areal</dt><dd>{Number(plot.area || 0).toLocaleString("nb-NO")} m²</dd></div>
-                <div><dt>Regulering</dt><dd>{plot.zoning || "Ikke oppgitt"}</dd></div>
-                <div><dt>Vann</dt><dd>{plot.water ? "Ja" : "Ikke oppgitt"}</dd></div>
-                <div><dt>Strøm</dt><dd>{plot.electricity ? "Ja" : "Ikke oppgitt"}</dd></div>
-              </dl>
-              {plot.notes && <p className="plot-notes">{plot.notes}</p>}
-            </article>
-          ))}
+          {filtered.map((plot) => {
+            const catastroRef = getCatastroRef(plot);
+            const polygon = getPolygon(plot);
+            const parcel = getParcel(plot);
+
+            return (
+              <article className="plot-card" id={`plot-${plot.id || encodeURIComponent(plotRef(plot))}`} key={plot.id || plotRef(plot)}>
+                <div>
+                  <p>{plot.municipality || plot.location || "Spania"}</p>
+                  <h2>{plotRef(plot)}</h2>
+                  <strong>{formatEuro(plot.price)}</strong>
+                </div>
+                <dl>
+                  <div><dt>Areal</dt><dd>{Number(plot.area || 0).toLocaleString("nb-NO")} m²</dd></div>
+                  <div><dt>Regulering</dt><dd>{plot.zoning || "Ikke oppgitt"}</dd></div>
+                  <div><dt>Vann</dt><dd>{plot.water ? "Ja" : "Ikke oppgitt"}</dd></div>
+                  <div><dt>Strøm</dt><dd>{plot.electricity ? "Ja" : "Ikke oppgitt"}</dd></div>
+                  {(polygon || parcel) && <div><dt>Catastro</dt><dd>{polygon ? `Pol. ${polygon}` : "Pol. -"} / {parcel ? `Parc. ${parcel}` : "Parc. -"}</dd></div>}
+                  {catastroRef && <div><dt>Ref. catastral</dt><dd>{catastroRef}</dd></div>}
+                </dl>
+                {plot.notes && <p className="plot-notes">{plot.notes}</p>}
+                {(catastroRef || polygon || parcel) && (
+                  <a className="catastro-link" href={getCatastroUrl(plot)} target="_blank" rel="noopener noreferrer">
+                    Åpne tomten i Catastro
+                  </a>
+                )}
+              </article>
+            );
+          })}
         </div>
       </section>
       <Footer />
