@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import type { LandPlot } from "@/lib/realtyflow";
 
 const CATASTRO_WMS_URL = "https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx";
+const CATASTRO_REF_PATTERN = /\b\d{5}[A-Z]\d{7}[A-Z0-9]{7}\b/i;
 
 type PlotWithCatastro = LandPlot & {
   cadastral_reference?: string;
@@ -31,15 +32,39 @@ function plotRef(plot: PlotWithCatastro) {
   return plot.plot_number || plot.plotNumber || plot.id || "Tomt";
 }
 
+function cleanCatastroRef(value?: string | number) {
+  const normalized = String(value || "").toUpperCase().replace(/[^0-9A-Z]/g, "");
+  const directMatch = normalized.match(CATASTRO_REF_PATTERN);
+  if (directMatch) return directMatch[0];
+
+  const looseMatch = String(value || "").toUpperCase().match(CATASTRO_REF_PATTERN);
+  return looseMatch?.[0] || "";
+}
+
+function extractCatastroRefFromPlot(plot: PlotWithCatastro) {
+  return cleanCatastroRef(
+    [
+      plot.notes,
+      plot.location,
+      plot.municipality,
+      plotRef(plot),
+      plot.registry_number,
+      plot.finca_registral,
+    ]
+      .filter(Boolean)
+      .join(" "),
+  );
+}
+
 function getCatastroRef(plot: PlotWithCatastro) {
   return (
-    plot.cadastral_reference ||
-    plot.cadastralReference ||
-    plot.referencia_catastral ||
-    plot.referenciaCatastral ||
-    plot.catastro_ref ||
-    plot.catastroRef ||
-    ""
+    cleanCatastroRef(plot.cadastral_reference) ||
+    cleanCatastroRef(plot.cadastralReference) ||
+    cleanCatastroRef(plot.referencia_catastral) ||
+    cleanCatastroRef(plot.referenciaCatastral) ||
+    cleanCatastroRef(plot.catastro_ref) ||
+    cleanCatastroRef(plot.catastroRef) ||
+    extractCatastroRefFromPlot(plot)
   );
 }
 
