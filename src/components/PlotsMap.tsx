@@ -52,17 +52,21 @@ function getParcel(plot: PlotWithCatastro) {
 }
 
 function getCatastroUrl(plot: PlotWithCatastro) {
+  const url = new URL("/api/catastro/redirect", window.location.origin);
   const ref = getCatastroRef(plot);
-  if (ref) return `https://www1.sedecatastro.gob.es/Cartografia/mapa.aspx?refcat=${encodeURIComponent(ref)}`;
 
-  const municipality = plot.municipality || plot.location || "";
-  const polygon = getPolygon(plot);
-  const parcel = getParcel(plot);
-  const query = [municipality, polygon ? `poligono ${polygon}` : "", parcel ? `parcela ${parcel}` : "", "Catastro"]
-    .filter(Boolean)
-    .join(" ");
+  if (ref) {
+    url.searchParams.set("refcat", ref);
+    return url.toString();
+  }
 
-  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  if (plot.lat && plot.lng) {
+    url.searchParams.set("lat", String(plot.lat));
+    url.searchParams.set("lng", String(plot.lng));
+    return url.toString();
+  }
+
+  return "https://www1.sedecatastro.gob.es/Cartografia/mapa.aspx";
 }
 
 function popupHtml(plot: PlotWithCatastro) {
@@ -80,7 +84,8 @@ function popupHtml(plot: PlotWithCatastro) {
     .filter(Boolean)
     .join("<br>");
 
-  return `<strong>${plotRef(plot)}</strong><br>${facts}<br><a href="${getCatastroUrl(plot)}" target="_blank" rel="noopener noreferrer">Åpne i Catastro</a>`;
+  const linkText = ref ? "Åpne i Catastro" : "Finn i Catastro fra kartposisjon";
+  return `<strong>${plotRef(plot)}</strong><br>${facts}<br><a href="${getCatastroUrl(plot)}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
 }
 
 export function PlotsMap({ plots }: { plots: LandPlot[] }) {
