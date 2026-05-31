@@ -34,11 +34,16 @@ function formatEuro(value?: number) {
   return new Intl.NumberFormat("nb-NO", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
 }
 
-function normalize(value?: string) {
-  return (value || "")
+function normalize(value?: string | number) {
+  return String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+    .toLowerCase()
+    .trim();
+}
+
+function normalizeNumber(value?: string | number) {
+  return String(value || "").replace(/[^0-9]/g, "").replace(/^0+/, "");
 }
 
 function plotRef(plot: PlotWithCatastro) {
@@ -56,14 +61,7 @@ function cleanCatastroRef(value?: string | number) {
 
 function extractCatastroRefFromPlot(plot: PlotWithCatastro) {
   return cleanCatastroRef(
-    [
-      plot.notes,
-      plot.location,
-      plot.municipality,
-      plotRef(plot),
-      plot.registry_number,
-      plot.finca_registral,
-    ]
+    [plot.notes, plot.location, plot.municipality, plotRef(plot), plot.registry_number, plot.finca_registral]
       .filter(Boolean)
       .join(" "),
   );
@@ -81,12 +79,40 @@ function getCatastroRef(plot: PlotWithCatastro) {
   );
 }
 
+function getPolygonFromRef(ref: string) {
+  const match = ref.match(/^\d{5}[A-Z](\d{3})/i);
+  return normalizeNumber(match?.[1]);
+}
+
+function getParcelFromRef(ref: string) {
+  const match = ref.match(/^\d{5}[A-Z]\d{3}(\d{5})/i);
+  return normalizeNumber(match?.[1]);
+}
+
 function getPolygon(plot: PlotWithCatastro) {
-  return plot.poligono || plot.polígono || plot.polygon || "";
+  const direct = plot.poligono || plot.polígono || plot.polygon || "";
+  return direct || getPolygonFromRef(getCatastroRef(plot));
 }
 
 function getParcel(plot: PlotWithCatastro) {
-  return plot.parcela || plot.parcel || "";
+  const direct = plot.parcela || plot.parcel || "";
+  return direct || getParcelFromRef(getCatastroRef(plot));
+}
+
+function matchesPolygonParcel(plot: PlotWithCatastro, polygon?: string, parcel?: string) {
+  const selectedPolygon = normalizeNumber(polygon);
+  const selectedParcel = normalizeNumber(parcel);
+  if (!selectedPolygon && !selectedParcel) return true;
+
+  const plotPolygon = normalizeNumber(getPolygon(plot));
+  const plotParcel = normalizeNumber(getParcel(plot));
+  const ref = getCatastroRef(plot);
+  const haystack = plotText(plot);
+
+  return (
+    (!selectedPolygon || plotPolygon === selectedPolygon || haystack.includes(`poligono ${selectedPolygon}`) || ref.includes(selectedPolygon.padStart(3, "0"))) &&
+    (!selectedParcel || plotParcel === selectedParcel || haystack.includes(`parcela ${selectedParcel}`) || ref.includes(selectedParcel.padStart(5, "0")))
+  );
 }
 
 function getCatastroUrl(plot: PlotWithCatastro) {
@@ -144,7 +170,7 @@ function isPinosoRegionPlot(plot: PlotWithCatastro) {
 export default async function PlotsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; minArea?: string; maxPrice?: string; zoning?: string }>;
+  searchParams: Promise<{ q?: string; minArea?: string; maxPrice?: string; zoning?: string; polygon?: string; parcel?: string }>;
 }) {
   const params = await searchParams;
   const plots = (await getLandPlots()) as PlotWithCatastro[];
@@ -152,12 +178,15 @@ export default async function PlotsPage({
   const minArea = Number(params.minArea || 0);
   const maxPrice = Number(params.maxPrice || 0);
   const zoning = normalize(params.zoning);
+  const polygon = params.polygon || "";
+  const parcel = params.parcel || "";
 
   const filtered = plots.filter((plot) => {
     const haystack = plotText(plot);
     return (
-      (q || isPinosoRegionPlot(plot)) &&
+      (q || polygon || parcel || isPinosoRegionPlot(plot)) &&
       (!q || haystack.includes(q)) &&
+      matchesPolygonParcel(plot, polygon, parcel) &&
       (!zoning || normalize(plot.zoning) === zoning) &&
       (!minArea || Number(plot.area || 0) >= minArea) &&
       (!maxPrice || Number(plot.price || 0) <= maxPrice)
@@ -173,11 +202,13 @@ export default async function PlotsPage({
         <p className="eyebrow">Tomter · Catastro · kart</p>
         <h1>Tomter i Pinoso-regionen</h1>
         <p>
-          Utforsk tomter med størrelse, pris, regulering og beliggenhet. Kartet er utvidet med Catastro-lag slik at du kan se
-          parcelgrenser sammen med dine egne tomtedata fra RealtyFlow.
+          Utforsk tomter med størrelse, pris, regulering og beliggenhet. Bruk omvendt Catastro-søk med polígono og parcela
+          for å finne riktig tomt direkte i kartet.
         </p>
-        <form className="search-card page-search plots-search" action="/tomter">
-          <input name="q" defaultValue={params.q || ""} placeholder="Søk sted, ref, Catastro, polígono eller parcela" />
+        <form className="search-card page-search plots-search catastro-search" action="/tomter">
+          <input name="q" defaultValue={params.q || ""} placeholder="Søk sted, ref eller Catastro" />
+          <input name="polygon" defaultValue={params.polygon || ""} placeholder="Polígono" inputMode="numeric" />
+          <input name="parcel" defaultValue={params.parcel || ""} placeholder="Parcela" inputMode="numeric" />
           <select name="minArea" defaultValue={params.minArea || ""}>
             <option value="">Areal fra</option>
             <option value="800">800 m²</option>
@@ -204,16 +235,19 @@ export default async function PlotsPage({
 
       <section className="catastro-summary" aria-label="Catastro-funksjoner">
         <article>
+          <span className="catastro-summary-icon">◆</span>
           <strong>{withCatastro.length}</strong>
-          <span>tomter med Catastro/polígono/parcela</span>
+          <span>tomter med Catastro / polígono / parcela</span>
         </article>
         <article>
+          <span className="catastro-summary-icon">⌖</span>
           <strong>{mapped.length}</strong>
           <span>tomter med kartposisjon</span>
         </article>
         <article>
+          <span className="catastro-summary-icon">▣</span>
           <strong>WMS</strong>
-          <span>offentlig Catastro-kartlag med parcelgrenser</span>
+          <span>Catastro-kartlag med parcelgrenser</span>
         </article>
       </section>
 
@@ -229,8 +263,8 @@ export default async function PlotsPage({
           </div>
           {filtered.map((plot) => {
             const catastroRef = getCatastroRef(plot);
-            const polygon = getPolygon(plot);
-            const parcel = getParcel(plot);
+            const plotPolygon = getPolygon(plot);
+            const plotParcel = getParcel(plot);
 
             return (
               <article className="plot-card" id={`plot-${plot.id || encodeURIComponent(plotRef(plot))}`} key={plot.id || plotRef(plot)}>
@@ -244,7 +278,7 @@ export default async function PlotsPage({
                   <div><dt>Regulering</dt><dd>{plot.zoning || "Ikke oppgitt"}</dd></div>
                   <div><dt>Vann</dt><dd>{plot.water ? "Ja" : "Ikke oppgitt"}</dd></div>
                   <div><dt>Strøm</dt><dd>{plot.electricity ? "Ja" : "Ikke oppgitt"}</dd></div>
-                  {(polygon || parcel) && <div><dt>Catastro</dt><dd>{polygon ? `Pol. ${polygon}` : "Pol. -"} / {parcel ? `Parc. ${parcel}` : "Parc. -"}</dd></div>}
+                  {(plotPolygon || plotParcel) && <div><dt>Catastro</dt><dd>{plotPolygon ? `Pol. ${plotPolygon}` : "Pol. -"} / {plotParcel ? `Parc. ${plotParcel}` : "Parc. -"}</dd></div>}
                   {catastroRef && <div><dt>Ref. catastral</dt><dd>{catastroRef}</dd></div>}
                 </dl>
                 {plot.notes && <p className="plot-notes">{plot.notes}</p>}
