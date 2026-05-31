@@ -184,7 +184,6 @@ export default async function PlotsPage({
   const filtered = plots.filter((plot) => {
     const haystack = plotText(plot);
     return (
-      (q || polygon || parcel || isPinosoRegionPlot(plot)) &&
       (!q || haystack.includes(q)) &&
       matchesPolygonParcel(plot, polygon, parcel) &&
       (!zoning || normalize(plot.zoning) === zoning) &&
@@ -235,17 +234,17 @@ export default async function PlotsPage({
 
       <section className="catastro-summary" aria-label="Catastro-funksjoner">
         <article>
-          <span className="catastro-summary-icon">◆</span>
+          <span className="catastro-summary-icon">REF</span>
           <strong>{withCatastro.length}</strong>
           <span>tomter med Catastro / polígono / parcela</span>
         </article>
         <article>
-          <span className="catastro-summary-icon">⌖</span>
+          <span className="catastro-summary-icon">MAP</span>
           <strong>{mapped.length}</strong>
           <span>tomter med kartposisjon</span>
         </article>
         <article>
-          <span className="catastro-summary-icon">▣</span>
+          <span className="catastro-summary-icon">WMS</span>
           <strong>WMS</strong>
           <span>Catastro-kartlag med parcelgrenser</span>
         </article>
