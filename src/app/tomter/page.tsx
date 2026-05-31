@@ -64,19 +64,16 @@ function getParcel(plot: PlotWithCatastro) {
 }
 
 function getCatastroUrl(plot: PlotWithCatastro) {
+  const params = new URLSearchParams();
   const ref = getCatastroRef(plot);
-  if (ref) return `https://www1.sedecatastro.gob.es/Cartografia/mapa.aspx?refcat=${encodeURIComponent(ref)}`;
 
-  const query = [
-    plot.municipality || plot.location || "",
-    getPolygon(plot) ? `poligono ${getPolygon(plot)}` : "",
-    getParcel(plot) ? `parcela ${getParcel(plot)}` : "",
-    "Catastro",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  if (ref) params.set("refcat", ref);
+  if (!ref && plot.lat && plot.lng) {
+    params.set("lat", String(plot.lat));
+    params.set("lng", String(plot.lng));
+  }
 
-  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  return params.toString() ? `/api/catastro/redirect?${params.toString()}` : "https://www1.sedecatastro.gob.es/Cartografia/mapa.aspx";
 }
 
 const pinosoPlotTerms = [
@@ -225,9 +222,9 @@ export default async function PlotsPage({
                   {catastroRef && <div><dt>Ref. catastral</dt><dd>{catastroRef}</dd></div>}
                 </dl>
                 {plot.notes && <p className="plot-notes">{plot.notes}</p>}
-                {(catastroRef || polygon || parcel) && (
+                {(catastroRef || plot.lat || plot.lng) && (
                   <a className="catastro-link" href={getCatastroUrl(plot)} target="_blank" rel="noopener noreferrer">
-                    Åpne tomten i Catastro
+                    {catastroRef ? "Åpne tomten i Catastro" : "Finn i Catastro fra kartposisjon"}
                   </a>
                 )}
               </article>
