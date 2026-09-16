@@ -14,6 +14,7 @@ export async function POST(request: Request) {
       email: String(body.email),
       phone: body.phone ? String(body.phone) : undefined,
       preferred_area: body.preferred_area ? String(body.preferred_area) : undefined,
+      lifestyle_interest: body.lifestyle_interest ? String(body.lifestyle_interest) : undefined,
       budget: body.budget ? String(body.budget) : undefined,
       property_type: body.property_type ? String(body.property_type) : undefined,
       bedrooms: body.bedrooms ? String(body.bedrooms) : undefined,
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
       property_ref: body.property_ref ? String(body.property_ref) : undefined,
       property_title: body.property_title ? String(body.property_title) : undefined,
       request_type: body.request_type ? String(body.request_type) : undefined,
+      page_url: body.page_url ? String(body.page_url) : undefined,
     });
 
     return NextResponse.json({ ok: true });
