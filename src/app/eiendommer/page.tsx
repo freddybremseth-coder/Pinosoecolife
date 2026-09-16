@@ -1,23 +1,22 @@
 import { Footer } from "@/components/Footer";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SiteHeader } from "@/components/SiteHeader";
+import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import {
   getProperties,
   getPropertySearchText,
-  getPropertyTitle,
   getPropertyType,
   getRegionLabel,
   normalizeSearchText,
   propertyMatchesArea,
   propertyMatchesLifestyle,
   propertyMatchesRegion,
-  regions,
 } from "@/lib/realtyflow";
 
 export const metadata = {
-  title: "Boliger til salgs",
+  title: "Innlandsboliger og villaer | Pinoso Eco Life",
   description:
-    "Søk blant moderne villaer, nybygg og landlige boliger i Pinoso innland.",
+    "Søk blant villaer, nybygg og landlige boliger i Pinoso, Vinalopó og utvalgte innlandsområder i Alicante og Murcia.",
   alternates: {
     canonical: "/eiendommer",
   },
@@ -79,20 +78,20 @@ export default async function PropertiesPage({
       <SiteHeader />
       <section className="page-hero compact-hero">
         <p className="eyebrow">Boligsøk</p>
-        <h1>Innlandsboliger i Pinoso-regionen</h1>
+        <h1>Innlandsboliger for livet du ønsker å skape</h1>
         <p>
-          Utforsk et spisset utvalg fra RealtyFlow for Pinoso, Aspe, Monforte og Hondon-dalen.
-          {locationLabel ? ` Viser ${locationLabel}.` : " Velg region med ett klikk."}
+          Utforsk et spisset RealtyFlow-utvalg for Pinoso-regionen, Vinalopó og andre Eco Life-områder i Alicante og Murcia.
+          {locationLabel ? ` Viser ${locationLabel}.` : " Velg område eller søk fritt."}
         </p>
         <div className="quick-filters">
           <a className={!region && !area ? "active" : ""} href="/eiendommer">Alle</a>
-          {regions.map((item) => (
+          {ecoLifeAreas.map((item) => (
             <a
-              className={region === item.key && !area ? "active" : ""}
-              href={`/eiendommer?region=${item.key}`}
-              key={item.key}
+              className={area === item.name ? "active" : ""}
+              href={`/eiendommer?area=${encodeURIComponent(item.name)}`}
+              key={item.slug}
             >
-              {item.label}
+              {item.name}
             </a>
           ))}
         </div>
@@ -103,9 +102,11 @@ export default async function PropertiesPage({
           <select name="type" defaultValue={params.type || ""}>
             <option value="">Alle typer</option>
             <option>Villa</option>
+            <option>Nybygg</option>
+            <option>Finca</option>
+            <option>Landsted</option>
             <option>Leilighet</option>
             <option>Rekkehus</option>
-            <option>Penthouse</option>
           </select>
           <select name="minPrice" defaultValue={params.minPrice || ""}>
             <option value="">Pris fra</option>
@@ -140,7 +141,7 @@ export default async function PropertiesPage({
             <option value="4">4+</option>
           </select>
           <select name="lifestyle" defaultValue={params.lifestyle || ""}>
-            <option value="">Livsstil</option>
+            <option value="">Egenskap</option>
             <option value="pool">Basseng</option>
             <option value="golf">Golf</option>
           </select>
@@ -150,7 +151,7 @@ export default async function PropertiesPage({
       <section className="section">
         <div className="list-heading">
           <h2>{filtered.length} boliger{area ? ` i ${area}` : ""}</h2>
-          <span>Viser nyeste og mest relevante først</span>
+          <span>Viser tilgjengelige treff fra RealtyFlow</span>
         </div>
         <div className="property-grid">
           {filtered.map((property, index) => (
