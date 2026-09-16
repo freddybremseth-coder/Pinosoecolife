@@ -3,11 +3,39 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
 
+const standardAreas = [
+  "Pinoso",
+  "Monóvar",
+  "La Romana",
+  "Hondón de las Nieves",
+  "Aspe",
+  "Novelda",
+  "Monforte del Cid",
+  "Biar",
+  "Villena",
+  "Sax",
+  "Jumilla",
+  "Åpen for forslag",
+];
+
+const lifestyleInterests = [
+  "Privatliv og ro",
+  "Hage og mer selvberget liv",
+  "Vinland og dyrking",
+  "Gåturer, sykkel og natur",
+  "Familie, gjester og store uteområder",
+  "Enkel logistikk og flyplass",
+  "Landsbyliv og lokalmiljø",
+  "Usikker – ønsker rådgivning",
+];
+
 type ContactFormProps = {
   source?: string;
   propertyRef?: string;
   propertyTitle?: string;
   requestType?: string;
+  preferredArea?: string;
+  lifestyleIntent?: string;
 };
 
 export function ContactForm({
@@ -15,8 +43,17 @@ export function ContactForm({
   propertyRef,
   propertyTitle,
   requestType = "general",
+  preferredArea,
+  lifestyleIntent,
 }: ContactFormProps) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const areaOptions = preferredArea && !standardAreas.includes(preferredArea)
+    ? [preferredArea, ...standardAreas]
+    : standardAreas;
+  const selectedArea = preferredArea || "Pinoso";
+  const selectedLifestyle = lifestyleIntent && lifestyleInterests.includes(lifestyleIntent)
+    ? lifestyleIntent
+    : "Usikker – ønsker rådgivning";
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,7 +64,14 @@ export function ContactForm({
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...data, source, property_ref: propertyRef, property_title: propertyTitle, request_type: requestType }),
+      body: JSON.stringify({
+        ...data,
+        source,
+        property_ref: propertyRef,
+        property_title: propertyTitle,
+        request_type: requestType,
+        page_url: window.location.href,
+      }),
     });
 
     if (res.ok) {
@@ -57,11 +101,8 @@ export function ContactForm({
       <div className="form-grid">
         <label>
           Område
-          <select name="preferred_area" defaultValue="Pinoso">
-            <option>Pinoso</option>
-            <option>Aspe og Monforte del Cid</option>
-            <option>Hondon-dalen</option>
-            <option>Åpen for forslag</option>
+          <select name="preferred_area" defaultValue={selectedArea}>
+            {areaOptions.map((area) => <option key={area}>{area}</option>)}
           </select>
         </label>
         <label>
@@ -69,12 +110,20 @@ export function ContactForm({
           <input name="budget" placeholder="f.eks 350 000" />
         </label>
       </div>
+      <label>
+        Hva betyr mest for deg i innlandet?
+        <select name="lifestyle_interest" defaultValue={selectedLifestyle}>
+          {lifestyleInterests.map((interest) => <option key={interest}>{interest}</option>)}
+        </select>
+      </label>
       <div className="form-grid">
         <label>
           Boligtype
           <select name="property_type" defaultValue="Nybygg">
             <option>Nybygg</option>
+            <option>Tomt og bygging</option>
             <option>Villa</option>
+            <option>Finca / landsted</option>
             <option>Leilighet</option>
             <option>Rekkehus</option>
           </select>
