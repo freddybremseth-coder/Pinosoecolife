@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getProperties, getPropertyRef, regions } from "@/lib/realtyflow";
+import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import { fetchPublishedPosts } from "@/lib/website-content";
 
 const baseUrl = "https://www.pinosoecolife.com";
@@ -8,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
+    "/livet-i-innlandet",
     "/eiendommer",
     "/tomter",
     "/omrader",
@@ -19,7 +21,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}${route}`,
     lastModified: now,
     changeFrequency: route === "/eiendommer" ? "daily" : "weekly",
-    priority: route === "" ? 1 : 0.8,
+    priority: route === "" ? 1 : route === "/livet-i-innlandet" ? 0.9 : 0.8,
+  }));
+
+  const ecoLifeAreaRoutes: MetadataRoute.Sitemap = ecoLifeAreas.map((area) => ({
+    url: `${baseUrl}/livet-i-innlandet/${area.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.75,
   }));
 
   const properties = await getProperties(100);
@@ -40,5 +49,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...propertyRoutes, ...articleRoutes];
+  return [...staticRoutes, ...ecoLifeAreaRoutes, ...propertyRoutes, ...articleRoutes];
 }

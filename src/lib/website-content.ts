@@ -1,6 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
-import { articles as fallbackArticles } from "@/lib/content";
+import { articles } from "@/lib/content";
+import { ecoLifePhase2Articles } from "@/lib/ecolife-phase2";
+
+const fallbackArticles = [...articles, ...ecoLifePhase2Articles];
 
 export type PublicWebsitePost = {
   id: string;

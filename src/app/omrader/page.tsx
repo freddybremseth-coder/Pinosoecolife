@@ -1,13 +1,15 @@
-import { MapPin } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, MapPin } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { areas } from "@/lib/content";
+import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import { areaMatchesRegion, getAreaProfiles, regions } from "@/lib/realtyflow";
 
 export const metadata = {
-  title: "Områder",
+  title: "Innlandsområder | Pinoso Eco Life",
   description:
-    "Utforsk Altea, Albir, Calpe, Finestrat, Torrevieja, Orihuela Costa, Los Alcazares og andre områder før du velger bolig i Spania.",
+    "Utforsk Pinoso, Monóvar, La Romana, Hondón, Aspe, Novelda, Monforte del Cid, Biar, Villena, Sax og Jumilla før du velger tomt eller bolig.",
   alternates: {
     canonical: "/omrader",
   },
@@ -30,9 +32,29 @@ export default async function AreasPage() {
       <SiteHeader />
       <section className="page-hero compact-hero image-hero">
         <p className="eyebrow">Områder</p>
-        <h1>Finn riktig sted før du velger bolig</h1>
-        <p>For mange kjøpere er beliggenhet, hverdagsliv og avstand til tjenester viktigere enn selve boligen.</p>
+        <h1>Finn riktig sted før du velger tomt og bolig</h1>
+        <p>
+          Pinoso Eco Life starter med hverdagen: ro, natur, vinland, byservice, flyplass, fjell eller landsbyliv. Når
+          området passer, begynner jakten på riktig tomt eller bolig.
+        </p>
       </section>
+
+      <section className="section proof-section">
+        <div className="section-heading">
+          <p className="eyebrow">Eco Life-områder</p>
+          <h2>Hvordan vil du faktisk leve?</h2>
+          <p>
+            Vi har samlet {ecoLifeAreas.length} innlandsområder i et eget livsstilsunivers. Her sammenligner vi ikke
+            bare boliger, men hvordan hverdagen kan føles på hvert sted.
+          </p>
+        </div>
+        <div className="center-action">
+          <Link className="text-button" href="/livet-i-innlandet">
+            Utforsk livet i innlandet <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
+
       <section className="region-strip">
         {regions.map((region) => (
           <a href={`#${region.key}`} key={region.key}>
@@ -41,13 +63,18 @@ export default async function AreasPage() {
           </a>
         ))}
       </section>
+
       <section className="section area-intro">
         <div className="section-heading">
-          <p className="eyebrow">Fra RealtyFlow</p>
-          <h2>Områder valgt for nettsiden</h2>
-          <p>Disse områdeprofilene er hentet fra RealtyFlow og vises når de er markert for nettsiden.</p>
+          <p className="eyebrow">Aktuelle områdeprofiler</p>
+          <h2>Publiserte områder og boligdata fra RealtyFlow</h2>
+          <p>
+            Eco Life-guidene hjelper deg å velge riktig type sted. Under finner du områdeprofiler som er publisert fra
+            RealtyFlow og kan kobles videre mot aktuelle boliger.
+          </p>
         </div>
       </section>
+
       {groupedProfiles.map((group) => (
         <section className="section area-profile-grid region-area-section" id={group.key} key={group.key}>
           <div className="section-heading region-heading">
