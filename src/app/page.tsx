@@ -28,7 +28,7 @@ export default async function Home() {
             <Link className="hero-primary-button" href="/tomter">
               Se tomter <MapPinned size={18} />
             </Link>
-            <Link className="hero-secondary-button" href="/magasin">
+            <Link className="hero-secondary-button" href="/livet-i-innlandet">
               Oppdag Eco Life <Leaf size={18} />
             </Link>
           </div>
@@ -89,6 +89,9 @@ export default async function Home() {
           </article>
         </div>
         <div className="center-action">
+          <Link className="text-button" href="/livet-i-innlandet">
+            Finn din type innlandsliv <ArrowRight size={18} />
+          </Link>
           <Link className="text-button" href="/magasin/10000-m2-hva-gjor-du-med-plassen">
             Hva kan du gjøre med 10 000 m²? <ArrowRight size={18} />
           </Link>
