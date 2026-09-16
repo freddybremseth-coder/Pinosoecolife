@@ -2,11 +2,31 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight, Check, MapPin, Sprout } from "lucide-react";
 
+import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ecoLifeAreas, getEcoLifeArea } from "@/lib/ecolife-areas";
 
 type Params = { slug: string };
+
+const lifestyleContext = {
+  vinland: {
+    interest: "Vinland og dyrking",
+    requestType: "Eco Life – vinland og dyrking",
+  },
+  landsby: {
+    interest: "Landsbyliv og lokalmiljø",
+    requestType: "Eco Life – landsbyliv og finca-ro",
+  },
+  praktisk: {
+    interest: "Enkel logistikk og flyplass",
+    requestType: "Eco Life – enkel logistikk",
+  },
+  fjell: {
+    interest: "Gåturer, sykkel og natur",
+    requestType: "Eco Life – fjell og natur",
+  },
+} as const;
 
 export function generateStaticParams() {
   return ecoLifeAreas.map((area) => ({ slug: area.slug }));
@@ -42,6 +62,7 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
   }
 
   const primarySearch = encodeURIComponent(area.searchTerms[0] || area.name);
+  const leadContext = lifestyleContext[area.zone];
 
   return (
     <main>
@@ -116,8 +137,25 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
         <div className="center-action">
           <Link className="text-button" href={`/tomter?q=${primarySearch}`}>Se tomter <ArrowRight size={18} /></Link>
           <Link className="text-button" href={`/eiendommer?area=${primarySearch}`}>Se boliger <ArrowRight size={18} /></Link>
-          <Link className="text-button" href="/#kontakt">Snakk med oss <ArrowRight size={18} /></Link>
+          <a className="text-button" href="#kontakt">Snakk med oss <ArrowRight size={18} /></a>
         </div>
+      </section>
+
+      <section className="contact-section" id="kontakt">
+        <div>
+          <p className="eyebrow">{area.name}</p>
+          <h2>Fortell oss hvordan du ønsker å leve her</h2>
+          <p>
+            Område og Eco Life-retning er allerede fylt inn. Legg til budsjett, tidslinje og det som er viktig for deg,
+            så kan vi vurdere aktuelle tomter, boliger og neste steg.
+          </p>
+        </div>
+        <ContactForm
+          source={`pinosoecolife-area-${area.slug}`}
+          preferredArea={area.name}
+          lifestyleIntent={leadContext.interest}
+          requestType={leadContext.requestType}
+        />
       </section>
 
       <section className="section">
