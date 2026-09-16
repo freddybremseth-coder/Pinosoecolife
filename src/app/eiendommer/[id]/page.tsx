@@ -63,8 +63,6 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
   const mainImage = getPrimaryImage(property);
   const description = getPropertyDescription(property);
   const location = property.location || property.town || "Spania";
-  const estimatedCosts = property.price ? Math.round(property.price * 0.135) : 0;
-  const estimatedTotal = property.price ? property.price + estimatedCosts : 0;
   const detailFacts = [
     { icon: <Tag />, label: `Ref ${getPropertyRef(property)}` },
     { icon: <Home />, label: getPropertyType(property) },
@@ -156,28 +154,28 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
                 <li>Oppdatert tilgjengelighet, pris og hva som faktisk er inkludert.</li>
                 <li>Betalingsplan, byggefase og forventet overtakelse.</li>
                 <li>Utbygger, kvalitet, garantier og tidligere leveranser.</li>
-                <li>Avstand til strand, service, flyplass og helårsaktivitet.</li>
+                <li>Daglig service, helse, flyplass, adkomst og hvordan området fungerer gjennom året.</li>
               </ul>
             </article>
             <article>
-              <h2>Estimert kjøpskostnad</h2>
+              <h2>Kjøpskostnader må beregnes konkret</h2>
               <p>
-                I Spania bør du normalt beregne ca. 13,5% ekstra til skatt, notar, register, advokat og øvrige kostnader.
+                Skatter og omkostninger varierer blant annet med om boligen er ny eller brukt, hvilken region den ligger i,
+                kjøpesummen og hvilke tjenester som inngår i handelen. Vi lager derfor et konkret kostnadsestimat for boligen
+                i stedet for å bruke én fast prosentsats for alle kjøp.
               </p>
               <div className="cost-box">
-                <span>Pris</span>
+                <span>Oppgitt boligpris</span>
                 <strong>{formatPrice(property.price)}</strong>
-                <span>Ca. kostnader</span>
-                <strong>{estimatedCosts ? formatPrice(estimatedCosts) : "Avklares"}</strong>
-                <span>Estimert total</span>
-                <strong>{estimatedTotal ? formatPrice(estimatedTotal) : "Pris på forespørsel"}</strong>
+                <span>Skatter og omkostninger</span>
+                <strong>Beregnes for denne handelen</strong>
               </div>
             </article>
             <article>
-              <h2>Passer den for utleie?</h2>
+              <h2>Hvis utleie er relevant</h2>
               <p>
-                Vi vurderer beliggenhet, turistlisens, felleskostnader, sesong, målgruppe og konkurranse før du baserer
-                kjøpet på forventet leieinntekt.
+                Vi baserer ikke et kjøp på en generell antakelse om leieinntekt. Regler, tillatelser, etterspørsel,
+                sesong, kostnader og faktisk bruk må vurderes for den konkrete boligen og kommunen.
               </p>
             </article>
             <article>
@@ -218,12 +216,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           <section className="area-context">
             <h2>Område og beliggenhet</h2>
             <p>
-              Boligen ligger i {location}. Vi vurderer alltid området sammen med deg: avstand til strand, golf,
-              restauranter, helsetjenester, flyplass og hvordan stedet fungerer utenom høysesong.
+              Boligen ligger i {location}. Vi vurderer området sammen med deg ut fra hverdagsservice, helsetjenester,
+              flyplass/reisevei, natur og uteområder, samt hvordan stedet fungerer gjennom hele året.
             </p>
             <div>
               <span>Norsk vurdering av området</span>
-              <span>Alternativer i samme prisklasse</span>
+              <span>Alternativer som passer samme behov</span>
               <span>Digital eller fysisk visning</span>
             </div>
           </section>
@@ -270,6 +268,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           <ContactForm
             propertyRef={getPropertyRef(property)}
             propertyTitle={getPropertyTitle(property)}
+            preferredArea={location}
             requestType="Komplett tilbud/prospekt"
             source={`property-${getPropertyRef(property)}`}
           />
