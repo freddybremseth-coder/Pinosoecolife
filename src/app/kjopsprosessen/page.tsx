@@ -6,6 +6,7 @@ import { processSteps } from "@/lib/content";
 
 export const metadata = {
   title: "Kjøpsprosessen | Pinoso Eco Life",
+  description: "Fra livsstil og områdevalg til egnet tomt, bolig, dokumentkontroll og overtakelse i innlandet i Spania.",
 };
 
 export default function BuyingProcessPage() {
@@ -14,8 +15,11 @@ export default function BuyingProcessPage() {
       <SiteHeader />
       <section className="page-hero compact-hero">
         <p className="eyebrow">Kjøpsprosessen</p>
-        <h1>Trygt kjøp av nybygg i Spania</h1>
-        <p>Vi følger deg gjennom behov, utvalg, dokumenter, visning, kontrakt og overtakelse.</p>
+        <h1>Fra riktig område til trygg gjennomføring</h1>
+        <p>
+          Vi starter med hvordan du vil leve, snevrer inn område og eiendom, og følger prosessen videre gjennom
+          dokumentkontroll, visning, kontrakt og overtakelse.
+        </p>
       </section>
       <section className="section split">
         <div className="timeline">
@@ -28,16 +32,16 @@ export default function BuyingProcessPage() {
         </div>
         <div className="feature-panel">
           <div>
-            <CheckCircle2 /> Strukturert prosess
+            <CheckCircle2 /> Livsstil og område først
           </div>
           <div>
-            <CheckCircle2 /> Dokumenter samlet
+            <CheckCircle2 /> Tomt og dokumenter kontrolleres
           </div>
           <div>
             <CheckCircle2 /> Rådgivning på norsk
           </div>
           <div>
-            <CheckCircle2 /> RealtyFlow-oppfølging
+            <CheckCircle2 /> Strukturert RealtyFlow-oppfølging
           </div>
         </div>
       </section>
@@ -45,9 +49,9 @@ export default function BuyingProcessPage() {
         <div>
           <p className="eyebrow">Neste steg</p>
           <h2>Start med en kort behovsavklaring</h2>
-          <p>Fortell oss hva du ser etter, så kan vi foreslå områder og prosjekter.</p>
+          <p>Fortell oss hvordan du vil leve, så kan vi begynne med område og deretter se på tomt eller bolig.</p>
         </div>
-        <ContactForm source="buying-process" />
+        <ContactForm source="buying-process" requestType="Kjøpsprosess – område, tomt og bolig" />
       </section>
       <Footer />
     </main>
