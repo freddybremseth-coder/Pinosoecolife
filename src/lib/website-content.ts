@@ -2,8 +2,9 @@ import { createClient } from "@supabase/supabase-js";
 
 import { articles } from "@/lib/content";
 import { ecoLifePhase2Articles } from "@/lib/ecolife-phase2";
+import { ecoLifePhase2bArticles } from "@/lib/ecolife-phase2b";
 
-const fallbackArticles = [...articles, ...ecoLifePhase2Articles];
+const fallbackArticles = [...articles, ...ecoLifePhase2Articles, ...ecoLifePhase2bArticles];
 
 export type PublicWebsitePost = {
   id: string;
