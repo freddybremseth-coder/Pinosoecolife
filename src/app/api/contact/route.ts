@@ -9,6 +9,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Navn og e-post er påkrevd" }, { status: 400 });
     }
 
+    const message = [
+      body.message ? String(body.message) : "",
+      body.lifestyle_interest ? `Eco Life-interesse: ${String(body.lifestyle_interest)}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
     await sendLead({
       name: String(body.name),
       email: String(body.email),
@@ -22,11 +29,12 @@ export async function POST(request: Request) {
       financing_status: body.financing_status ? String(body.financing_status) : undefined,
       spain_experience: body.spain_experience ? String(body.spain_experience) : undefined,
       next_step: body.next_step ? String(body.next_step) : undefined,
-      message: body.message ? String(body.message) : undefined,
+      message: message || undefined,
       source: body.source ? String(body.source) : "pinosoecolife-next",
       property_ref: body.property_ref ? String(body.property_ref) : undefined,
       property_title: body.property_title ? String(body.property_title) : undefined,
       request_type: body.request_type ? String(body.request_type) : undefined,
+      page_url: body.page_url ? String(body.page_url) : undefined,
     });
 
     return NextResponse.json({ ok: true });
