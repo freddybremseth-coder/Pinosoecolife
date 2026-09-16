@@ -53,12 +53,31 @@ function toFallbackPost(article: (typeof fallbackArticles)[number]): PublicWebsi
     title: article.title,
     slug: article.slug,
     summary: article.excerpt,
-    markdown: `# ${article.title}\n\n${article.excerpt}`,
-    image_url: null,
-    tags: [],
+    markdown: article.markdown || `# ${article.title}\n\n${article.excerpt}`,
+    image_url: article.image || null,
+    tags: article.tags || [],
     published_at: article.date,
     created_at: article.date,
   };
+}
+
+function mergeMagazinePosts(rows: PublicWebsitePost[]) {
+  const bySlug = new Map<string, PublicWebsitePost>();
+
+  // Curated Eco Life articles are a durable baseline. CMS rows with the same slug
+  // may override them so editorial updates can still be published without code changes.
+  for (const article of fallbackArticles) {
+    bySlug.set(article.slug, toFallbackPost(article));
+  }
+  for (const row of rows) {
+    bySlug.set(row.slug, row);
+  }
+
+  return Array.from(bySlug.values()).sort((a, b) => {
+    const aDate = new Date(a.published_at || a.created_at).getTime();
+    const bDate = new Date(b.published_at || b.created_at).getTime();
+    return bDate - aDate;
+  });
 }
 
 export async function fetchPublishedPosts(destinationId: string): Promise<PublicWebsitePost[]> {
@@ -81,8 +100,8 @@ export async function fetchPublishedPosts(destinationId: string): Promise<Public
   }
 
   const rows = (data || []) as unknown as PublicWebsitePost[];
-  if (rows.length > 0 || destinationId !== "magasin") return rows;
-  return fallbackArticles.map(toFallbackPost);
+  if (destinationId === "magasin") return mergeMagazinePosts(rows);
+  return rows;
 }
 
 export async function fetchPublishedPost(destinationId: string, slug: string): Promise<PublicWebsitePost | null> {
