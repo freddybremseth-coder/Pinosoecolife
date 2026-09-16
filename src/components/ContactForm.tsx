@@ -50,7 +50,7 @@ export function ContactForm({
   const areaOptions = preferredArea && !standardAreas.includes(preferredArea)
     ? [preferredArea, ...standardAreas]
     : standardAreas;
-  const selectedArea = preferredArea || "Pinoso";
+  const selectedArea = preferredArea || "Åpen for forslag";
   const selectedLifestyle = lifestyleIntent && lifestyleInterests.includes(lifestyleIntent)
     ? lifestyleIntent
     : "Usikker – ønsker rådgivning";
