@@ -1,36 +1,73 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 import { ArrowRight, CheckCircle2, Send } from "lucide-react";
 
-const areaAdvice: Record<string, { title: string; text: string; href: string }> = {
-  Pinoso: {
-    title: "Pinoso passer ofte best",
-    text: "Du prioriterer store tomter, ro, lokalt hverdagsliv, god verdi og mulighet for moderne villa med privatliv.",
-    href: "/tomter?region=pinoso",
+type Advice = { title: string; text: string; href: string };
+
+const areaOptions = [
+  { name: "Pinoso", slug: "pinoso" },
+  { name: "Monóvar", slug: "monovar" },
+  { name: "La Romana", slug: "la-romana" },
+  { name: "Hondón de las Nieves", slug: "hondon-de-las-nieves" },
+  { name: "Aspe", slug: "aspe" },
+  { name: "Novelda", slug: "novelda" },
+  { name: "Monforte del Cid", slug: "monforte-del-cid" },
+  { name: "Biar", slug: "biar" },
+  { name: "Villena", slug: "villena" },
+  { name: "Sax", slug: "sax" },
+  { name: "Jumilla", slug: "jumilla" },
+];
+
+const profileAdvice: Record<string, Advice> = {
+  vinland: {
+    title: "Se nærmere på vinlandet",
+    text: "Pinoso og Jumilla er naturlige steder å sammenligne når vinlandskap, store horisonter, jord og plass skal være en tydelig del av hverdagen.",
+    href: "/livet-i-innlandet#vinland",
   },
-  "Aspe og Monforte del Cid": {
-    title: "Aspe og Monforte kan være riktig balanse",
-    text: "Du får inland-følelse, tomtemuligheter og kortere vei mot Alicante, golf og større servicetilbud.",
-    href: "/tomter?q=Aspe",
+  landsby: {
+    title: "Se nærmere på landsby- og finca-livet",
+    text: "Monóvar, La Romana og Hondón de las Nieves gir ulike varianter av landsbyliv, privatliv og landlige eiendommer med hverdagsservice i nærheten.",
+    href: "/livet-i-innlandet#landsby",
   },
-  "Hondon-dalen": {
-    title: "Hondon-dalen bør vurderes",
-    text: "Dette passer godt hvis du vil ha dal, utsikt, landsbyliv og store tomter i rolige omgivelser.",
-    href: "/tomter?q=Hondon",
+  praktisk: {
+    title: "Se nærmere på det praktiske innlandet",
+    text: "Aspe, Novelda og Monforte del Cid er relevante når mer plass skal kombineres med enkel logistikk mot Alicante, Elche og flyplassen.",
+    href: "/livet-i-innlandet#praktisk",
   },
-  "Usikker": {
-    title: "Vi bør starte med områdevalget",
-    text: "Når du er usikker på område, er riktig første steg å sammenligne livsstil, reisevei, prisnivå og bruk gjennom året.",
-    href: "/omrader",
+  fjell: {
+    title: "Se nærmere på fjell- og Vinalopó-innlandet",
+    text: "Biar, Villena og Sax passer inn i en sammenligning når natur, lokale bymiljøer, tydeligere årstider og aktivt hverdagsliv betyr mye.",
+    href: "/livet-i-innlandet#fjell",
+  },
+  unsure: {
+    title: "Start med livet du ønsker",
+    text: "Sammenlign først vinland, landsbyliv, praktisk innland og fjellområder. Når retningen er klar, blir tomt og boligvalg langt enklere.",
+    href: "/livet-i-innlandet",
   },
 };
 
+const lifestyleInterestByProfile: Record<string, string> = {
+  vinland: "Vinland og dyrking",
+  landsby: "Landsbyliv og lokalmiljø",
+  praktisk: "Enkel logistikk og flyplass",
+  fjell: "Gåturer, sykkel og natur",
+  unsure: "Usikker – ønsker rådgivning",
+};
+
+function adviceForArea(area: string): Advice | null {
+  const match = areaOptions.find((item) => item.name === area);
+  if (!match) return null;
+  return {
+    title: `Utforsk livet i ${match.name}`,
+    text: `Du har allerede pekt ut ${match.name}. Neste steg er å se om hverdagen, tomtene og den praktiske beliggenheten faktisk passer det livet du ønsker.`,
+    href: `/livet-i-innlandet/${match.slug}`,
+  };
+}
+
 export function BuyerMatchQuiz() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [resultArea, setResultArea] = useState("Usikker");
-
-  const result = useMemo(() => areaAdvice[resultArea] || areaAdvice.Usikker, [resultArea]);
+  const [result, setResult] = useState<Advice>(profileAdvice.unsure);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,15 +75,16 @@ export function BuyerMatchQuiz() {
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
 
-    const preferredArea = data.preferred_area || "Usikker";
-    setResultArea(preferredArea);
+    const preferredArea = data.preferred_area || "Åpen for forslag";
+    const profile = data.profile || "unsure";
+    setResult(adviceForArea(preferredArea) || profileAdvice[profile] || profileAdvice.unsure);
 
     const message = [
-      `Boligmatch-quiz: ${data.goal || "Ikke valgt"}`,
-      `Viktigst: ${data.priority || "Ikke valgt"}`,
-      `Strand/golf/ro: ${data.lifestyle || "Ikke valgt"}`,
-      `Flyplass: ${data.airport || "Ikke valgt"}`,
-      `Utleie: ${data.rental || "Ikke valgt"}`,
+      `Eco Life-match: ${data.goal || "Ikke valgt"}`,
+      `Ønsket hverdag: ${data.profile_label || "Ikke valgt"}`,
+      `Bruk av tomten: ${data.land_use || "Ikke valgt"}`,
+      `Reise/logistikk: ${data.travel || "Ikke valgt"}`,
+      `Vedlikehold: ${data.maintenance || "Ikke valgt"}`,
       data.message ? `Kommentar: ${data.message}` : "",
     ]
       .filter(Boolean)
@@ -58,9 +96,11 @@ export function BuyerMatchQuiz() {
       body: JSON.stringify({
         ...data,
         preferred_area: preferredArea,
+        lifestyle_interest: lifestyleInterestByProfile[profile] || lifestyleInterestByProfile.unsure,
         message,
-        source: "pinosoecolife-buyer-match",
-        request_type: "Finn riktig område og bolig",
+        page_url: window.location.href,
+        source: "pinosoecolife-eco-life-match",
+        request_type: `Eco Life-match – ${profile}`,
       }),
     });
 
@@ -74,10 +114,10 @@ export function BuyerMatchQuiz() {
   return (
     <section className="section buyer-match" id="boligmatch">
       <div className="section-heading">
-        <p className="eyebrow">Boligmatch</p>
-        <h2>Finn riktig område, tomt og boligtype på 2 minutter</h2>
+        <p className="eyebrow">Eco Life-match</p>
+        <h2>Hvilken type innlandsliv passer det du ser for deg?</h2>
         <p>
-          Svar på noen få spørsmål, så får RealtyFlow et bedre grunnlag for shortlist, oppfølging og anbefalte neste steg.
+          Start med hverdagen, plassen og hvordan du vil bruke eiendommen. Deretter kan vi snevre inn område, tomt og boligmodell.
         </p>
       </div>
       <div className="quiz-layout">
@@ -85,73 +125,94 @@ export function BuyerMatchQuiz() {
           <div className="form-grid">
             <label>
               Hva er målet?
-              <select name="goal" defaultValue="Feriebolig">
-                <option>Feriebolig</option>
-                <option>Pensjon / lengre opphold</option>
-                <option>Investering og utleie</option>
-                <option>Flytting til Spania</option>
+              <select name="goal" defaultValue="Tomt og bygging">
                 <option>Tomt og bygging</option>
+                <option>Moderne villa / nybygg</option>
+                <option>Finca eller landsted</option>
+                <option>Flytting til Spania</option>
+                <option>Pensjon / lengre opphold</option>
+                <option>Feriebolig med mye uteplass</option>
               </select>
             </label>
             <label>
-              Foretrukket område
-              <select name="preferred_area" defaultValue="Usikker">
-                <option>Pinoso</option>
-                <option>Aspe og Monforte del Cid</option>
-                <option>Hondon-dalen</option>
-                <option>Usikker</option>
+              Har du allerede et område i tankene?
+              <select name="preferred_area" defaultValue="Åpen for forslag">
+                <option>Åpen for forslag</option>
+                {areaOptions.map((area) => <option key={area.slug}>{area.name}</option>)}
               </select>
             </label>
           </div>
+
+          <label>
+            Hvilken hverdag frister mest?
+            <select name="profile" defaultValue="unsure" onChange={(event) => {
+              const select = event.currentTarget;
+              const labelInput = select.form?.elements.namedItem("profile_label") as HTMLInputElement | null;
+              if (labelInput) labelInput.value = select.options[select.selectedIndex]?.text || "";
+            }}>
+              <option value="unsure">Usikker – jeg vil sammenligne</option>
+              <option value="vinland">Vinland, dyrking og store horisonter</option>
+              <option value="landsby">Landsbyliv, ro og privatliv</option>
+              <option value="praktisk">Mer plass med enkel logistikk og flyplass</option>
+              <option value="fjell">Fjell, natur og et aktivt hverdagsliv</option>
+            </select>
+            <input type="hidden" name="profile_label" defaultValue="Usikker – jeg vil sammenligne" />
+          </label>
+
           <div className="form-grid">
             <label>
-              Viktigst for deg
-              <select name="priority" defaultValue="Trygg kjøpsprosess">
-                <option>Trygg kjøpsprosess</option>
-                <option>Mest bolig for pengene</option>
-                <option>Stor tomt og privatliv</option>
-                <option>Nærhet til Alicante</option>
-                <option>Rolig livsstil</option>
+              Hva vil du bruke plassen til?
+              <select name="land_use" defaultValue="Privatliv og gode uteområder">
+                <option>Privatliv og gode uteområder</option>
+                <option>Kjøkkenhage og frukttrær</option>
+                <option>Vinranker, oliven eller mandler</option>
+                <option>Familie, gjester og bassengliv</option>
+                <option>Dyr / høner der reglene tillater det</option>
+                <option>Sykkel, tur og natur</option>
+                <option>Minst mulig vedlikehold</option>
               </select>
             </label>
-            <label>
-              Livsstil
-              <select name="lifestyle" defaultValue="Strand og restauranter">
-                <option>Strand og restauranter</option>
-                <option>Golf og resort</option>
-                <option>Ro, natur og plass</option>
-                <option>Helårsby med service</option>
-              </select>
-            </label>
-          </div>
-          <div className="form-grid">
             <label>
               Budsjett
               <input name="budget" placeholder="f.eks 350 000 EUR" />
             </label>
-            <label>
-              Soverom
-              <input name="bedrooms" min="1" type="number" placeholder="2" />
-            </label>
           </div>
+
           <div className="form-grid">
             <label>
-              Flyplassavstand
-              <select name="airport" defaultValue="Maks 60 min">
-                <option>Maks 45 min</option>
-                <option>Maks 60 min</option>
-                <option>Inntil 90 min er ok</option>
+              Hvor viktig er enkel reise til flyplass/by?
+              <select name="travel" defaultValue="Viktig, men ikke avgjørende">
+                <option>Svært viktig</option>
+                <option>Viktig, men ikke avgjørende</option>
+                <option>Jeg prioriterer ro og plass høyere</option>
               </select>
             </label>
             <label>
-              Utleie
-              <select name="rental" defaultValue="Usikker">
-                <option>Viktig</option>
-                <option>Ikke viktig</option>
-                <option>Usikker</option>
+              Hvor mye vedlikehold ønsker du?
+              <select name="maintenance" defaultValue="Noe hage og uteprosjekter er fint">
+                <option>Minst mulig</option>
+                <option>Noe hage og uteprosjekter er fint</option>
+                <option>Jeg ønsker aktivt å dyrke og utvikle tomten</option>
               </select>
             </label>
           </div>
+
+          <div className="form-grid">
+            <label>
+              Min. soverom
+              <input name="bedrooms" min="1" type="number" placeholder="2" />
+            </label>
+            <label>
+              Tidslinje
+              <select name="timeline" defaultValue="6-12 mnd">
+                <option>Klar nå</option>
+                <option>Innen 3 mnd</option>
+                <option>6-12 mnd</option>
+                <option>Planlegger fremtidig flytting/pensjon</option>
+              </select>
+            </label>
+          </div>
+
           <div className="form-grid">
             <label>
               Navn
@@ -164,22 +225,22 @@ export function BuyerMatchQuiz() {
           </div>
           <label>
             Kommentar
-            <textarea name="message" rows={4} placeholder="Skriv gjerne dato for Spania-tur, område du vurderer eller spesielle krav." />
+            <textarea name="message" rows={4} placeholder="Fortell gjerne hva du drømmer om å gjøre med stedet." />
           </label>
           <button className="submit-button" disabled={status === "sending"}>
             <Send size={18} />
-            {status === "sending" ? "Sender..." : "Få anbefaling"}
+            {status === "sending" ? "Sender..." : "Få en første retning"}
           </button>
-          {status === "sent" && <p className="form-success">Takk. Vi har sendt svarene til RealtyFlow og viser en første anbefaling her.</p>}
+          {status === "sent" && <p className="form-success">Takk. Vi har mottatt Eco Life-profilen din og viser en første retning her.</p>}
           {status === "error" && <p className="form-error">Noe gikk galt. Prøv igjen om litt.</p>}
         </form>
         <aside className="quiz-result">
           <CheckCircle2 />
-          <p className="eyebrow">Foreløpig anbefaling</p>
+          <p className="eyebrow">Første retning</p>
           <h3>{result.title}</h3>
           <p>{result.text}</p>
           <a className="text-button" href={result.href}>
-            Se aktuelle boliger <ArrowRight size={18} />
+            Utforsk områdene <ArrowRight size={18} />
           </a>
         </aside>
       </div>
