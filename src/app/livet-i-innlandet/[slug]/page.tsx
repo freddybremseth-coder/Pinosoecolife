@@ -5,7 +5,12 @@ import { ArrowLeft, ArrowRight, Check, MapPin, Sprout } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
+import {
+  getAlternativeAreaSlugs,
+  getAreaArticleSlugs,
+} from "@/lib/ecolife-content-links";
 import { ecoLifeAreas, getEcoLifeArea } from "@/lib/ecolife-areas";
+import { fetchPublishedPosts } from "@/lib/website-content";
 
 type Params = { slug: string };
 
@@ -63,6 +68,16 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
 
   const primarySearch = encodeURIComponent(area.searchTerms[0] || area.name);
   const leadContext = lifestyleContext[area.zone];
+  const publishedPosts = await fetchPublishedPosts("magasin");
+  const relevantArticleSlugs = getAreaArticleSlugs(area.slug, 4);
+  const relevantArticles = relevantArticleSlugs.flatMap((articleSlug) => {
+    const post = publishedPosts.find((candidate) => candidate.slug === articleSlug);
+    return post ? [post] : [];
+  });
+  const alternativeAreas = getAlternativeAreaSlugs(area.slug, 3).flatMap((areaSlug) => {
+    const candidate = getEcoLifeArea(areaSlug);
+    return candidate ? [candidate] : [];
+  });
 
   return (
     <main>
@@ -103,6 +118,30 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
         </div>
       </section>
 
+      {relevantArticles.length > 0 && (
+        <section className="section proof-section">
+          <div className="section-heading">
+            <p className="eyebrow">Les deg inn på hverdagen</p>
+            <h2>Artikler som er særlig relevante for {area.name}</h2>
+            <p>
+              Områdevalget blir lettere når du også ser for deg hvordan tomten, uteområdet og hverdagen faktisk kan brukes.
+            </p>
+          </div>
+          <div className="proof-grid">
+            {relevantArticles.map((post) => (
+              <article key={post.slug}>
+                <strong>Eco Life</strong>
+                <h3>{post.title}</h3>
+                <p>{post.summary}</p>
+                <Link className="text-button" href={`/magasin/${post.slug}`}>
+                  Les artikkelen <ArrowRight size={16} />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
       <section className="section split">
         <div>
           <p className="eyebrow">Tomten som del av hjemmet</p>
@@ -140,6 +179,30 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
           <a className="text-button" href="#kontakt">Snakk med oss <ArrowRight size={18} /></a>
         </div>
       </section>
+
+      {alternativeAreas.length > 0 && (
+        <section className="section proof-section">
+          <div className="section-heading">
+            <p className="eyebrow">Sammenlign før du bestemmer deg</p>
+            <h2>Andre områder du bør se sammen med {area.name}</h2>
+            <p>
+              Et godt områdevalg handler ofte om å se to eller tre realistiske alternativer ved siden av hverandre før du velger tomt.
+            </p>
+          </div>
+          <div className="proof-grid">
+            {alternativeAreas.map((candidate) => (
+              <article key={candidate.slug}>
+                <strong>{candidate.region}</strong>
+                <h3>{candidate.name}</h3>
+                <p>{candidate.summary}</p>
+                <Link className="text-button" href={`/livet-i-innlandet/${candidate.slug}`}>
+                  Se livet i {candidate.name} <ArrowRight size={16} />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="contact-section" id="kontakt">
         <div>
