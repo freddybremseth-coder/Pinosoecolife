@@ -1,11 +1,16 @@
 import Link from "next/link";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 import type { Metadata } from "next";
 
 import { ContactForm } from "@/components/ContactForm";
 import MarkdownArticle from "@/components/MarkdownArticle";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
+import {
+  getArticleAreaSlugs,
+  getRelatedArticleSlugs,
+} from "@/lib/ecolife-content-links";
+import { getEcoLifeArea } from "@/lib/ecolife-areas";
 import { fetchPublishedPost, fetchPublishedPosts } from "@/lib/website-content";
 
 function formatDate(value?: string | null) {
@@ -65,6 +70,15 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
   }
 
   const lifestyleIntent = inferLifestyleIntent(post.tags || []);
+  const allPosts = await fetchPublishedPosts("magasin");
+  const relevantAreas = getArticleAreaSlugs(post.slug, 4).flatMap((areaSlug) => {
+    const area = getEcoLifeArea(areaSlug);
+    return area ? [area] : [];
+  });
+  const relatedArticles = getRelatedArticleSlugs(post.slug, 3).flatMap((articleSlug) => {
+    const article = allPosts.find((candidate) => candidate.slug === articleSlug);
+    return article ? [article] : [];
+  });
 
   return (
     <main>
@@ -94,6 +108,54 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
           <MarkdownArticle markdown={post.markdown} />
         </div>
       </section>
+
+      {relevantAreas.length > 0 && (
+        <section className="section proof-section">
+          <div className="section-heading">
+            <p className="eyebrow">Fra idé til sted</p>
+            <h2>Områder der dette livet er naturlig å utforske videre</h2>
+            <p>
+              Temaet i artikkelen kan se forskjellig ut fra sted til sted. Disse områdene er gode utgangspunkt for å sammenligne hverdagen før du velger tomt eller bolig.
+            </p>
+          </div>
+          <div className="proof-grid">
+            {relevantAreas.map((area) => (
+              <article key={area.slug}>
+                <strong>{area.region}</strong>
+                <h3>{area.name}</h3>
+                <p>{area.summary}</p>
+                <Link className="text-button" href={`/livet-i-innlandet/${area.slug}`}>
+                  Se livet i {area.name} <ArrowRight size={16} />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {relatedArticles.length > 0 && (
+        <section className="section proof-section">
+          <div className="section-heading">
+            <p className="eyebrow">Les videre</p>
+            <h2>Bygg et tydeligere bilde av livet du ønsker</h2>
+            <p>
+              De beste beslutningene kommer sjelden fra én boligannonse. Les videre om plass, hverdagsliv, tomt og hvordan eiendommen faktisk kan brukes.
+            </p>
+          </div>
+          <div className="proof-grid">
+            {relatedArticles.map((article) => (
+              <article key={article.slug}>
+                <strong>Eco Life</strong>
+                <h3>{article.title}</h3>
+                <p>{article.summary}</p>
+                <Link className="text-button" href={`/magasin/${article.slug}`}>
+                  Les artikkelen <ArrowRight size={16} />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="contact-section" id="kontakt">
         <div>
