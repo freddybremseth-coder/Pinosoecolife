@@ -232,9 +232,19 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           {images.length > 1 && (
             <section className={styles.gallery}>
               <h2>Bilder</h2>
+              <p className={styles.galleryIntro}>Trykk på et bilde for å åpne originalen i full størrelse.</p>
               <div className={styles.galleryGrid}>
-                {images.slice(1, 10).map((image) => (
-                  <div className={styles.galleryImage} key={image} style={{ backgroundImage: `url(${image})` }} />
+                {images.slice(1, 10).map((image, index) => (
+                  <a href={image} target="_blank" rel="noreferrer" key={image} aria-label={`Åpne bilde ${index + 2} i full størrelse`}>
+                    <img
+                      className={styles.galleryImage}
+                      src={image}
+                      alt={`${getPropertyTitle(property)} – bilde ${index + 2}`}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                  </a>
                 ))}
               </div>
             </section>
