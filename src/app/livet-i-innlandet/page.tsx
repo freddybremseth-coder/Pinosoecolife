@@ -86,7 +86,14 @@ export default function InlandLifePage() {
             <div className={styles.areaList}>
               {groupAreas.map((area) => (
                 <article className={styles.areaCard} key={area.slug}>
-                  <div className={styles.areaPhoto} style={{ backgroundImage: `url(${area.photo})` }} />
+                  <img
+                    className={styles.areaPhoto}
+                    src={area.photo}
+                    alt={area.name}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
                   <div className={styles.areaBody}>
                     <span className={styles.cardEyebrow}>{area.region} · {area.eyebrow}</span>
                     <h3>{area.name}</h3>
