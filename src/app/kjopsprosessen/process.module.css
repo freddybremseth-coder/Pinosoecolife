@@ -215,6 +215,47 @@
   backdrop-filter: blur(12px);
 }
 
+.formShell :global(.lead-form) {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.formShell :global(.lead-form label) {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.formShell :global(.lead-form input),
+.formShell :global(.lead-form select),
+.formShell :global(.lead-form textarea) {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.96);
+  color: #17231c;
+}
+
+.formShell :global(.lead-form input::placeholder),
+.formShell :global(.lead-form textarea::placeholder) {
+  color: rgba(23, 35, 28, 0.5);
+}
+
+.formShell :global(.lead-form input:focus),
+.formShell :global(.lead-form select:focus),
+.formShell :global(.lead-form textarea:focus) {
+  border-color: rgba(200, 211, 191, 0.82);
+  outline: 3px solid rgba(200, 211, 191, 0.16);
+}
+
+.formShell :global(.submit-button) {
+  background: #f4efe3;
+  color: #17231c;
+}
+
+.formShell :global(.form-success) {
+  color: #d7e5d0;
+}
+
+.formShell :global(.form-error) {
+  color: #ffd0c6;
+}
+
 @media (max-width: 900px) {
   .hero {
     min-height: 550px;
