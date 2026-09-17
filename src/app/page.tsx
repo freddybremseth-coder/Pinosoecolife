@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, Grape, Leaf, MapPinned, Sprout, SunMedium } from "lucide-react";
 import { BuyerMatchQuiz } from "@/components/BuyerMatchQuiz";
@@ -39,7 +40,15 @@ export default async function Home() {
       <SiteHeader />
 
       <section className={styles.hero} id="top">
-        <div className={styles.heroMedia} aria-hidden="true" />
+        <Image
+          className={styles.heroMedia}
+          src="/assets/hero-pinoso-dream.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectFit: "cover", objectPosition: "center 48%", backgroundImage: "none" }}
+        />
         <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.heroInner}>
           <p className={styles.kicker}>Pinoso Eco Life · Alicante & Murcia</p>
