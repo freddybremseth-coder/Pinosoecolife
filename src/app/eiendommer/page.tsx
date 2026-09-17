@@ -12,6 +12,7 @@ import {
   propertyMatchesLifestyle,
   propertyMatchesRegion,
 } from "@/lib/realtyflow";
+import styles from "./properties.module.css";
 
 export const metadata = {
   title: "Innlandsboliger og villaer | Pinoso Eco Life",
@@ -47,10 +48,6 @@ export default async function PropertiesPage({
   const minBedrooms = Number(params.bedrooms || 0);
   const minBathrooms = Number(params.bathrooms || 0);
   const lifestyle = params.lifestyle || "";
-
-  // The catalogue must use the full approved Pinoso Eco Life inventory.
-  // getProperties() defaults to a small homepage-sized slice, while a zero
-  // limit returns every website-visible property that passes the inland/brand rules.
   const properties = await getProperties(0);
 
   const filtered = properties.filter((property) => {
@@ -76,32 +73,44 @@ export default async function PropertiesPage({
       matchesLifestyle
     );
   });
+
   const locationLabel = area || getRegionLabel(region);
 
   return (
     <main>
       <SiteHeader />
-      <section className="page-hero compact-hero">
-        <p className="eyebrow">Boligsøk</p>
-        <h1>Innlandsboliger for livet du ønsker å skape</h1>
-        <p>
-          Utforsk et spisset RealtyFlow-utvalg for Pinoso-regionen, Vinalopó og andre Eco Life-områder i Alicante og Murcia.
-          {locationLabel ? ` Viser ${locationLabel}.` : " Velg område eller søk fritt."}
-        </p>
-        <div className="quick-filters">
-          <a className={!region && !area ? "active" : ""} href="/eiendommer">Alle</a>
+
+      <section className={styles.hero}>
+        <div className={styles.heroInner}>
+          <div className={styles.heroGrid}>
+            <div>
+              <p className={styles.eyebrow}>Boliger · modeller · prosjekter</p>
+              <h1 className={styles.title}>Finn boligen etter at du har valgt livet.</h1>
+            </div>
+            <p className={styles.lead}>
+              Utforsk hele den godkjente Pinoso Eco Life-beholdningen fra RealtyFlow. Bruk område, pris og boligtype som filter – og husk at mange nybygg her er modeller som kan vurderes sammen med riktig tomt og lokale rammer.
+              {locationLabel ? ` Du ser nå treff for ${locationLabel}.` : ""}
+            </p>
+          </div>
+        </div>
+
+        <nav className={styles.areaStrip} aria-label="Filtrer på område">
+          <a className={`${styles.areaLink} ${!region && !area ? styles.areaLinkActive : ""}`} href="/eiendommer">Alle</a>
           {ecoLifeAreas.map((item) => (
             <a
-              className={area === item.name ? "active" : ""}
+              className={`${styles.areaLink} ${area === item.name ? styles.areaLinkActive : ""}`}
               href={`/eiendommer?area=${encodeURIComponent(item.name)}`}
               key={item.slug}
             >
               {item.name}
             </a>
           ))}
-        </div>
-        <form className="search-card page-search" action="/eiendommer">
-          <input name="q" defaultValue={params.q || ""} placeholder="Søk område, referanse eller stil" />
+        </nav>
+      </section>
+
+      <div className={styles.filterShell}>
+        <form className={styles.filters} action="/eiendommer">
+          <input name="q" defaultValue={params.q || ""} placeholder="Søk modell, område eller referanse" />
           {region && <input type="hidden" name="region" value={region} />}
           {area && <input type="hidden" name="area" value={area} />}
           <select name="type" defaultValue={params.type || ""}>
@@ -150,20 +159,30 @@ export default async function PropertiesPage({
             <option value="pool">Basseng</option>
             <option value="golf">Golf</option>
           </select>
-          <button type="submit">Søk</button>
+          <button type="submit">Vis treff</button>
         </form>
-      </section>
-      <section className="section">
-        <div className="list-heading">
+      </div>
+
+      <section className={styles.catalogue}>
+        <div className={styles.catalogueHeading}>
           <h2>{filtered.length} boliger{area ? ` i ${area}` : ""}</h2>
-          <span>Viser tilgjengelige treff fra RealtyFlow</span>
+          <p>Tilgjengelige treff fra RealtyFlow. Oppdatert pris og tilgjengelighet bekreftes før reservasjon.</p>
         </div>
-        <div className="property-grid">
-          {filtered.map((property, index) => (
-            <PropertyCard key={property.id || property.ref || index} property={property} />
-          ))}
-        </div>
+
+        {filtered.length > 0 ? (
+          <div className={styles.grid}>
+            {filtered.map((property, index) => (
+              <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 6} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.empty}>
+            <h3>Ingen boliger traff disse filtrene.</h3>
+            <p>Prøv et annet område, større prisintervall eller færre kriterier.</p>
+          </div>
+        )}
       </section>
+
       <Footer />
     </main>
   );
