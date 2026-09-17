@@ -88,7 +88,9 @@ export default async function PropertiesPage({
               <h1 className={styles.title}>Finn boligen etter at du har valgt livet.</h1>
             </div>
             <p className={styles.lead}>
-              Utforsk hele den godkjente Pinoso Eco Life-beholdningen fra RealtyFlow. Bruk område, pris og boligtype som filter – og husk at mange nybygg her er modeller som kan vurderes sammen med riktig tomt og lokale rammer.
+              Utforsk aktuelle villaer, nybygg, fincaer og landlige boliger i innlandet. Bruk område, pris og boligtype
+              som filter. Mange nybygg er boligmodeller som kan vurderes sammen med en egnet tomt og de lokale rammene
+              for hva som kan bygges.
               {locationLabel ? ` Du ser nå treff for ${locationLabel}.` : ""}
             </p>
           </div>
@@ -166,7 +168,7 @@ export default async function PropertiesPage({
       <section className={styles.catalogue}>
         <div className={styles.catalogueHeading}>
           <h2>{filtered.length} boliger{area ? ` i ${area}` : ""}</h2>
-          <p>Tilgjengelige treff fra RealtyFlow. Oppdatert pris og tilgjengelighet bekreftes før reservasjon.</p>
+          <p>Pris og tilgjengelighet kan endre seg og bekreftes alltid på nytt før reservasjon eller kjøpsbeslutning.</p>
         </div>
 
         {filtered.length > 0 ? (

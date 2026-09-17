@@ -44,7 +44,7 @@ export default async function AreasPage() {
               Utforsk Eco Life-områdene <ArrowRight size={17} />
             </Link>
             <Link className={styles.secondaryAction} href="/eiendommer">
-              Se publiserte boliger
+              Se boliger
             </Link>
           </div>
         </div>
@@ -56,13 +56,13 @@ export default async function AreasPage() {
             <p className={styles.sectionEyebrow}>Eco Life-områdene</p>
             <h2 className={styles.sectionTitle}>{ecoLifeAreas.length} steder – ulike måter å leve i innlandet på</h2>
             <p className={styles.sectionCopy}>
-              De redaksjonelle områdeguidene sammenligner ikke bare eiendommer. De forklarer hvordan hverdagen kan føles,
-              hvem området passer for, hva slags plass du kan se etter og hvilke alternativer du bør sammenligne med.
+              Områdeguidene forklarer hvordan hverdagen kan føles, hvem stedet kan passe for, hva slags plass du kan se
+              etter og hvilke nærliggende alternativer som er verdt å sammenligne.
             </p>
           </div>
           <aside className={styles.introAside}>
             <span className={styles.bigNumber}>{ecoLifeAreas.length}</span>
-            <p>redaksjonelle steder i Eco Life-universet – før vi snevrer inn søket til konkret tomt eller bolig.</p>
+            <p>steder du kan sammenligne før søket snevres inn til en konkret tomt eller bolig.</p>
             <Link className={styles.inlineLink} href="/livet-i-innlandet">
               Sammenlign stedene <ArrowRight size={16} />
             </Link>
@@ -72,10 +72,10 @@ export default async function AreasPage() {
 
       <section className={`${styles.section} ${styles.dataIntro}`}>
         <p className={styles.sectionEyebrow}>Aktuelle boliger</p>
-        <h2 className={styles.sectionTitle}>Se hvor vi har publiserte boliger akkurat nå</h2>
+        <h2 className={styles.sectionTitle}>Se hvor vi har boliger akkurat nå</h2>
         <p className={styles.sectionCopy}>
           Utvalget endrer seg med tilgjengeligheten. Hvis du først vil finne området som passer livet du ønsker, kan du
-          utforske alle Eco Life-guidene før du går videre til de konkrete boligene.
+          utforske alle Eco Life-guidene før du går videre til konkrete boliger og tomter.
         </p>
         <Link className={styles.inlineLink} href="/livet-i-innlandet">
           Utforsk alle områdene <ArrowRight size={16} />
@@ -98,7 +98,7 @@ export default async function AreasPage() {
         <section className={`${styles.section} ${styles.groupSection}`} id={group.key} key={group.key}>
           <div className={styles.groupHeader}>
             <div>
-              <p className={styles.sectionEyebrow}>Aktuelle boliger og områdeinnhold</p>
+              <p className={styles.sectionEyebrow}>Området og aktuelle boliger</p>
               <h2 className={styles.sectionTitle}>{group.label}</h2>
               <p className={styles.sectionCopy}>{group.description}</p>
             </div>
@@ -147,10 +147,10 @@ export default async function AreasPage() {
               <article className={styles.emptyCard}>
                 <MapPin size={24} />
                 <div>
-                  <h3>Ingen publiserte områdeprofiler akkurat nå</h3>
+                  <h3>Vil du utforske dette området nærmere?</h3>
                   <p>
-                    Du kan fortsatt utforske stedene og livsstilen i «Livet i innlandet» og kontakte oss hvis du vil at
-                    vi skal lete etter bolig eller tomt i dette området.
+                    Les om stedene og livsstilen i «Livet i innlandet», eller kontakt oss hvis du vil at vi skal lete
+                    konkret etter bolig eller tomt her.
                   </p>
                 </div>
               </article>
@@ -164,7 +164,7 @@ export default async function AreasPage() {
           <div className={styles.groupHeader}>
             <div>
               <p className={styles.sectionEyebrow}>Flere områder</p>
-              <h2 className={styles.sectionTitle}>Andre områder med publisert boliginnhold</h2>
+              <h2 className={styles.sectionTitle}>Andre steder å se nærmere på</h2>
             </div>
           </div>
           <div className={styles.profileList}>

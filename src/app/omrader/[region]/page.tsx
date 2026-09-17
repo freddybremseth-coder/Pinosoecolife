@@ -17,20 +17,20 @@ const regionCopy: Record<RegionKey, { title: string; intro: string; proof: strin
   pinoso: {
     title: "Pinoso og vinlandet rundt",
     intro:
-      "Denne RealtyFlow-gruppen samler publiserte boliger og områdeprofiler rundt Pinoso og nærliggende innland. For selve livsstilsvalget bruker vi de mer detaljerte Eco Life-guidene.",
+      "Her kan du utforske boliger og steder rundt Pinoso og nærliggende innland. Start med hvordan du vil leve, og gå deretter videre til de konkrete boligene og tomtene som passer planen din.",
     proof: ["Store tomter og mer rom rundt boligen", "By og landsbyer som fungerer gjennom året", "Vinland, jordbruk og landlige omgivelser"],
   },
   "aspe-monforte": {
     title: "Aspe, Monforte del Cid og praktisk innland",
     intro:
-      "Denne RealtyFlow-gruppen organiserer publiserte boliger rundt Aspe, Monforte del Cid og nærliggende steder med praktisk forbindelse mot Alicante og Elche.",
+      "Se boliger og steder rundt Aspe, Monforte del Cid og nærliggende områder når enkel logistikk mot Alicante og Elche er viktig, men du fortsatt ønsker mer plass og en tydelig innlandsfølelse.",
     proof: ["Praktisk forbindelse mot Alicante og Elche", "Byservice kombinert med mer åpne omgivelser", "Muligheter for både moderne bolig og landligere alternativer"],
   },
   "hondon-dalen": {
     title: "Hondón-dalen og landsbyene rundt",
     intro:
-      "Denne RealtyFlow-gruppen samler publiserte boliger og områdeprofiler i Hondón-dalen og nærliggende landsbyer. Den detaljerte Eco Life-guiden forklarer hvordan hverdagen i Hondón de las Nieves faktisk kan se ut.",
-    proof: ["Vinmarker, åser og landsbymiljø", "Villaer og fincaer med mer uteplass", "Et område kjent blant både lokale og internasjonale boligeiere"],
+      "Utforsk boliger og steder i Hondón-dalen og nærliggende landsbyer. Her kan vinmarker, landsbyliv og større uteområder være en viktig del av hverdagen du ønsker å skape.",
+    proof: ["Vinmarker, åser og landsbymiljø", "Villaer og fincaer med mer uteplass", "Landsbyliv kombinert med landlige omgivelser"],
   },
 };
 
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ region: R
   const copy = regionCopy[region];
   return {
     title: copy?.title || "Område",
-    description: copy?.intro || "Publiserte område- og boligdata for Pinoso Eco Life.",
+    description: copy?.intro || "Utforsk innlandsområder, aktuelle boliger og steder å bo med Pinoso Eco Life.",
     alternates: {
       canonical: `/omrader/${region}`,
     },
@@ -100,18 +100,18 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
 
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <p className={styles.eyebrow}>RealtyFlow-datagruppe</p>
+          <p className={styles.eyebrow}>Områdevalg</p>
           <h1>{copy.title}</h1>
           <p className={styles.heroCopy}>{copy.intro}</p>
           <div className={styles.heroActions}>
             <Link className={styles.primaryAction} href={`/eiendommer?region=${region}`}>
-              Se {regionProperties.length} publiserte boliger <ArrowRight size={17} />
+              Se {regionProperties.length} aktuelle boliger <ArrowRight size={17} />
             </Link>
             <Link className={styles.secondaryAction} href={`/tomter?q=${encodeURIComponent(selected.label)}`}>
               Se tomter
             </Link>
             <Link className={styles.secondaryAction} href="/livet-i-innlandet">
-              Sammenlign Eco Life-områder
+              Sammenlign flere områder
             </Link>
           </div>
         </div>
@@ -120,8 +120,8 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
       <section className={styles.section}>
         <div className={styles.introGrid}>
           <div>
-            <p className={styles.sectionEyebrow}>Hva gruppen dekker</p>
-            <h2 className={styles.sectionTitle}>Bruk boligdataene etter at du har vurdert hverdagen</h2>
+            <p className={styles.sectionEyebrow}>Hva området kan passe for</p>
+            <h2 className={styles.sectionTitle}>Se på hverdagen før du velger bolig</h2>
             <p className={styles.sectionCopy}>{selected.description}</p>
             <div className={styles.guideGrid}>
               {copy.proof.map((item) => (
@@ -135,11 +135,11 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
           <aside className={styles.statsGrid}>
             <div className={styles.stat}>
               <strong>{regionProperties.length}</strong>
-              <span>publiserte boliger i datagruppen</span>
+              <span>aktuelle boliger i området</span>
             </div>
             <div className={styles.stat}>
-              <strong>{regionProfiles.length}</strong>
-              <span>publiserte områdeprofiler fra RealtyFlow</span>
+              <strong>{guideLinks.length}</strong>
+              <span>steder å utforske nærmere</span>
             </div>
           </aside>
         </div>
@@ -147,10 +147,11 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
 
       {guideLinks.length > 0 && (
         <section className={`${styles.section} ${styles.groupSection}`}>
-          <p className={styles.sectionEyebrow}>Eco Life-guidene</p>
-          <h2 className={styles.sectionTitle}>Les om stedene som steder å leve – ikke bare som boligmarkeder</h2>
+          <p className={styles.sectionEyebrow}>Steder å se nærmere på</p>
+          <h2 className={styles.sectionTitle}>Sammenlign hverdagen før du bestemmer deg</h2>
           <p className={styles.sectionCopy}>
-            Datagruppen hjelper med sortering. De konkrete guidene forklarer forskjellen i hverdagsliv, tomt, natur og praktisk bruk.
+            Les om forskjellene i landsbyliv, natur, tomter, service og logistikk. Det gjør det enklere å snevre inn
+            søket før du bruker tid på konkrete visninger.
           </p>
           <div className={styles.guideGrid}>
             {guideLinks.map((guide) => (
@@ -171,8 +172,8 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
         <section className={`${styles.section} ${styles.groupSection}`}>
           <div className={styles.groupHeader}>
             <div>
-              <p className={styles.sectionEyebrow}>Publiserte områdeprofiler</p>
-              <h2 className={styles.sectionTitle}>Data og beskrivelser fra RealtyFlow</h2>
+              <p className={styles.sectionEyebrow}>Flere steder i området</p>
+              <h2 className={styles.sectionTitle}>Se boligmuligheter sted for sted</h2>
             </div>
           </div>
           <div className={styles.profileList}>
@@ -203,11 +204,11 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
       )}
 
       <section className={`${styles.section} ${styles.propertySection}`}>
-        <p className={styles.sectionEyebrow}>Publiserte boliger</p>
+        <p className={styles.sectionEyebrow}>Aktuelle boliger</p>
         <h2 className={styles.sectionTitle}>Boliger i {selected.label}</h2>
         <p className={styles.sectionCopy}>
-          Bruk disse som konkrete alternativer etter at område, livsstil og behov er avklart. Tilgjengelighet og detaljer
-          må alltid kontrolleres på nytt før en beslutning.
+          Se boligene som konkrete alternativer etter at område, livsstil og behov er avklart. Pris, tilgjengelighet og
+          detaljer bekreftes alltid på nytt før reservasjon eller kjøpsbeslutning.
         </p>
         {regionProperties.length > 0 ? (
           <div className={styles.propertyGrid}>
@@ -219,16 +220,17 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
           <article className={styles.emptyCard}>
             <MapPin size={24} />
             <div>
-              <h3>Ingen publiserte boliger i denne datagruppen akkurat nå</h3>
+              <h3>Ingen boliger i dette utvalget akkurat nå</h3>
               <p>
-                Området kan fortsatt være aktuelt. Start med Eco Life-guiden eller kontakt oss hvis du vil at vi skal lete konkret.
+                Området kan fortsatt være aktuelt. Utforsk områdeguidene eller kontakt oss hvis du vil at vi skal lete
+                etter en bolig eller tomt som passer kriteriene dine.
               </p>
             </div>
           </article>
         )}
         <div className={styles.heroActions}>
           <Link className={styles.pillLink} href={`/eiendommer?region=${region}`}>
-            Se alle publiserte boliger i {selected.label} <ArrowRight size={17} />
+            Se alle boliger i {selected.label} <ArrowRight size={17} />
           </Link>
         </div>
       </section>

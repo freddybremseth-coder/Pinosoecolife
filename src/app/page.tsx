@@ -6,11 +6,20 @@ import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SiteHeader } from "@/components/SiteHeader";
-import { getProperties } from "@/lib/realtyflow";
+import { getProperties, type Property } from "@/lib/realtyflow";
 import styles from "./home.module.css";
 
+function sampleProperties(items: Property[], count: number) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled.slice(0, count);
+}
+
 export default async function Home() {
-  const properties = await getProperties(6);
+  const properties = sampleProperties(await getProperties(0), 6);
 
   const journey = [
     {
@@ -141,8 +150,9 @@ export default async function Home() {
           <div className={styles.stageHeading}>
             <h2>Boligen kommer etter området.</h2>
             <p>
-              Her er et utvalg publiserte innlandsboliger fra RealtyFlow. Se dem som konkrete muligheter – ikke som
-              erstatning for å finne ut hvor og hvordan du faktisk ønsker å bo.
+              Her er seks aktuelle boliger og modeller fra innlandet. Utvalget varierer, slik at du får se flere av
+              mulighetene over tid. Når noe er interessant, bekrefter vi pris, tilgjengelighet og hva som gjelder for den
+              konkrete boligen eller tomten.
             </p>
           </div>
           <div className="property-grid">
