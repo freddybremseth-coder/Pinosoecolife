@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./MarkdownArticle.module.css";
 
 function inlineMarkdown(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -19,7 +20,7 @@ export default function MarkdownArticle({ markdown }: { markdown: string }) {
     const items = listItems;
     listItems = [];
     blocks.push(
-      <ul key={`list-${blocks.length}`} className="my-6 list-disc space-y-2 pl-6 text-base leading-8 text-slate-600">
+      <ul key={`list-${blocks.length}`}>
         {items.map((item, index) => (
           <li key={index}>{inlineMarkdown(item)}</li>
         ))}
@@ -42,17 +43,17 @@ export default function MarkdownArticle({ markdown }: { markdown: string }) {
     flushList();
 
     if (line.startsWith("### ")) {
-      blocks.push(<h3 key={blocks.length} className="mt-10 text-2xl font-semibold text-slate-900">{inlineMarkdown(line.slice(4))}</h3>);
+      blocks.push(<h3 key={blocks.length}>{inlineMarkdown(line.slice(4))}</h3>);
     } else if (line.startsWith("## ")) {
-      blocks.push(<h2 key={blocks.length} className="mt-12 text-3xl font-semibold text-slate-900">{inlineMarkdown(line.slice(3))}</h2>);
+      blocks.push(<h2 key={blocks.length}>{inlineMarkdown(line.slice(3))}</h2>);
     } else if (line.startsWith("# ")) {
-      blocks.push(<h1 key={blocks.length} className="mt-10 text-4xl font-semibold text-slate-900">{inlineMarkdown(line.slice(2))}</h1>);
+      blocks.push(<h1 key={blocks.length}>{inlineMarkdown(line.slice(2))}</h1>);
     } else {
-      blocks.push(<p key={blocks.length} className="my-5 text-base leading-8 text-slate-600">{inlineMarkdown(line)}</p>);
+      blocks.push(<p key={blocks.length}>{inlineMarkdown(line)}</p>);
     }
   }
 
   flushList();
 
-  return <div>{blocks}</div>;
+  return <div className={styles.prose}>{blocks}</div>;
 }
