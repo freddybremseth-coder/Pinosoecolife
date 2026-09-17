@@ -7,7 +7,7 @@ import { ecoLifeAreaGroups, ecoLifeAreas } from "@/lib/ecolife-areas";
 import styles from "../ecolife-editorial.module.css";
 
 export const metadata = {
-  title: "Livet i innlandet | Pinoso Eco Life",
+  title: "Livet i innlandet",
   description:
     "Utforsk hvordan hverdagen kan se ut i Pinoso, Hondón, Aspe, La Romana, Biar, Villena, Jumilla og andre innlandsområder i Alicante og Murcia.",
   alternates: { canonical: "/livet-i-innlandet" },
