@@ -86,7 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Script
           src="https://appointment.chatgenius.pro/embed.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           data-brand="pinoso"
           data-config-url="https://realtyflow.chatgenius.pro/api/public/booking-config?brand_id=pinosoecolife"
         />
