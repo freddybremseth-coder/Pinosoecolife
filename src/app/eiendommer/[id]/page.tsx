@@ -60,6 +60,11 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
     );
   }
 
+  const buyerProperty = property as typeof property & {
+    garage?: boolean;
+    year_built?: number;
+    floor_label?: string;
+  };
   const images = getPropertyImages(property);
   const mainImage = getPrimaryImage(property);
   const description = getPropertyDescription(property);
@@ -70,6 +75,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
     property.bedrooms ? { icon: <BedDouble />, label: `${property.bedrooms} soverom` } : null,
     property.bathrooms ? { icon: <Bath />, label: `${property.bathrooms} bad` } : null,
     getPropertyArea(property) ? { icon: <Ruler />, label: `${getPropertyArea(property)} m² bolig` } : null,
+    property.plot_size ? { icon: <Ruler />, label: `${Number(property.plot_size).toLocaleString("nb-NO")} m² tomt` } : null,
+    property.pool ? { icon: <Home />, label: "Basseng" } : null,
+    buyerProperty.garage ? { icon: <Home />, label: "Garasje" } : null,
+    property.energy_rating ? { icon: <Tag />, label: `Energi ${property.energy_rating}` } : null,
+    buyerProperty.year_built ? { icon: <Tag />, label: `Byggeår ${buyerProperty.year_built}` } : null,
+    buyerProperty.floor_label ? { icon: <Tag />, label: buyerProperty.floor_label } : null,
   ].filter(Boolean) as Array<{ icon: ReactNode; label: string }>;
 
   return (
