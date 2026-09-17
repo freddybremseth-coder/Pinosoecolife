@@ -9,8 +9,17 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { getProperties } from "@/lib/realtyflow";
 import styles from "./home.module.css";
 
+function sampleProperties<T>(items: T[], count: number) {
+  const pool = [...items];
+  for (let index = pool.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [pool[index], pool[randomIndex]] = [pool[randomIndex], pool[index]];
+  }
+  return pool.slice(0, count);
+}
+
 export default async function Home() {
-  const properties = await getProperties(6);
+  const properties = sampleProperties(await getProperties(0), 6);
 
   const journey = [
     {
