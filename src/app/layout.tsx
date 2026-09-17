@@ -1,7 +1,21 @@
 import type { Metadata } from "next";
+import { Manrope, Newsreader } from "next/font/google";
 import Script from "next/script";
 import { PinosoChatbot } from "@/components/PinosoChatbot";
 import "./globals.css";
+import "./design-system.css";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.pinosoecolife.com"),
@@ -31,7 +45,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="no">
+    <html lang="no" className={`${manrope.variable} ${newsreader.variable}`}>
       <body>
         <script
           type="application/ld+json"

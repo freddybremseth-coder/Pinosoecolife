@@ -1,0 +1,776 @@
+/*
+ * Pinoso Eco Life — Design System 2027–2030
+ * Foundation layer. It intentionally overrides the legacy stylesheet while
+ * page-by-page redesign is migrated in controlled PRs.
+ */
+
+:root {
+  --ink: #17231c;
+  --ink-soft: #2b382f;
+  --paper: #f6f3ec;
+  --surface: #fffdf8;
+  --surface-soft: #eeeee6;
+  --olive: #60745e;
+  --olive-strong: #405342;
+  --olive-soft: #dfe6d9;
+  --clay: #9a6250;
+  --sand: #d7c8aa;
+  --muted: #69736c;
+  --line: rgba(23, 35, 28, 0.12);
+  --line-strong: rgba(23, 35, 28, 0.2);
+  --shadow-soft: 0 18px 50px rgba(23, 35, 28, 0.08);
+  --shadow-float: 0 24px 70px rgba(18, 29, 23, 0.12);
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  /* Transitional aliases for legacy components. */
+  --dark: var(--ink);
+  --gold: var(--olive);
+  --gold-dark: var(--olive-strong);
+  --accent: var(--clay);
+  --sage: var(--olive-soft);
+  --text: var(--ink-soft);
+  --shadow: var(--shadow-float);
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-body), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(96, 116, 94, 0.2);
+  color: var(--ink);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1,
+h2,
+.hero h1,
+.section h2,
+.contact-section h2,
+.page-hero h1,
+.property-detail-hero h1,
+.property-body h3,
+.article-card h2,
+.plot-card h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Global shell */
+.site-header {
+  min-height: 82px;
+  padding: 0 clamp(22px, 4vw, 64px);
+  background: rgba(23, 35, 28, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+  backdrop-filter: blur(20px) saturate(120%);
+}
+
+.brand {
+  gap: 11px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.brand img {
+  width: 50px;
+  height: 50px;
+}
+
+.nav {
+  gap: clamp(18px, 2.2vw, 32px);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.nav a {
+  position: relative;
+  color: rgba(255, 255, 255, 0.76);
+  transition: color 180ms ease, opacity 180ms ease;
+}
+
+.nav a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -9px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.72);
+  transition: right 180ms ease;
+}
+
+.nav a:not(.nav-cta):hover::after {
+  right: 0;
+}
+
+.nav-cta {
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: var(--radius-pill);
+  padding: 10px 17px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white !important;
+}
+
+/* Editorial type system */
+.eyebrow {
+  margin-bottom: 14px;
+  color: var(--olive);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 980px;
+  margin-inline: auto;
+  font-size: clamp(3.55rem, 7.4vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.26);
+}
+
+.section h2,
+.contact-section h2,
+.page-hero h1 {
+  font-size: clamp(2.55rem, 4.5vw, 4.5rem);
+  line-height: 1.02;
+}
+
+.section-heading {
+  width: min(790px, 100%);
+  margin-bottom: 54px;
+}
+
+.section-heading p:not(.eyebrow),
+.split p,
+.contact-section p,
+.page-hero p:not(.eyebrow) {
+  font-size: clamp(1.02rem, 1.4vw, 1.16rem);
+  line-height: 1.78;
+}
+
+/* Hero */
+.hero {
+  min-height: 760px;
+  background: var(--ink);
+}
+
+.hero-video {
+  filter: brightness(0.72) saturate(0.92) contrast(1.02);
+}
+
+.hero-overlay {
+  background:
+    linear-gradient(180deg, rgba(16, 28, 21, 0.18), rgba(16, 28, 21, 0.42) 48%, rgba(16, 28, 21, 0.88)),
+    linear-gradient(90deg, rgba(31, 45, 35, 0.2), transparent 60%);
+}
+
+.hero-content {
+  width: min(1080px, calc(100% - 44px));
+}
+
+.hero-copy {
+  width: min(720px, 100%);
+  margin: 28px auto 36px;
+  color: rgba(255, 255, 255, 0.87);
+  font-size: clamp(1.08rem, 1.7vw, 1.3rem);
+  line-height: 1.7;
+}
+
+.hero-primary-actions {
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.hero-primary-button,
+.hero-secondary-button,
+.search-card button,
+.contact-button,
+.submit-button,
+.access-panel button,
+.portal-preferences button,
+.chatbot-form button {
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.hero-primary-button {
+  background: #f3efe5;
+  color: var(--ink);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+}
+
+.hero-secondary-button {
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.search-card {
+  border-radius: var(--radius-md);
+  padding: 10px;
+  border-color: rgba(255, 255, 255, 0.44);
+  box-shadow: 0 20px 60px rgba(7, 17, 11, 0.2);
+}
+
+.search-card input,
+.search-card select {
+  border-radius: 12px;
+  border-color: rgba(23, 35, 28, 0.13);
+  background: rgba(255, 253, 248, 0.96);
+}
+
+.search-card button {
+  box-shadow: none;
+}
+
+/* Spacing and surfaces */
+.section {
+  width: min(1240px, calc(100% - 56px));
+  padding: 112px 0;
+}
+
+.trust-band {
+  background: var(--surface);
+  border-bottom-color: var(--line);
+}
+
+.trust-band div {
+  padding-block: 34px;
+}
+
+.trust-band strong {
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.trust-band span {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.property-grid,
+.proof-grid,
+.article-grid {
+  gap: 24px;
+}
+
+.property-card,
+.proof-grid article,
+.article-card,
+.plot-card,
+.info-card,
+.timeline-item,
+.decision-grid article,
+.rich-text,
+.premium-gallery,
+.area-context,
+.region-landing-grid article,
+.region-landing-grid aside,
+.portal-sidebar,
+.portal-panel {
+  border-color: var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.property-card {
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-soft);
+}
+
+.property-image {
+  min-height: 290px;
+}
+
+.property-image span {
+  top: 18px;
+  left: 18px;
+  border-radius: var(--radius-pill);
+  background: rgba(23, 35, 28, 0.78);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.property-body {
+  padding: 28px;
+}
+
+.property-body p,
+.article-card span,
+.plot-card p:first-child {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.property-body h3 {
+  margin-bottom: 14px;
+  font-size: 1.55rem;
+  line-height: 1.2;
+}
+
+.property-body strong {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.facts {
+  color: var(--muted);
+}
+
+.proof-grid article {
+  padding: 32px;
+  transition: transform 220ms ease, border-color 220ms ease;
+}
+
+.proof-grid article:hover {
+  transform: translateY(-3px);
+  border-color: rgba(96, 116, 94, 0.3);
+}
+
+.proof-grid strong {
+  color: var(--olive);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.proof-grid h3 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.feature-panel,
+.buyer-next-steps {
+  border-radius: var(--radius-lg);
+  background: var(--olive-soft);
+  border-color: rgba(64, 83, 66, 0.09);
+}
+
+.feature-panel div {
+  border-radius: 14px;
+  background: rgba(255, 253, 248, 0.86);
+  font-weight: 650;
+}
+
+.buyer-match {
+  background: #eceee7;
+}
+
+.quiz-form,
+.quiz-result {
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.quiz-form label,
+.lead-form label,
+.portal-preferences label,
+.portal-calculator label,
+.access-panel label {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.quiz-form input,
+.quiz-form select,
+.quiz-form textarea,
+.lead-form input,
+.lead-form select,
+.lead-form textarea,
+.portal-preferences input,
+.portal-preferences select,
+.portal-preferences textarea,
+.portal-calculator input,
+.access-panel input,
+.access-panel textarea,
+.portal-message-form input,
+.portal-message-form textarea {
+  border-radius: 12px;
+  border-color: var(--line-strong);
+  background: var(--surface);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.quiz-form input:focus,
+.quiz-form select:focus,
+.quiz-form textarea:focus,
+.lead-form input:focus,
+.lead-form select:focus,
+.lead-form textarea:focus,
+.portal-preferences input:focus,
+.portal-preferences select:focus,
+.portal-preferences textarea:focus,
+.portal-calculator input:focus,
+.access-panel input:focus,
+.access-panel textarea:focus {
+  border-color: var(--olive);
+  box-shadow: 0 0 0 4px rgba(96, 116, 94, 0.1);
+  outline: none;
+}
+
+/* Page heroes */
+.page-hero {
+  padding-top: 168px;
+  padding-bottom: 94px;
+  background: var(--ink);
+}
+
+.image-hero {
+  background:
+    linear-gradient(90deg, rgba(18, 31, 23, 0.9), rgba(18, 31, 23, 0.34)),
+    url("/assets/hero-pinoso-dream.jpg") center/cover;
+}
+
+.page-hero h1 {
+  max-width: 940px;
+  letter-spacing: -0.04em;
+}
+
+.page-hero p:not(.eyebrow) {
+  max-width: 760px;
+}
+
+.text-button,
+.read-more-text button,
+.read-more-text a {
+  color: var(--olive-strong);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.text-button.light {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Editorial magazine */
+.article-card {
+  min-height: 340px;
+  padding: 32px;
+}
+
+.article-card h2 {
+  margin-top: 18px;
+  font-size: 1.8rem;
+  line-height: 1.12;
+}
+
+.article-card a {
+  color: var(--olive-strong);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.rich-text {
+  padding: clamp(28px, 5vw, 56px);
+}
+
+.rich-text p,
+.read-more-text p {
+  font-size: 1.08rem;
+  line-height: 1.85;
+}
+
+/* Plots, areas and map */
+.map-surface,
+.plot-card,
+.area-profile-card,
+.sticky-card {
+  border-radius: var(--radius-md);
+}
+
+.map-surface {
+  box-shadow: var(--shadow-soft);
+}
+
+.plot-card {
+  padding: 30px;
+}
+
+.plot-card dl div {
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.area-profile-card {
+  border-color: var(--line);
+  background: var(--surface);
+}
+
+.area-profile-card section {
+  padding: 38px;
+}
+
+.region-strip {
+  background: rgba(255, 253, 248, 0.96);
+  box-shadow: 0 10px 30px rgba(23, 35, 28, 0.05);
+}
+
+.region-strip a {
+  padding: 26px 34px;
+}
+
+.region-strip strong {
+  font-weight: 700;
+}
+
+/* Contact and footer */
+.contact-section {
+  background: var(--ink);
+  padding-block: 88px;
+}
+
+.contact-section h2 {
+  letter-spacing: -0.035em;
+}
+
+footer {
+  padding: 34px clamp(22px, 4vw, 64px);
+  background: #101a14;
+  color: rgba(255, 255, 255, 0.58);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Chat and portal inherit the brand without pretending to be the public editorial UI. */
+.chatbot-toggle {
+  background: var(--olive-strong);
+  box-shadow: 0 14px 36px rgba(23, 35, 28, 0.2);
+}
+
+.chatbot-panel {
+  border-radius: 20px;
+  border-color: var(--line);
+  box-shadow: var(--shadow-float);
+}
+
+.chatbot-panel header {
+  background: var(--ink);
+}
+
+.chatbot-messages {
+  background: var(--paper);
+}
+
+.chatbot-messages p {
+  border-radius: 14px;
+}
+
+.chatbot-messages .user,
+.chatbot-input button {
+  background: var(--olive-strong);
+}
+
+.portal-shell {
+  gap: 32px;
+}
+
+.portal-sidebar,
+.portal-panel {
+  box-shadow: none;
+}
+
+.portal-icon {
+  border-radius: 14px;
+  background: var(--olive-soft);
+  color: var(--olive-strong);
+}
+
+.portal-mode,
+.message-preview,
+.portal-document-content,
+.portal-match-list li,
+.calculator-results div {
+  background: var(--surface-soft);
+  border-radius: 12px;
+}
+
+.panel-title,
+.portal-list svg,
+.portal-topline span {
+  color: var(--olive-strong);
+}
+
+/* Motion and accessibility */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .site-header {
+    min-height: 72px;
+  }
+
+  .mobile-menu-button {
+    border-radius: 14px;
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .nav {
+    top: 72px;
+    padding: 12px 22px 26px;
+    background: rgba(23, 35, 28, 0.985);
+  }
+
+  .nav a {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .nav a:first-child,
+  .nav a:nth-child(2) {
+    color: white;
+    font-size: 1rem;
+  }
+
+  .hero {
+    min-height: 760px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 12vw, 5rem);
+  }
+
+  .section {
+    width: min(100% - 40px, 1240px);
+    padding: 82px 0;
+  }
+
+  .property-image {
+    min-height: 270px;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header {
+    padding-inline: 16px;
+  }
+
+  .brand span {
+    font-size: 0.92rem;
+  }
+
+  .hero {
+    min-height: 690px;
+    padding-top: 100px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.85rem, 14vw, 4.1rem);
+    line-height: 0.98;
+  }
+
+  .hero-copy {
+    font-size: 1rem;
+  }
+
+  .section {
+    width: min(100% - 32px, 1240px);
+    padding: 68px 0;
+  }
+
+  .section h2,
+  .contact-section h2,
+  .page-hero h1 {
+    font-size: clamp(2.25rem, 11vw, 3.25rem);
+    overflow-wrap: anywhere;
+  }
+
+  .page-hero {
+    padding-top: 122px;
+    padding-bottom: 64px;
+  }
+
+  .property-card,
+  .proof-grid article,
+  .article-card,
+  .plot-card,
+  .info-card,
+  .timeline-item,
+  .portal-panel,
+  .portal-sidebar {
+    border-radius: 16px;
+  }
+
+  .property-body,
+  .proof-grid article,
+  .article-card,
+  .plot-card {
+    padding: 22px;
+  }
+
+  .contact-section {
+    padding: 68px 20px;
+  }
+
+  footer {
+    padding: 30px 20px;
+  }
+}
