@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, MapPinned } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { CatastroSummary } from "@/components/CatastroSummary";
 import { Footer } from "@/components/Footer";
 import { PlotsMap } from "@/components/PlotsMap";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getLandPlots, type LandPlot } from "@/lib/realtyflow";
+import styles from "./plots.module.css";
 
 const CATASTRO_REF_PATTERN = /\b\d{5}[A-Z]\d{7}[A-Z0-9]{7}\b/i;
 
@@ -212,22 +213,29 @@ export default async function PlotsPage({
   return (
     <main>
       <SiteHeader />
-      <section className="page-hero compact-hero image-hero">
-        <p className="eyebrow">Område først · tomt nummer to</p>
-        <h1>Tomter i innlandet i Alicante og Murcia</h1>
-        <p>
-          Finn aktuelle tomter i Eco Life-områdene og bruk kart, størrelse, pris og Catastro-referanser som første
-          sortering. Deretter må den konkrete tomten kontrolleres juridisk og teknisk før den behandles som et realistisk byggeprosjekt.
-        </p>
-        <div className="center-action">
-          <Link className="text-button" href="/livet-i-innlandet">
-            Finn riktig område først <ArrowRight size={18} />
-          </Link>
-          <Link className="text-button" href="/magasin/10000-m2-i-praksis-for-du-bygger">
-            Hva må sjekkes før du bygger? <ArrowRight size={18} />
-          </Link>
+
+      <section className={styles.hero}>
+        <div className={styles.heroInner}>
+          <div className={styles.heroGrid}>
+            <div>
+              <p className={styles.eyebrow}>Område først · tomt nummer to</p>
+              <h1 className={styles.title}>Finn tomten som kan bære livet du vil bygge.</h1>
+            </div>
+            <div>
+              <p className={styles.lead}>
+                Bruk kart, areal, pris og Catastro-data til første sortering. Deretter må hver tomt kontrolleres juridisk og teknisk før den behandles som et realistisk byggeprosjekt.
+              </p>
+              <div className={styles.heroLinks}>
+                <Link className={styles.heroLink} href="/livet-i-innlandet">Finn riktig område først <ArrowRight size={17} /></Link>
+                <Link className={styles.heroLink} href="/magasin/10000-m2-i-praksis-for-du-bygger">Hva må sjekkes før du bygger? <ArrowRight size={17} /></Link>
+              </div>
+            </div>
+          </div>
         </div>
-        <form className="search-card page-search plots-search catastro-search" action="/tomter">
+      </section>
+
+      <div className={styles.filterShell}>
+        <form className={styles.filters} action="/tomter">
           <input name="q" defaultValue={params.q || ""} placeholder="Søk område, ref eller Catastro" />
           <input name="polygon" defaultValue={params.polygon || ""} placeholder="Polígono" inputMode="numeric" />
           <input name="parcel" defaultValue={params.parcel || ""} placeholder="Parcela" inputMode="numeric" />
@@ -251,84 +259,93 @@ export default async function PlotsPage({
             <option value="urbano">Urbano</option>
             <option value="urbanizable">Urbanizable</option>
           </select>
-          <button type="submit">Søk</button>
+          <button type="submit">Vis tomter</button>
         </form>
-      </section>
+      </div>
 
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Før boligmodellen</p>
-          <h2>En stor og vakker tomt er bare starten på vurderingen</h2>
+      <section className={styles.process}>
+        <div className={styles.processIntro}>
+          <div>
+            <p className={styles.eyebrow}>Før boligmodellen</p>
+            <h2 className={styles.processTitle}>En stor og vakker tomt er bare starten.</h2>
+          </div>
           <p>
-            Vi vil først vite at stedet passer livet du ønsker. Deretter må tomten tåle kontroll før arkitektur, basseng og uteområder planlegges rundt den.
+            Vi vil først vite at stedet passer hverdagen du ønsker. Deretter må tomten tåle kontroll før arkitektur, basseng og uteområder planlegges rundt den.
           </p>
         </div>
-        <div className="proof-grid">
-          <article>
-            <strong><MapPinned size={24} /></strong>
-            <h3>1. Riktig område</h3>
-            <p>Hverdagsliv, klima, avstander, natur og lokale tjenester bør passe før en konkret tomt får styre valget.</p>
+        <div className={styles.processGrid}>
+          <article className={styles.processItem}>
+            <span className={styles.processNumber}>01</span>
+            <h3>Riktig område</h3>
+            <p>Hverdagsliv, klima, natur, reisevei og lokale tjenester bør passe før en konkret tomt får styre valget.</p>
           </article>
-          <article>
-            <strong><CheckCircle2 size={24} /></strong>
-            <h3>2. Egnet tomt</h3>
+          <article className={styles.processItem}>
+            <span className={styles.processNumber}>02</span>
+            <h3>Egnet tomt</h3>
             <p>Planstatus, byggbarhet, registrering, adkomst, vann, strøm, avløp og andre forhold må kontrolleres konkret.</p>
           </article>
-          <article>
-            <strong>03</strong>
-            <h3>3. Boligen tilpasses stedet</h3>
+          <article className={styles.processItem}>
+            <span className={styles.processNumber}>03</span>
+            <h3>Boligen tilpasses stedet</h3>
             <p>Når tomten fungerer, kan boligmodell, orientering og uteområder tilpasses de faktiske rammene og budsjettet.</p>
           </article>
         </div>
       </section>
 
-      <CatastroSummary withCatastro={withCatastro.length} mapped={mapped.length} total={filtered.length} />
+      <div className={styles.summaryWrap}>
+        <CatastroSummary withCatastro={withCatastro.length} mapped={mapped.length} total={filtered.length} />
+      </div>
 
-      <section className="plots-layout">
-        <div className="plots-map">
+      <section className={styles.workspace}>
+        <div className={styles.mapPanel}>
+          <div className={styles.mapHeader}>
+            <strong>Kart</strong>
+            <span>{mapped.length} tomter med kartposisjon</span>
+          </div>
           <PlotsMap plots={mapped} />
         </div>
 
-        <div className="plots-list">
-          <div className="list-heading">
-            <h2>{filtered.length} tomter</h2>
-            <span>{mapped.length} med kartposisjon</span>
+        <div className={styles.list}>
+          <div className={styles.resultsHeader}>
+            <h2 className={styles.resultsTitle}>{filtered.length} tomter</h2>
+            <p className={styles.resultsMeta}>{withCatastro.length} med Catastro-data</p>
           </div>
+
           {filtered.length === 0 && (
-            <article className="plot-card">
-              <div>
-                <p>Ingen treff</p>
-                <h2>Vi fant ingen tomter med disse filtrene</h2>
-              </div>
-              <p className="plot-notes">
-                Prøv et annet område eller et bredere pris-/arealfilter. Du kan også kontakte oss hvis du vil at vi skal lete etter en bestemt type tomt.
-              </p>
+            <article className={styles.empty}>
+              <h2>Ingen tomter traff disse filtrene.</h2>
+              <p>Prøv et annet område eller et bredere pris-/arealfilter. Du kan også kontakte oss hvis du vil at vi skal lete etter en bestemt type tomt.</p>
             </article>
           )}
+
           {filtered.map((plot) => {
             const catastroRef = getCatastroRef(plot);
             const plotPolygon = getPolygon(plot);
             const plotParcel = getParcel(plot);
 
             return (
-              <article className="plot-card" id={`plot-${plot.id || encodeURIComponent(plotRef(plot))}`} key={plot.id || plotRef(plot)}>
-                <div>
-                  <p>{plot.municipality || plot.location || "Spania"}</p>
-                  <h2>{plotRef(plot)}</h2>
-                  <strong>{formatEuro(plot.price)}</strong>
+              <article className={styles.card} id={`plot-${plot.id || encodeURIComponent(plotRef(plot))}`} key={plot.id || plotRef(plot)}>
+                <div className={styles.cardTop}>
+                  <div>
+                    <p className={styles.cardLocation}>{plot.municipality || plot.location || "Innlandet"}</p>
+                    <h2>{plotRef(plot)}</h2>
+                  </div>
+                  <strong className={styles.price}>{formatEuro(plot.price)}</strong>
                 </div>
-                <dl>
-                  <div><dt>Areal</dt><dd>{Number(plot.area || 0).toLocaleString("nb-NO")} m²</dd></div>
-                  <div><dt>Regulering</dt><dd>{plot.zoning || "Ikke oppgitt"}</dd></div>
-                  <div><dt>Vann</dt><dd>{plot.water ? "Ja" : "Ikke oppgitt"}</dd></div>
-                  <div><dt>Strøm</dt><dd>{plot.electricity ? "Ja" : "Ikke oppgitt"}</dd></div>
-                  {(plotPolygon || plotParcel) && <div><dt>Catastro</dt><dd>{plotPolygon ? `Pol. ${plotPolygon}` : "Pol. -"} / {plotParcel ? `Parc. ${plotParcel}` : "Parc. -"}</dd></div>}
-                  {catastroRef && <div><dt>Ref. catastral</dt><dd>{catastroRef}</dd></div>}
+
+                <dl className={styles.facts}>
+                  <div className={styles.fact}><dt>Areal</dt><dd>{Number(plot.area || 0).toLocaleString("nb-NO")} m²</dd></div>
+                  <div className={styles.fact}><dt>Regulering</dt><dd>{plot.zoning || "Ikke oppgitt"}</dd></div>
+                  <div className={styles.fact}><dt>Vann</dt><dd>{plot.water ? "Ja" : "Ikke oppgitt"}</dd></div>
+                  <div className={styles.fact}><dt>Strøm</dt><dd>{plot.electricity ? "Ja" : "Ikke oppgitt"}</dd></div>
+                  {(plotPolygon || plotParcel) && <div className={styles.fact}><dt>Catastro</dt><dd>{plotPolygon ? `Pol. ${plotPolygon}` : "Pol. -"} / {plotParcel ? `Parc. ${plotParcel}` : "Parc. -"}</dd></div>}
+                  {catastroRef && <div className={styles.fact}><dt>Ref. catastral</dt><dd>{catastroRef}</dd></div>}
                 </dl>
-                {plot.notes && <p className="plot-notes">{plot.notes}</p>}
+
+                {plot.notes && <p className={styles.notes}>{plot.notes}</p>}
                 {(catastroRef || plot.lat || plot.lng) && (
-                  <a className="catastro-link" href={getCatastroUrl(plot)} target="_blank" rel="noopener noreferrer">
-                    {catastroRef ? "Åpne tomten i Catastro" : "Finn i Catastro fra kartposisjon"}
+                  <a className={styles.catastroLink} href={getCatastroUrl(plot)} target="_blank" rel="noopener noreferrer">
+                    {catastroRef ? "Åpne tomten i Catastro" : "Finn i Catastro fra kartposisjon"} <ExternalLink size={15} />
                   </a>
                 )}
               </article>
@@ -337,17 +354,15 @@ export default async function PlotsPage({
         </div>
       </section>
 
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Neste steg</p>
-          <h2>Fant du en tomt som ser interessant ut?</h2>
-          <p>
-            Ikke start med å bestemme husmodell. Start med å kontrollere at tomten faktisk fungerer for prosjektet og hverdagen du ønsker.
-          </p>
+      <section className={styles.nextStep}>
+        <div>
+          <p className={styles.eyebrow}>Neste steg</p>
+          <h2 className={styles.nextTitle}>Fant du en tomt som ser interessant ut?</h2>
+          <p>Ikke start med å bestemme husmodell. Start med å kontrollere at tomten faktisk fungerer for prosjektet og hverdagen du ønsker.</p>
         </div>
-        <div className="center-action">
-          <Link className="text-button" href="/kjopsprosessen">Se hvordan vi kontrollerer veien videre <ArrowRight size={18} /></Link>
-          <Link className="text-button" href="/#kontakt">Fortell oss hvilken tomt du vurderer <ArrowRight size={18} /></Link>
+        <div className={styles.nextLinks}>
+          <Link href="/kjopsprosessen">Se hvordan vi kontrollerer veien videre <ArrowRight size={17} /></Link>
+          <Link href="/#kontakt">Fortell oss hvilken tomt du vurderer <ArrowRight size={17} /></Link>
         </div>
       </section>
 
