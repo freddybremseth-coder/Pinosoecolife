@@ -1,7 +1,8 @@
-# Pinoso Eco Life — Brand & Content Plan 1.0
+# Pinoso Eco Life — Brand & Content Plan 1.1
 
 Status: LOCKED
-Date: 2026-09-16
+Original lock: 2026-09-16
+Updated: 2026-09-17
 
 ## 1. Core positioning
 
@@ -102,7 +103,9 @@ The first track creates desire. The second makes the decision credible.
 
 ## 6. Website build order
 
-### Phase 1 — Brand foundation (NOW)
+### Phase 1 — Brand foundation
+Status: COMPLETE
+
 - Put the lifestyle promise on the homepage.
 - Add a dedicated Eco Life section before the technical property journey dominates.
 - Upgrade the magazine positioning from generic guides to lifestyle + practical knowledge.
@@ -110,17 +113,24 @@ The first track creates desire. The second makes the decision credible.
 - Keep CMS posts and code-curated articles together without duplicates.
 
 ### Phase 2 — Editorial depth
+Status: COMPLETE
+
 - Add the remaining first-wave articles.
 - Add article-to-article internal links and contextual CTAs.
-- Create a dedicated `/livet-i-innlandet` pillar page if the first articles perform well and the content architecture supports it cleanly.
+- Create a dedicated `/livet-i-innlandet` pillar page.
+- Connect Eco Life area pages and articles in both directions.
 
 ### Phase 3 — Conversion layer
-- Add lifestyle intent to lead forms and RealtyFlow source metadata.
-- Use content interest (garden, privacy, cycling, plot, self-sufficient living, wine country) to improve shortlist and follow-up.
-- Measure article → property/plot/contact transitions.
+Status: COMPLETE
 
-### Phase 4 — Email and nurturing (LATER)
-Do not start broad email campaigns until the website concept and first editorial cluster are consistent.
+- Add lifestyle intent to lead forms and RealtyFlow source metadata.
+- Use content interest (garden, privacy, cycling, plot, more self-reliant living, wine country) to improve shortlist and follow-up.
+- Carry source page, area and lifestyle context into lead handling.
+
+### Phase 4 — Email and nurturing
+Status: LATER
+
+Do not start broad email campaigns until the website concept, content architecture and new visual system are consistent.
 
 When ready, build email sequences around one life idea at a time rather than generic property newsletters.
 
@@ -146,3 +156,42 @@ Examples: 10 000 m², kitchen garden, privacy, cycling, village life, family vis
 Pinoso Eco Life should own the question:
 
 **Hva ville du gjort hvis du hadde 10 000 m² rundt hjemmet ditt?**
+
+## 9. Locked next phase — Design System 2027–2030
+
+This phase starts only after the final content and factual audit is merged and production-verified.
+
+The design goal is not a cosmetic refresh. Pinoso Eco Life should become a premium, contemporary lifestyle/property experience that feels credible for 2027–2030 while remaining calm, human and easy to use.
+
+### Design review scope
+
+- typography and font system across desktop and mobile
+- spacing, rhythm, grid and maximum reading widths
+- modern editorial hierarchy for long-form stories
+- image art direction and aspect-ratio system
+- hero treatments, cards and section transitions
+- navigation and mobile menu
+- area pages, magazine cards, property cards and plot cards
+- forms, contact CTAs, chatbot and customer portal
+- micro-interactions and restrained motion where it adds clarity
+- accessibility, contrast, readable type sizes and touch targets
+- responsive QA at phone, tablet, laptop and large desktop widths
+- loading/performance so visual ambition does not make the site slow
+- consistent component tokens for radius, shadows, borders, surfaces and states
+
+### Locked design principles
+
+1. **Editorial before portal-like.** The public website should feel like a premium lifestyle publication with property capability, not an admin dashboard.
+2. **Warm modernity.** Use land, stone, wine, olive, light and natural materials as inspiration without becoming rustic or old-fashioned.
+3. **Space is part of the brand.** Generous whitespace and strong photography should communicate the same freedom as a large plot.
+4. **Fewer, stronger moments.** Avoid visual noise, excessive cards, unnecessary gradients and decorative effects with no purpose.
+5. **Typography carries the premium feel.** Headlines, reading text, labels and numerical/property data must each have a clear role.
+6. **Mobile is a first-class experience.** Long words, headings, maps, filters and forms must never collide or overflow.
+7. **Facts remain visually distinct from inspiration.** Legal, planning, cost and buildability caveats must be easy to understand without destroying the emotional story.
+8. **No redesign by accident before the audit is complete.** Content structure and factual correctness are frozen first; visual overhaul follows as a dedicated phase.
+
+### Execution order after content sign-off
+
+**Design audit → visual direction → design tokens → global shell → homepage → Eco Life pillar/areas → magazine → plots/properties → forms/chatbot/portal → responsive/accessibility/performance QA → production rollout.**
+
+Broad email nurturing starts only after this design phase is coherent enough that email traffic lands on pages that represent the finished brand.

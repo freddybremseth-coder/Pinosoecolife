@@ -16,19 +16,21 @@ export async function GET() {
       exchangeSource = "Frankfurter / ECB";
     }
   } catch {
-    // Keep fallback values so the calculator remains usable.
+    // Keep the exchange-rate fallback so the calculator remains usable.
   }
 
   return NextResponse.json({
     eurNok,
     updatedAt,
     exchangeSource,
-    purchaseCostRate: 0.135,
+    purchaseCostRate: null,
+    purchaseCostNote:
+      "Skatt og kjøpskostnader er ikke beregnet som én fast prosent. De må vurderes ut fra den konkrete handelen, blant annet boligtype, region, pris og hvilke tjenester som inngår.",
     loanAssumptions: {
       spainRate: 0.0425,
       norwayRate: 0.055,
       sourceNote:
-        "Veiledende kalkulatorrenter. Faktiske lånebetingelser må bekreftes med bank, belåningsgrad, inntekt og sikkerhet.",
+        "Scenarioverdier for kalkulatoren – ikke banktilbud. Faktiske lånebetingelser må bekreftes med bank, belåningsgrad, inntekt og sikkerhet.",
     },
   });
 }

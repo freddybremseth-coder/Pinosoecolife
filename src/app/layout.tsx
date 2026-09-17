@@ -6,18 +6,18 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.pinosoecolife.com"),
   title: {
-    default: "Pinoso Eco Life | Moderne boliger og store tomter i Spania",
+    default: "Pinoso Eco Life | Livet i innlandet, tomter og moderne boliger",
     template: "%s | Pinoso Eco Life",
   },
   description:
-    "Spesialist på moderne boliger, store tomter og trygg norsk oppfølging i Pinoso-området.",
+    "Norsk rådgivning for deg som vurderer et liv i innlandet i Alicante og Murcia – fra områdevalg og tomtesøk til moderne bolig, finca og trygg kjøpsprosess.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Pinoso Eco Life | Moderne boliger og store tomter i Spania",
+    title: "Pinoso Eco Life | Livet i innlandet, tomter og moderne boliger",
     description:
-      "Finn moderne villaer, byggbare tomter og gode områder rundt Pinoso med norsk rådgivning og trygg kjøpsreise.",
+      "Start med hvordan du vil leve. Utforsk innlandsområder, store tomter, fincaer og moderne boliger i Alicante og Murcia med norsk rådgivning.",
     url: "https://www.pinosoecolife.com",
     siteName: "Pinoso Eco Life",
     locale: "nb_NO",
@@ -41,8 +41,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "RealEstateAgent",
               name: "Pinoso Eco Life",
               url: "https://www.pinosoecolife.com",
-              areaServed: ["Pinoso", "Aspe", "Hondon de las Nieves", "Alicante", "Spania"],
-              knowsAbout: ["Tomter i Spania", "Nybygg i Pinoso", "Boligkjøp i Spania", "Store tomter"],
+              areaServed: [
+                "Pinoso",
+                "Monóvar",
+                "La Romana",
+                "Hondón de las Nieves",
+                "Aspe",
+                "Novelda",
+                "Monforte del Cid",
+                "Biar",
+                "Villena",
+                "Sax",
+                "Jumilla",
+                "Alicante",
+                "Murcia",
+                "Spania",
+              ],
+              knowsAbout: [
+                "Boligkjøp i Spania",
+                "Tomter i innlandet",
+                "Finca og landsted",
+                "Moderne nybygg",
+                "Områdevalg i Alicante og Murcia",
+                "Tomtevurdering og kjøpsprosess",
+              ],
               sameAs: [],
             }),
           }}

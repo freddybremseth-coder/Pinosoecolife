@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, MapPinned } from "lucide-react";
 import { CatastroSummary } from "@/components/CatastroSummary";
 import { Footer } from "@/components/Footer";
 import { PlotsMap } from "@/components/PlotsMap";
@@ -23,8 +25,9 @@ type PlotWithCatastro = LandPlot & {
 };
 
 export const metadata = {
-  title: "Tomter i Pinoso-regionen",
-  description: "Se tomter i Pinoso-regionen fra RealtyFlow med kart, Catastro-lag, pris, størrelse og filtrering.",
+  title: "Tomter i innlandet i Alicante og Murcia",
+  description:
+    "Utforsk tomter i Pinoso, Monóvar, La Romana, Hondón, Aspe, Novelda, Monforte del Cid, Biar, Villena, Sax og Jumilla med kart og Catastro-referanser som utgangspunkt for videre kontroll.",
   alternates: {
     canonical: "/tomter",
   },
@@ -129,16 +132,27 @@ function getCatastroUrl(plot: PlotWithCatastro) {
   return params.toString() ? `/api/catastro/redirect?${params.toString()}` : "https://www1.sedecatastro.gob.es/Cartografia/mapa.aspx";
 }
 
-const pinosoPlotTerms = [
+const ecoLifePlotTerms = [
   "pinoso",
   "pinosos",
-  "aspe",
-  "monforte",
-  "monforte del cid",
+  "el pinos",
+  "el pinós",
+  "monovar",
+  "monóvar",
+  "la romana",
   "hondon",
   "hondón",
+  "hondon de las nieves",
+  "hondón de las nieves",
+  "aspe",
   "novelda",
-  "la romana",
+  "monforte",
+  "monforte del cid",
+  "biar",
+  "villena",
+  "sax",
+  "jumilla",
+  "altiplano",
   "barbarroja",
   "barba-roja",
   "font del llop",
@@ -163,9 +177,9 @@ function plotText(plot: PlotWithCatastro) {
   );
 }
 
-function isPinosoRegionPlot(plot: PlotWithCatastro) {
+function isEcoLifeAreaPlot(plot: PlotWithCatastro) {
   const haystack = plotText(plot);
-  return pinosoPlotTerms.some((term) => haystack.includes(normalize(term)));
+  return ecoLifePlotTerms.some((term) => haystack.includes(normalize(term)));
 }
 
 export default async function PlotsPage({
@@ -191,7 +205,7 @@ export default async function PlotsPage({
       (!minArea || Number(plot.area || 0) >= minArea) &&
       (!maxPrice || Number(plot.price || 0) <= maxPrice)
     );
-  }).sort((a, b) => Number(isPinosoRegionPlot(b)) - Number(isPinosoRegionPlot(a)));
+  }).sort((a, b) => Number(isEcoLifeAreaPlot(b)) - Number(isEcoLifeAreaPlot(a)));
   const mapped = filtered.filter((plot) => plot.lat && plot.lng);
   const withCatastro = filtered.filter((plot) => getCatastroRef(plot) || getPolygon(plot) || getParcel(plot));
 
@@ -199,14 +213,22 @@ export default async function PlotsPage({
     <main>
       <SiteHeader />
       <section className="page-hero compact-hero image-hero">
-        <p className="eyebrow">Tomter · Catastro · kart</p>
-        <h1>Tomter i Pinoso-regionen</h1>
+        <p className="eyebrow">Område først · tomt nummer to</p>
+        <h1>Tomter i innlandet i Alicante og Murcia</h1>
         <p>
-          Utforsk tomter med størrelse, pris, regulering og beliggenhet. Bruk omvendt Catastro-søk med polígono og parcela
-          for å finne riktig tomt direkte i kartet.
+          Finn aktuelle tomter i Eco Life-områdene og bruk kart, størrelse, pris og Catastro-referanser som første
+          sortering. Deretter må den konkrete tomten kontrolleres juridisk og teknisk før den behandles som et realistisk byggeprosjekt.
         </p>
+        <div className="center-action">
+          <Link className="text-button" href="/livet-i-innlandet">
+            Finn riktig område først <ArrowRight size={18} />
+          </Link>
+          <Link className="text-button" href="/magasin/10000-m2-i-praksis-for-du-bygger">
+            Hva må sjekkes før du bygger? <ArrowRight size={18} />
+          </Link>
+        </div>
         <form className="search-card page-search plots-search catastro-search" action="/tomter">
-          <input name="q" defaultValue={params.q || ""} placeholder="Søk sted, ref eller Catastro" />
+          <input name="q" defaultValue={params.q || ""} placeholder="Søk område, ref eller Catastro" />
           <input name="polygon" defaultValue={params.polygon || ""} placeholder="Polígono" inputMode="numeric" />
           <input name="parcel" defaultValue={params.parcel || ""} placeholder="Parcela" inputMode="numeric" />
           <select name="minArea" defaultValue={params.minArea || ""}>
@@ -233,6 +255,33 @@ export default async function PlotsPage({
         </form>
       </section>
 
+      <section className="section proof-section">
+        <div className="section-heading">
+          <p className="eyebrow">Før boligmodellen</p>
+          <h2>En stor og vakker tomt er bare starten på vurderingen</h2>
+          <p>
+            Vi vil først vite at stedet passer livet du ønsker. Deretter må tomten tåle kontroll før arkitektur, basseng og uteområder planlegges rundt den.
+          </p>
+        </div>
+        <div className="proof-grid">
+          <article>
+            <strong><MapPinned size={24} /></strong>
+            <h3>1. Riktig område</h3>
+            <p>Hverdagsliv, klima, avstander, natur og lokale tjenester bør passe før en konkret tomt får styre valget.</p>
+          </article>
+          <article>
+            <strong><CheckCircle2 size={24} /></strong>
+            <h3>2. Egnet tomt</h3>
+            <p>Planstatus, byggbarhet, registrering, adkomst, vann, strøm, avløp og andre forhold må kontrolleres konkret.</p>
+          </article>
+          <article>
+            <strong>03</strong>
+            <h3>3. Boligen tilpasses stedet</h3>
+            <p>Når tomten fungerer, kan boligmodell, orientering og uteområder tilpasses de faktiske rammene og budsjettet.</p>
+          </article>
+        </div>
+      </section>
+
       <CatastroSummary withCatastro={withCatastro.length} mapped={mapped.length} total={filtered.length} />
 
       <section className="plots-layout">
@@ -245,6 +294,17 @@ export default async function PlotsPage({
             <h2>{filtered.length} tomter</h2>
             <span>{mapped.length} med kartposisjon</span>
           </div>
+          {filtered.length === 0 && (
+            <article className="plot-card">
+              <div>
+                <p>Ingen treff</p>
+                <h2>Vi fant ingen tomter med disse filtrene</h2>
+              </div>
+              <p className="plot-notes">
+                Prøv et annet område eller et bredere pris-/arealfilter. Du kan også kontakte oss hvis du vil at vi skal lete etter en bestemt type tomt.
+              </p>
+            </article>
+          )}
           {filtered.map((plot) => {
             const catastroRef = getCatastroRef(plot);
             const plotPolygon = getPolygon(plot);
@@ -276,6 +336,21 @@ export default async function PlotsPage({
           })}
         </div>
       </section>
+
+      <section className="section proof-section">
+        <div className="section-heading">
+          <p className="eyebrow">Neste steg</p>
+          <h2>Fant du en tomt som ser interessant ut?</h2>
+          <p>
+            Ikke start med å bestemme husmodell. Start med å kontrollere at tomten faktisk fungerer for prosjektet og hverdagen du ønsker.
+          </p>
+        </div>
+        <div className="center-action">
+          <Link className="text-button" href="/kjopsprosessen">Se hvordan vi kontrollerer veien videre <ArrowRight size={18} /></Link>
+          <Link className="text-button" href="/#kontakt">Fortell oss hvilken tomt du vurderer <ArrowRight size={18} /></Link>
+        </div>
+      </section>
+
       <Footer />
     </main>
   );

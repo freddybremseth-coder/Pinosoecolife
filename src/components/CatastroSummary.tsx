@@ -9,19 +9,19 @@ export function CatastroSummary({ withCatastro, mapped, total }: CatastroSummary
     {
       label: "Catastro-data",
       value: withCatastro,
-      text: "tomter med Catastro, polígono eller parcela",
+      text: "tomter med Catastro, polígono eller parcela som kan brukes til identifikasjon",
       badge: "REF",
     },
     {
       label: "Kartposisjon",
       value: mapped,
-      text: "tomter med koordinater og markør i kartet",
+      text: "tomter med koordinater og markør som gjør beliggenheten enklere å kontrollere",
       badge: "MAP",
     },
     {
       label: "Kartlag",
       value: "WMS",
-      text: "offentlig Catastro-kartlag med parcelgrenser",
+      text: "offentlig Catastro-kartlag som viser registrerte parcelgrenser",
       badge: "WMS",
     },
   ];
@@ -31,7 +31,7 @@ export function CatastroSummary({ withCatastro, mapped, total }: CatastroSummary
       <div className="catastro-summary-pro__header">
         <div>
           <p>Catastro oversikt</p>
-          <h2>Dokumentasjon og kartgrunnlag for tomtene</h2>
+          <h2>Identifikasjon og kartgrunnlag for tomtene</h2>
         </div>
         {typeof total === "number" && <span>{total} tomter vist</span>}
       </div>
@@ -46,6 +46,11 @@ export function CatastroSummary({ withCatastro, mapped, total }: CatastroSummary
           </article>
         ))}
       </div>
+
+      <p className="catastro-summary-pro__note">
+        Catastro hjelper oss å identifisere og lokalisere en tomt. Det dokumenterer ikke alene at tomten kan bebygges.
+        Planstatus, byggbarhet, registrering, adkomst, vann, strøm, avløp og andre relevante forhold må kontrolleres separat.
+      </p>
 
       <style>{`
         .catastro-summary-pro {
@@ -153,6 +158,14 @@ export function CatastroSummary({ withCatastro, mapped, total }: CatastroSummary
         .catastro-summary-pro small {
           color: #617084;
           line-height: 1.5;
+          font-weight: 700;
+        }
+
+        .catastro-summary-pro__note {
+          margin: 16px 2px 0;
+          color: #617084;
+          font-size: 0.84rem;
+          line-height: 1.6;
           font-weight: 700;
         }
 
