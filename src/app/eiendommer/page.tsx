@@ -47,7 +47,12 @@ export default async function PropertiesPage({
   const minBedrooms = Number(params.bedrooms || 0);
   const minBathrooms = Number(params.bathrooms || 0);
   const lifestyle = params.lifestyle || "";
-  const properties = await getProperties();
+
+  // The catalogue must use the full approved Pinoso Eco Life inventory.
+  // getProperties() defaults to a small homepage-sized slice, while a zero
+  // limit returns every website-visible property that passes the inland/brand rules.
+  const properties = await getProperties(0);
+
   const filtered = properties.filter((property) => {
     const haystack = getPropertySearchText(property);
     const matchesQuery = q ? haystack.includes(q) : true;
