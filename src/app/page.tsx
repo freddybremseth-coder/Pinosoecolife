@@ -187,7 +187,15 @@ export default async function Home() {
       <BuyerMatchQuiz />
 
       <section className={styles.story}>
-        <div className={styles.storyImage} aria-hidden="true" />
+        <div className={styles.storyImage} aria-hidden="true" style={{ position: "relative", backgroundImage: "none" }}>
+          <Image
+            src="/assets/areas.jpg"
+            alt=""
+            fill
+            sizes="(max-width: 980px) 100vw, 58vw"
+            style={{ objectFit: "cover" }}
+          />
+        </div>
         <div className={styles.storyCopy}>
           <p className={styles.kicker}>Tomten som en del av hjemmet</p>
           <h2>Du kjøper også rommet rundt huset.</h2>
