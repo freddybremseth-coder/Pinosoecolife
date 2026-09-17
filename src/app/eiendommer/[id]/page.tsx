@@ -137,6 +137,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
             <a className={styles.heroAction} href="#kontakt">
               <MessageCircle size={17} /> Be om prospekt eller visning
             </a>
+            {images.length > 1 && (
+              <a className={styles.heroAction} href="#bilder">Bilder ({images.length})</a>
+            )}
+            {floorplans.length > 0 && (
+              <a className={styles.heroAction} href="#plantegninger">Plantegninger ({floorplans.length})</a>
+            )}
           </div>
         </div>
       </section>
@@ -209,7 +215,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           </section>
 
           {floorplans.length > 0 && (
-            <section className={styles.gallery}>
+            <section className={styles.gallery} id="plantegninger">
               <h2>Plantegninger</h2>
               <p className={styles.galleryIntro}>
                 Se planløsningen som er registrert for boligen. Endelige mål og utførelse bekreftes alltid i det komplette prospektet.
@@ -230,7 +236,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           )}
 
           {images.length > 1 && (
-            <section className={styles.gallery}>
+            <section className={styles.gallery} id="bilder">
               <h2>Bilder</h2>
               <p className={styles.galleryIntro}>Trykk på et bilde for å åpne originalen i full størrelse.</p>
               <div className={styles.galleryGrid}>
