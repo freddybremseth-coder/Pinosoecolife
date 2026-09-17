@@ -3,6 +3,7 @@ import { LockKeyhole } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { PortalWorkspace } from "@/components/PortalWorkspace";
 import { SiteHeader } from "@/components/SiteHeader";
+import styles from "./min-side.module.css";
 
 export const metadata = {
   title: "Min side",
@@ -16,22 +17,30 @@ export default function PortalPage() {
   return (
     <main>
       <SiteHeader />
-      <section className="page-hero compact-hero">
-        <p className="eyebrow">Min side</p>
-        <h1>Din Eco Life-kjøpsreise samlet på ett sted</h1>
-        <p>
-          Logg inn for å samle boligønsker, aktuelle tomter og boliger, dokumenter, meldinger og neste steg. Målet er at
-          område, livsstil og det praktiske rundt kjøpet skal henge sammen gjennom hele prosessen.
-        </p>
-        <div className="portal-actions">
-          <Link className="contact-button" href="#portal">
-            <LockKeyhole size={19} /> Gå til innlogging
-          </Link>
+
+      <section className={styles.hero}>
+        <div className={styles.heroInner}>
+          <div className={styles.heroGrid}>
+            <div>
+              <p className={styles.eyebrow}>Min side · Pinoso Eco Life</p>
+              <h1 className={styles.title}>Din kjøpsreise. Samlet, personlig og oversiktlig.</h1>
+            </div>
+            <div>
+              <p className={styles.lead}>
+                Samle områdevalg, aktuelle tomter og boliger, favoritter, dokumenter, meldinger og neste steg på ett sted. Her skal det være enkelt å se hva du vurderer – og hva som faktisk bør skje videre.
+              </p>
+              <Link className={styles.heroAction} href="#portal">
+                <LockKeyhole size={18} /> Gå til kundeportalen
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
-      <section id="portal">
+
+      <section className={styles.portalTheme} id="portal">
         <PortalWorkspace />
       </section>
+
       <Footer />
     </main>
   );
