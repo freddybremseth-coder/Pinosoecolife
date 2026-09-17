@@ -11,6 +11,7 @@ import {
   type RegionKey,
   regions,
 } from "@/lib/realtyflow";
+import styles from "../areas.module.css";
 
 const regionCopy: Record<RegionKey, { title: string; intro: string; proof: string[] }> = {
   pinoso: {
@@ -75,76 +76,89 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
     return (
       <main>
         <SiteHeader />
-        <section className="page-hero compact-hero">
-          <h1>Område ikke funnet</h1>
-          <Link className="text-button light" href="/omrader">Til områder</Link>
+        <section className={styles.hero}>
+          <div className={styles.heroInner}>
+            <p className={styles.eyebrow}>Område</p>
+            <h1>Område ikke funnet</h1>
+            <div className={styles.heroActions}>
+              <Link className={styles.primaryAction} href="/omrader">Til områder</Link>
+            </div>
+          </div>
         </section>
         <Footer />
       </main>
     );
   }
 
-  const [profiles, properties] = await Promise.all([getAreaProfiles(), getProperties()]);
+  const [profiles, properties] = await Promise.all([getAreaProfiles(), getProperties(0)]);
   const regionProfiles = profiles.filter((profile) => areaMatchesRegion(profile, region));
   const regionProperties = properties.filter((property) => propertyMatchesRegion(property, region));
 
   return (
     <main>
       <SiteHeader />
-      <section className="page-hero compact-hero image-hero">
-        <p className="eyebrow">RealtyFlow-datagruppe</p>
-        <h1>{copy.title}</h1>
-        <p>{copy.intro}</p>
-        <div className="portal-actions">
-          <Link className="contact-button" href={`/eiendommer?region=${region}`}>
-            Se {regionProperties.length} publiserte boliger <ArrowRight size={18} />
-          </Link>
-          <Link className="text-button light" href={`/tomter?q=${encodeURIComponent(selected.label)}`}>
-            Se tomter
-          </Link>
-          <Link className="text-button light" href="/livet-i-innlandet">
-            Sammenlign Eco Life-områder
-          </Link>
+
+      <section className={styles.hero}>
+        <div className={styles.heroInner}>
+          <p className={styles.eyebrow}>RealtyFlow-datagruppe</p>
+          <h1>{copy.title}</h1>
+          <p className={styles.heroCopy}>{copy.intro}</p>
+          <div className={styles.heroActions}>
+            <Link className={styles.primaryAction} href={`/eiendommer?region=${region}`}>
+              Se {regionProperties.length} publiserte boliger <ArrowRight size={17} />
+            </Link>
+            <Link className={styles.secondaryAction} href={`/tomter?q=${encodeURIComponent(selected.label)}`}>
+              Se tomter
+            </Link>
+            <Link className={styles.secondaryAction} href="/livet-i-innlandet">
+              Sammenlign Eco Life-områder
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="section region-landing-grid">
-        <article>
-          <p className="eyebrow">Hva gruppen dekker</p>
-          <h2>Bruk boligdataene etter at du har vurdert hverdagen</h2>
-          <p>{selected.description}</p>
-          <div className="region-proof-list">
-            {copy.proof.map((item) => (
-              <span key={item}>
-                <ShieldCheck size={17} /> {item}
-              </span>
-            ))}
+      <section className={styles.section}>
+        <div className={styles.introGrid}>
+          <div>
+            <p className={styles.sectionEyebrow}>Hva gruppen dekker</p>
+            <h2 className={styles.sectionTitle}>Bruk boligdataene etter at du har vurdert hverdagen</h2>
+            <p className={styles.sectionCopy}>{selected.description}</p>
+            <div className={styles.guideGrid}>
+              {copy.proof.map((item) => (
+                <article className={styles.guideCard} key={item}>
+                  <ShieldCheck size={20} />
+                  <h3>{item}</h3>
+                </article>
+              ))}
+            </div>
           </div>
-        </article>
-        <aside>
-          <strong>{regionProperties.length}</strong>
-          <span>publiserte boliger i datagruppen</span>
-          <strong>{regionProfiles.length}</strong>
-          <span>publiserte områdeprofiler fra RealtyFlow</span>
-        </aside>
+          <aside className={styles.statsGrid}>
+            <div className={styles.stat}>
+              <strong>{regionProperties.length}</strong>
+              <span>publiserte boliger i datagruppen</span>
+            </div>
+            <div className={styles.stat}>
+              <strong>{regionProfiles.length}</strong>
+              <span>publiserte områdeprofiler fra RealtyFlow</span>
+            </div>
+          </aside>
+        </div>
       </section>
 
       {guideLinks.length > 0 && (
-        <section className="section proof-section">
-          <div className="section-heading">
-            <p className="eyebrow">Eco Life-guidene</p>
-            <h2>Les om stedene som steder å leve – ikke bare som boligmarkeder</h2>
-            <p>
-              Datagruppen hjelper med sortering. De konkrete guidene forklarer forskjellen i hverdagsliv, tomt, natur og praktisk bruk.
-            </p>
-          </div>
-          <div className="proof-grid">
+        <section className={`${styles.section} ${styles.groupSection}`}>
+          <p className={styles.sectionEyebrow}>Eco Life-guidene</p>
+          <h2 className={styles.sectionTitle}>Les om stedene som steder å leve – ikke bare som boligmarkeder</h2>
+          <p className={styles.sectionCopy}>
+            Datagruppen hjelper med sortering. De konkrete guidene forklarer forskjellen i hverdagsliv, tomt, natur og praktisk bruk.
+          </p>
+          <div className={styles.guideGrid}>
             {guideLinks.map((guide) => (
-              <article key={guide.slug}>
-                <strong>Område</strong>
+              <article className={styles.guideCard} key={guide.slug}>
+                <span>Område</span>
                 <h3>{guide.name}</h3>
                 <p>{guide.note}</p>
-                <Link className="text-button" href={`/livet-i-innlandet/${guide.slug}`}>
+                <Link className={styles.inlineLink} href={`/livet-i-innlandet/${guide.slug}`}>
                   Se livet i {guide.name} <ArrowRight size={16} />
                 </Link>
               </article>
@@ -154,57 +168,71 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
       )}
 
       {regionProfiles.length > 0 && (
-        <section className="section area-profile-grid region-area-section">
-          <div className="section-heading">
-            <p className="eyebrow">Publiserte områdeprofiler</p>
-            <h2>Data og beskrivelser fra RealtyFlow</h2>
+        <section className={`${styles.section} ${styles.groupSection}`}>
+          <div className={styles.groupHeader}>
+            <div>
+              <p className={styles.sectionEyebrow}>Publiserte områdeprofiler</p>
+              <h2 className={styles.sectionTitle}>Data og beskrivelser fra RealtyFlow</h2>
+            </div>
           </div>
-          {regionProfiles.slice(0, 6).map((profile) => (
-            <article className={`area-profile-card${profile.photo_url ? "" : " no-photo"}`} key={profile.id || profile.name}>
-              {profile.photo_url && <div style={{ backgroundImage: `url(${profile.photo_url})` }} />}
-              <section>
-                <span>{profile.region || selected.label}</span>
-                <h2>{profile.name}</h2>
-                {profile.hero_blurb && <strong>{profile.hero_blurb}</strong>}
-                {profile.description && <p>{profile.description}</p>}
-                <a className="text-button area-property-link" href={`/eiendommer?region=${region}&area=${encodeURIComponent(profile.name)}`}>
-                  <MapPin size={17} /> Se boliger i {profile.name}
-                </a>
-              </section>
-            </article>
-          ))}
+          <div className={styles.profileList}>
+            {regionProfiles.slice(0, 6).map((profile) => (
+              <article
+                className={`${styles.profileCard} ${profile.photo_url ? "" : styles.profileCardNoPhoto}`}
+                key={profile.id || profile.name}
+              >
+                {profile.photo_url && (
+                  <div className={styles.profileImage} style={{ backgroundImage: `url(${profile.photo_url})` }} />
+                )}
+                <div className={styles.profileBody}>
+                  <span className={styles.profileMeta}>{profile.region || selected.label}</span>
+                  <h2>{profile.name}</h2>
+                  {profile.hero_blurb && <strong>{profile.hero_blurb}</strong>}
+                  {profile.description && <p>{profile.description}</p>}
+                  <Link
+                    className={styles.inlineLink}
+                    href={`/eiendommer?region=${region}&area=${encodeURIComponent(profile.name)}`}
+                  >
+                    <MapPin size={16} /> Se boliger i {profile.name}
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
       )}
 
-      <section className="section">
-        <div className="section-heading">
-          <p className="eyebrow">Publiserte boliger</p>
-          <h2>Boliger i {selected.label}</h2>
-          <p>
-            Bruk disse som konkrete alternativer etter at område, livsstil og behov er avklart. Tilgjengelighet og detaljer må alltid kontrolleres på nytt før en beslutning.
-          </p>
-        </div>
+      <section className={`${styles.section} ${styles.propertySection}`}>
+        <p className={styles.sectionEyebrow}>Publiserte boliger</p>
+        <h2 className={styles.sectionTitle}>Boliger i {selected.label}</h2>
+        <p className={styles.sectionCopy}>
+          Bruk disse som konkrete alternativer etter at område, livsstil og behov er avklart. Tilgjengelighet og detaljer
+          må alltid kontrolleres på nytt før en beslutning.
+        </p>
         {regionProperties.length > 0 ? (
-          <div className="property-grid">
+          <div className={styles.propertyGrid}>
             {regionProperties.slice(0, 6).map((property, index) => (
               <PropertyCard key={property.id || property.ref || index} property={property} />
             ))}
           </div>
         ) : (
-          <article className="info-card muted-card">
-            <MapPin />
+          <article className={styles.emptyCard}>
+            <MapPin size={24} />
             <div>
-              <h2>Ingen publiserte boliger i denne datagruppen akkurat nå</h2>
-              <p>Området kan fortsatt være aktuelt. Start med Eco Life-guiden eller kontakt oss hvis du vil at vi skal lete konkret.</p>
+              <h3>Ingen publiserte boliger i denne datagruppen akkurat nå</h3>
+              <p>
+                Området kan fortsatt være aktuelt. Start med Eco Life-guiden eller kontakt oss hvis du vil at vi skal lete konkret.
+              </p>
             </div>
           </article>
         )}
-        <div className="center-action">
-          <Link className="text-button" href={`/eiendommer?region=${region}`}>
-            Se alle publiserte boliger i {selected.label} <ArrowRight size={18} />
+        <div className={styles.heroActions}>
+          <Link className={styles.pillLink} href={`/eiendommer?region=${region}`}>
+            Se alle publiserte boliger i {selected.label} <ArrowRight size={17} />
           </Link>
         </div>
       </section>
+
       <Footer />
     </main>
   );
