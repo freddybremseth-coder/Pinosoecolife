@@ -55,7 +55,7 @@ export function PinosoChatbot() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      text: "Hei. Jeg kan hjelpe deg å sortere livsstil, område, tomt og bolig i innlandet i Alicante og Murcia. Fortell først litt om hva du ser for deg, så sender jeg ønskene dine videre til Freddy i RealtyFlow.",
+      text: "Hei. Jeg kan hjelpe deg å sortere livsstil, område, tomt og bolig i innlandet i Alicante og Murcia. Fortell litt om hva du ser for deg, så sender jeg ønskene dine videre til Freddy.",
     },
   ]);
 
@@ -75,7 +75,7 @@ export function PinosoChatbot() {
       { role: "user", text: nextLead.need },
       {
         role: "assistant",
-        text: "Takk. Jeg har sendt forespørselen til RealtyFlow. Neste spørsmål er ikke bare hvilken bolig du vil ha, men hvordan du ønsker å leve: mer plass og privatliv, hage/dyrking, vinland, natur/aktivitet, landsbyliv eller enkel logistikk?",
+        text: "Takk. Forespørselen er sendt videre. Neste spørsmål er ikke bare hvilken bolig du vil ha, men hvordan du ønsker å leve: mer plass og privatliv, hage/dyrking, vinland, natur/aktivitet, landsbyliv eller enkel logistikk?",
       },
     ]);
     await fetch("/api/contact", {
