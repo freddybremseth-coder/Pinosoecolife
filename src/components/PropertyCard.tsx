@@ -21,6 +21,7 @@ export function PropertyCard({ property, priority = false }: { property: Propert
     property.bathrooms ? `${property.bathrooms} bad` : "",
     getPropertyArea(property) ? `${getPropertyArea(property)} m² bolig` : "",
     property.plot_size ? `${Number(property.plot_size).toLocaleString("nb-NO")} m² tomt` : "",
+    property.pool ? "Basseng" : "",
   ].filter(Boolean);
 
   return (
