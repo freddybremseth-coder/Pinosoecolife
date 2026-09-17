@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { ExternalLink, LockKeyhole, ShieldCheck } from "lucide-react";
+import { LockKeyhole } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { PortalWorkspace } from "@/components/PortalWorkspace";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata = {
   title: "Min side",
-  description: "Kundeportal for boligmatch, dokumenter, meldinger og oppfølging hos Pinoso Eco Life.",
+  description: "Din kundeportal for boligønsker, tomter, favoritter, dokumenter, meldinger og oppfølging hos Pinoso Eco Life.",
   alternates: {
     canonical: "/min-side",
   },
@@ -17,18 +17,15 @@ export default function PortalPage() {
     <main>
       <SiteHeader />
       <section className="page-hero compact-hero">
-        <p className="eyebrow">Min Side</p>
-        <h1>Kundeportal for kjøpere</h1>
+        <p className="eyebrow">Min side</p>
+        <h1>Din Eco Life-kjøpsreise samlet på ett sted</h1>
         <p>
-          En ryddig portal for boligmatch, dokumenter og meldinger. Admin, leads og samtaler håndteres i RealtyFlow,
-          slik at alt ligger samlet i huben din.
+          Logg inn for å samle boligønsker, aktuelle tomter og boliger, dokumenter, meldinger og neste steg. Målet er at
+          område, livsstil og det praktiske rundt kjøpet skal henge sammen gjennom hele prosessen.
         </p>
         <div className="portal-actions">
           <Link className="contact-button" href="#portal">
-            <LockKeyhole size={19} /> Logg inn på Min side
-          </Link>
-          <Link className="text-button light" href="https://realtyflow.chatgenius.pro">
-            <ShieldCheck size={18} /> RealtyFlow admin <ExternalLink size={18} />
+            <LockKeyhole size={19} /> Gå til innlogging
           </Link>
         </div>
       </section>
