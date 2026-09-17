@@ -16,7 +16,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...regions.map((region) => `/omrader/${region.key}`),
     "/kjopsprosessen",
     "/magasin",
-    "/min-side",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,
@@ -31,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.75,
   }));
 
-  const properties = await getProperties(100);
+  const properties = await getProperties(0);
   const propertyRoutes = properties
     .map((property) => getPropertyRef(property))
     .filter(Boolean)
