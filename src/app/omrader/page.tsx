@@ -71,23 +71,25 @@ export default async function AreasPage() {
       </section>
 
       <section className={`${styles.section} ${styles.dataIntro}`}>
-        <p className={styles.sectionEyebrow}>Boligdata fra RealtyFlow</p>
-        <h2 className={styles.sectionTitle}>Tre datagrupper organiserer publiserte boliger – ikke hele merkevaren</h2>
+        <p className={styles.sectionEyebrow}>Aktuelle boliger</p>
+        <h2 className={styles.sectionTitle}>Se hvor vi har publiserte boliger akkurat nå</h2>
         <p className={styles.sectionCopy}>
-          Gruppene under brukes til å sortere områdeprofiler og boligdata publisert fra RealtyFlow. Biar, Villena, Sax,
-          Jumilla og de øvrige Eco Life-guidene finner du i «Livet i innlandet» selv om de ikke ligger i en av disse tre
-          tekniske datagruppene.
+          Utvalget endrer seg med tilgjengeligheten. Hvis du først vil finne området som passer livet du ønsker, kan du
+          utforske alle Eco Life-guidene før du går videre til de konkrete boligene.
         </p>
+        <Link className={styles.inlineLink} href="/livet-i-innlandet">
+          Utforsk alle områdene <ArrowRight size={16} />
+        </Link>
       </section>
 
-      <nav className={styles.groupGrid} aria-label="RealtyFlow-datagrupper">
+      <nav className={styles.groupGrid} aria-label="Aktuelle boligområder">
         {regions.map((region) => (
           <a className={styles.groupCard} href={`#${region.key}`} key={region.key}>
             <div>
               <strong>{region.label}</strong>
               <p>{region.description}</p>
             </div>
-            <span>Se publiserte profiler ↓</span>
+            <span>Utforsk området ↓</span>
           </a>
         ))}
       </nav>
@@ -96,13 +98,13 @@ export default async function AreasPage() {
         <section className={`${styles.section} ${styles.groupSection}`} id={group.key} key={group.key}>
           <div className={styles.groupHeader}>
             <div>
-              <p className={styles.sectionEyebrow}>RealtyFlow-gruppe</p>
+              <p className={styles.sectionEyebrow}>Aktuelle boliger og områdeinnhold</p>
               <h2 className={styles.sectionTitle}>{group.label}</h2>
               <p className={styles.sectionCopy}>{group.description}</p>
             </div>
             <div className={styles.groupActions}>
               <Link className={styles.pillLink} href={`/omrader/${group.key}`}>
-                Se datagruppen
+                Se området
               </Link>
               <Link className={styles.pillLink} href={`/eiendommer?region=${group.key}`}>
                 Se boliger
@@ -145,10 +147,10 @@ export default async function AreasPage() {
               <article className={styles.emptyCard}>
                 <MapPin size={24} />
                 <div>
-                  <h3>Ingen publiserte områdeprofiler ennå</h3>
+                  <h3>Ingen publiserte områdeprofiler akkurat nå</h3>
                   <p>
-                    Områdeguiden finnes fortsatt i Eco Life-universet selv om RealtyFlow ikke har publisert en egen
-                    dataprofilsak her ennå.
+                    Du kan fortsatt utforske stedene og livsstilen i «Livet i innlandet» og kontakte oss hvis du vil at
+                    vi skal lete etter bolig eller tomt i dette området.
                   </p>
                 </div>
               </article>
@@ -161,8 +163,8 @@ export default async function AreasPage() {
         <section className={`${styles.section} ${styles.groupSection}`}>
           <div className={styles.groupHeader}>
             <div>
-              <p className={styles.sectionEyebrow}>Flere publiserte profiler</p>
-              <h2 className={styles.sectionTitle}>Ikke sortert i en RealtyFlow-gruppe ennå</h2>
+              <p className={styles.sectionEyebrow}>Flere områder</p>
+              <h2 className={styles.sectionTitle}>Andre områder med publisert boliginnhold</h2>
             </div>
           </div>
           <div className={styles.profileList}>
@@ -192,9 +194,9 @@ export default async function AreasPage() {
       <section className={styles.section}>
         <div className={styles.closing}>
           <p className={styles.sectionEyebrow}>Usikker på hvor du skal starte?</p>
-          <h2>Velg livsstilen først – ikke datagruppen</h2>
+          <h2>Velg livsstilen først – deretter området</h2>
           <p>
-            Hvis du ikke allerede kjenner områdene, start med «Livet i innlandet». Derfra kan du sammenligne konkrete
+            Hvis du ikke allerede kjenner innlandet, start med «Livet i innlandet». Der kan du sammenligne konkrete
             steder før bolig- og tomtesøket snevres inn.
           </p>
           <Link className={styles.primaryAction} href="/livet-i-innlandet">
