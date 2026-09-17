@@ -137,14 +137,9 @@ const ecoLifePlotTerms = [
   "pinoso",
   "pinosos",
   "el pinos",
-  "el pinós",
   "monovar",
-  "monóvar",
   "la romana",
   "hondon",
-  "hondón",
-  "hondon de las nieves",
-  "hondón de las nieves",
   "aspe",
   "novelda",
   "monforte",
@@ -157,7 +152,54 @@ const ecoLifePlotTerms = [
   "barbarroja",
   "barba-roja",
   "font del llop",
+  "alenda golf",
+  "ubeda",
+  "culebron",
+  "lel",
+  "encebras",
+  "raspay",
+  "casas pastor",
+  "rodriguillo",
+  "el prado",
+  "herrada",
+  "paredon",
+  "canada del trigo",
 ];
+
+const ecoLifeCadastralPrefixes = [
+  "03105", // Pinoso / El Pinós
+  "03089", // Monóvar / Monòver
+  "03114", // La Romana
+  "03077", // Hondón de las Nieves
+  "03078", // Hondón de los Frailes
+  "03019", // Aspe
+  "03093", // Novelda
+  "03088", // Monforte del Cid
+  "03043", // Biar
+  "03140", // Villena
+  "03123", // Sax
+  "30022", // Jumilla
+];
+
+const outsideEcoLifeTerms = [
+  "benissa",
+  "calpe",
+  "altea",
+  "el campello",
+  "campello",
+  "busot",
+  "crevillent",
+  "elche",
+  "matola",
+  "balsares",
+  "torrellano",
+  "las bayas",
+  "baya alta",
+  "asprillas",
+  "daimes",
+];
+
+const inactivePlotTerms = ["sold", "reservado", "reserved", "kjopt"];
 
 function plotText(plot: PlotWithCatastro) {
   return normalize(
@@ -178,9 +220,19 @@ function plotText(plot: PlotWithCatastro) {
   );
 }
 
+function isInactivePlot(plot: PlotWithCatastro) {
+  const haystack = plotText(plot);
+  return inactivePlotTerms.some((term) => haystack.includes(term));
+}
+
 function isEcoLifeAreaPlot(plot: PlotWithCatastro) {
   const haystack = plotText(plot);
-  return ecoLifePlotTerms.some((term) => haystack.includes(normalize(term)));
+  if (outsideEcoLifeTerms.some((term) => haystack.includes(normalize(term)))) return false;
+
+  const termMatch = ecoLifePlotTerms.some((term) => haystack.includes(normalize(term)));
+  const catastroRef = getCatastroRef(plot);
+  const cadastralMatch = ecoLifeCadastralPrefixes.some((prefix) => catastroRef.startsWith(prefix));
+  return termMatch || cadastralMatch;
 }
 
 export default async function PlotsPage({
@@ -197,7 +249,8 @@ export default async function PlotsPage({
   const polygon = params.polygon || "";
   const parcel = params.parcel || "";
 
-  const filtered = plots.filter((plot) => {
+  const publishedPlots = plots.filter((plot) => isEcoLifeAreaPlot(plot) && !isInactivePlot(plot));
+  const filtered = publishedPlots.filter((plot) => {
     const haystack = plotText(plot);
     return (
       (!q || haystack.includes(q)) &&
@@ -206,7 +259,7 @@ export default async function PlotsPage({
       (!minArea || Number(plot.area || 0) >= minArea) &&
       (!maxPrice || Number(plot.price || 0) <= maxPrice)
     );
-  }).sort((a, b) => Number(isEcoLifeAreaPlot(b)) - Number(isEcoLifeAreaPlot(a)));
+  });
   const mapped = filtered.filter((plot) => plot.lat && plot.lng);
   const withCatastro = filtered.filter((plot) => getCatastroRef(plot) || getPolygon(plot) || getParcel(plot));
 
