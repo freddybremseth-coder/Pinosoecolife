@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import styles from "./SiteHeader.module.css";
 
 const navLinks = [
   { href: "/livet-i-innlandet", label: "Livet i innlandet" },
@@ -13,38 +15,81 @@ const navLinks = [
   { href: "/magasin", label: "Magasin" },
 ];
 
+function isActivePath(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function SiteHeader() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  function closeMenu() {
+  useEffect(() => {
     setMenuOpen(false);
-  }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   return (
-    <header className="site-header">
-      <Link className="brand" href="/" aria-label="Pinoso Eco Life">
-        <img src="/assets/logo.png" alt="" />
-        <span>Pinoso Eco Life</span>
-      </Link>
-      <button
-        className="mobile-menu-button"
-        type="button"
-        aria-label={menuOpen ? "Lukk meny" : "Åpne meny"}
-        aria-expanded={menuOpen}
-        onClick={() => setMenuOpen((open) => !open)}
-      >
-        {menuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-      <nav className={`nav ${menuOpen ? "open" : ""}`}>
-        {navLinks.map((link) => (
-          <Link href={link.href} key={link.href} onClick={closeMenu}>
-            {link.label}
-          </Link>
-        ))}
-        <Link className="nav-cta" href="/min-side" onClick={closeMenu}>
-          Min side
+    <header className={styles.header}>
+      <div className={styles.inner}>
+        <Link className={styles.brand} href="/" aria-label="Pinoso Eco Life – forside">
+          <img className={styles.logo} src="/assets/logo.png" alt="" />
+          <span className={styles.brandCopy}>
+            <span className={styles.wordmark}>Pinoso Eco Life</span>
+            <span className={styles.brandLine}>Innlandet i Alicante &amp; Murcia</span>
+          </span>
         </Link>
-      </nav>
+
+        <button
+          className={styles.menuButton}
+          type="button"
+          aria-label={menuOpen ? "Lukk meny" : "Åpne meny"}
+          aria-expanded={menuOpen}
+          aria-controls="site-navigation"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X size={21} /> : <Menu size={21} />}
+        </button>
+
+        <nav id="site-navigation" className={`${styles.nav} ${menuOpen ? styles.open : ""}`} aria-label="Hovedmeny">
+          <p className={styles.mobileIntro}>Finn stedet og hverdagen du vil bygge livet rundt.</p>
+          {navLinks.map((link) => {
+            const active = isActivePath(pathname, link.href);
+            return (
+              <Link
+                className={`${styles.navLink} ${active ? styles.active : ""}`}
+                href={link.href}
+                key={link.href}
+                aria-current={active ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <Link
+            className={`${styles.cta} ${isActivePath(pathname, "/min-side") ? styles.ctaActive : ""}`}
+            href="/min-side"
+            aria-current={isActivePath(pathname, "/min-side") ? "page" : undefined}
+          >
+            Min side
+          </Link>
+        </nav>
+      </div>
     </header>
   );
 }
