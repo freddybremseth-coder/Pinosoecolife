@@ -492,7 +492,7 @@ export function PortalWorkspace() {
             <article className="portal-panel access-panel wide-panel">
               <div className="panel-title"><KeyRound size={20} /><h3>Sett nytt passord</h3></div>
               <form onSubmit={changePassword}>
-                <label>Ny passord<input minLength={8} onChange={(event) => setNewPassword(event.target.value)} placeholder="Minst 8 tegn" required type="password" value={newPassword} /></label>
+                <label>Nytt passord<input minLength={8} onChange={(event) => setNewPassword(event.target.value)} placeholder="Minst 8 tegn" required type="password" value={newPassword} /></label>
                 <button type="submit">Lagre nytt passord</button>
                 {passwordStatus === "saved" && <p className="form-success">Passordet er oppdatert.</p>}
                 {passwordStatus === "error" && <p className="form-error">Kunne ikke lagre passordet.</p>}
