@@ -4,6 +4,7 @@ import { ArrowRight, Leaf, MapPin, Mountain, Route, Sprout } from "lucide-react"
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ecoLifeAreaGroups, ecoLifeAreas } from "@/lib/ecolife-areas";
+import styles from "../ecolife-editorial.module.css";
 
 export const metadata = {
   title: "Livet i innlandet | Pinoso Eco Life",
@@ -24,35 +25,39 @@ export default function InlandLifePage() {
     <main>
       <SiteHeader />
 
-      <section className="page-hero compact-hero image-hero">
-        <p className="eyebrow">Pinoso Eco Life</p>
-        <h1>Livet i innlandet</h1>
-        <p>
-          Ikke alle innlandsområder gir den samme hverdagen. Noen handler om vinland og store tomter. Andre om
-          landsbyliv, fjell, byservice eller enkel reise til flyplassen. Start med livet du ønsker – ikke bare med huset.
-        </p>
-      </section>
-
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Hva passer deg?</p>
-          <h2>Velg type hverdag før du velger område</h2>
-          <p>
-            Den riktige tomten i feil område er fortsatt feil. Derfor deler vi innlandet etter hvordan stedet faktisk
-            kan brukes i hverdagen – og lar bolig og tomt komme etterpå.
+      <section className={styles.editorialHero}>
+        <img className={styles.heroMedia} src="/assets/hero-pinoso-dream.jpg" alt="Landskap i innlandet i Spania" />
+        <div className={`${styles.heroInner} ${styles.heroInnerNarrow}`}>
+          <p className={styles.heroEyebrow}>Pinoso Eco Life · Alicante & Murcia</p>
+          <h1 className={styles.heroTitle}>Livet i innlandet</h1>
+          <p className={styles.heroLead}>
+            Start med hverdagen du ønsker. Vinland, landsby, fjell eller enklere logistikk gir svært forskjellige liv – selv når tomtestørrelsen ser lik ut på papiret.
           </p>
         </div>
-        <div className="proof-grid">
+      </section>
+
+      <section className={styles.introSection}>
+        <div className={styles.introGrid}>
+          <div>
+            <p className={styles.sectionEyebrow}>Velg livet før adressen</p>
+            <h2 className={styles.introTitle}>Den riktige tomten i feil område er fortsatt feil.</h2>
+          </div>
+          <p className={styles.introCopy}>
+            Derfor deler vi ikke innlandet bare etter kommunegrenser. Vi ser på hvordan stedet faktisk fungerer: hvor mye service du vil ha nær deg, om naturen skal være en stor del av hverdagen, hvor ofte du reiser, og hva du ønsker å gjøre med plassen rundt boligen.
+          </p>
+        </div>
+
+        <div className={styles.groupGrid}>
           {ecoLifeAreaGroups.map((group) => {
             const Icon = icons[group.key];
             const count = ecoLifeAreas.filter((area) => area.zone === group.key).length;
             return (
-              <article key={group.key}>
-                <strong><Icon size={24} /></strong>
+              <a className={styles.groupCard} href={`#${group.key}`} key={group.key}>
+                <span className={styles.groupIcon}><Icon size={21} /></span>
                 <h3>{group.title}</h3>
                 <p>{group.text}</p>
-                <span>{count} områder</span>
-              </article>
+                <span className={styles.groupCount}>{count} områder å sammenligne</span>
+              </a>
             );
           })}
         </div>
@@ -61,70 +66,49 @@ export default function InlandLifePage() {
       {ecoLifeAreaGroups.map((group) => {
         const groupAreas = ecoLifeAreas.filter((area) => area.zone === group.key);
         return (
-          <section className="section area-profile-grid region-area-section" id={group.key} key={group.key}>
-            <div className="section-heading region-heading">
+          <section className={styles.zoneSection} id={group.key} key={group.key}>
+            <div className={styles.zoneHeader}>
               <div>
-                <p className="eyebrow">Områder</p>
-                <h2>{group.title}</h2>
-                <p>{group.text}</p>
+                <p className={styles.sectionEyebrow}>Eco Life-områder</p>
+                <h2 className={styles.sectionTitle}>{group.title}</h2>
               </div>
+              <p>{group.text}</p>
             </div>
-            {groupAreas.map((area) => (
-              <article className="area-profile-card" key={area.slug}>
-                <div style={{ backgroundImage: `url(${area.photo})` }} />
-                <section>
-                  <span>{area.region}</span>
-                  <h2>{area.name}</h2>
-                  <strong>{area.eyebrow}</strong>
-                  <p>{area.summary}</p>
-                  <ul>
-                    {area.bestFor.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
-                  </ul>
-                  <Link className="text-button area-property-link" href={`/livet-i-innlandet/${area.slug}`}>
-                    Hvordan er livet i {area.name}? <ArrowRight size={16} />
-                  </Link>
-                </section>
-              </article>
-            ))}
+
+            <div className={styles.areaList}>
+              {groupAreas.map((area) => (
+                <article className={styles.areaCard} key={area.slug}>
+                  <div className={styles.areaPhoto} style={{ backgroundImage: `url(${area.photo})` }} />
+                  <div className={styles.areaBody}>
+                    <span className={styles.cardEyebrow}>{area.region} · {area.eyebrow}</span>
+                    <h3>{area.name}</h3>
+                    <p>{area.summary}</p>
+                    <ul>
+                      {area.bestFor.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
+                    </ul>
+                    <Link className={styles.editorialLink} href={`/livet-i-innlandet/${area.slug}`}>
+                      Hvordan er livet i {area.name}? <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
           </section>
         );
       })}
 
-      <section className="section split">
+      <section className={styles.actionBand}>
         <div>
-          <p className="eyebrow">Tomten kommer etter området</p>
-          <h2>10 000 m² kan gi helt forskjellige liv</h2>
+          <p className={styles.heroEyebrow}>Område først. Tomt etterpå.</p>
+          <h2>10 000 m² kan gi helt forskjellige liv.</h2>
           <p>
-            Den samme tomtestørrelsen kan bety vinland og åpne horisonter i Pinoso, en mer praktisk hverdag nær
-            Alicante i Aspe eller fjell og tydeligere årstider rundt Biar. Derfor er områdevalget første store beslutning.
-          </p>
-          <div className="check-list">
-            <span><MapPin size={18} /> Hvilket miljø vil du våkne i?</span>
-            <span><Route size={18} /> Hvor viktig er flyplass, by og daglig service?</span>
-            <span><Sprout size={18} /> Hva vil du faktisk gjøre med tomten?</span>
-          </div>
-        </div>
-        <div className="feature-panel">
-          <div><Leaf /> Vinland og dyrking</div>
-          <div><Mountain /> Fjell og natur</div>
-          <div><Route /> Enkel logistikk</div>
-          <div><Sprout /> Landsby og finca-ro</div>
-        </div>
-      </section>
-
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Neste steg</p>
-          <h2>Se området først. Deretter finner vi tomten.</h2>
-          <p>
-            Når du vet hvilken type hverdag du ønsker, blir det lettere å vurdere tomt, boligmodell og totalbudsjett
-            uten å forelske seg i feil prosjekt først.
+            Når du vet hvilket miljø du vil våkne i, hvor mye service du trenger og hva du vil gjøre med tomten, kan vi begynne å lete konkret – uten at en tilfeldig boligannonse bestemmer hvor du ender opp.
           </p>
         </div>
-        <div className="center-action">
-          <Link className="text-button" href="/tomter">Se aktuelle tomter <ArrowRight size={18} /></Link>
-          <Link className="text-button" href="/magasin">Les Eco Life-artikler <ArrowRight size={18} /></Link>
-          <Link className="text-button" href="/#kontakt">Fortell oss hvordan du vil leve <ArrowRight size={18} /></Link>
+        <div className={styles.actionLinks}>
+          <Link href="/tomter">Se aktuelle tomter <ArrowRight size={17} /></Link>
+          <Link href="/magasin">Les Eco Life-magasinet <ArrowRight size={17} /></Link>
+          <Link href="/#kontakt"><MapPin size={16} /> Fortell oss hvordan du vil leve</Link>
         </div>
       </section>
 
