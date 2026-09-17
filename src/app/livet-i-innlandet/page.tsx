@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Leaf, MapPin, Mountain, Route, Sprout } from "lucide-react";
 
@@ -26,7 +27,14 @@ export default function InlandLifePage() {
       <SiteHeader />
 
       <section className={styles.editorialHero}>
-        <img className={styles.heroMedia} src="/assets/hero-pinoso-dream.jpg" alt="Landskap i innlandet i Spania" />
+        <Image
+          className={styles.heroMedia}
+          src="/assets/hero-pinoso-dream.jpg"
+          alt="Landskap i innlandet i Spania"
+          fill
+          priority
+          sizes="100vw"
+        />
         <div className={`${styles.heroInner} ${styles.heroInnerNarrow}`}>
           <p className={styles.heroEyebrow}>Pinoso Eco Life · Alicante & Murcia</p>
           <h1 className={styles.heroTitle}>Livet i innlandet</h1>
