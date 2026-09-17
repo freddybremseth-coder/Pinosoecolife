@@ -26,7 +26,14 @@ export function PropertyCard({ property, priority = false }: { property: Propert
   return (
     <Link className={styles.card} href={href} prefetch={priority}>
       <div className={styles.media}>
-        <div className={styles.image} style={{ backgroundImage: `url(${image})` }} />
+        <img
+          className={styles.image}
+          src={image}
+          alt={title}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
         <span className={styles.badge}>{getPropertyType(property)}</span>
         {ref && <span className={styles.ref}>{ref}</span>}
         <span className={styles.arrow} aria-hidden="true"><ArrowUpRight size={18} /></span>
