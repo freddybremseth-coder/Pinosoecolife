@@ -1,216 +1,200 @@
 import Link from "next/link";
-import { ArrowRight, Building2, Check, Grape, Leaf, MapPinned, ShieldCheck, Sparkles, Sprout, SunMedium } from "lucide-react";
+import { ArrowRight, Check, Grape, Leaf, MapPinned, Sprout, SunMedium } from "lucide-react";
 import { BuyerMatchQuiz } from "@/components/BuyerMatchQuiz";
 import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getProperties } from "@/lib/realtyflow";
+import styles from "./home.module.css";
 
 export default async function Home() {
   const properties = await getProperties(6);
+
+  const journey = [
+    {
+      number: "01",
+      title: "Start med livet",
+      text: "Privatliv, hage, natur, landsbyliv, familie og hvor mye du faktisk vil bruke tomten til kommer før antall soverom.",
+    },
+    {
+      number: "02",
+      title: "Finn riktig område",
+      text: "Pinoso, Monóvar, Hondón, Biar, Jumilla og de andre innlandsområdene gir forskjellige hverdager. Vi sammenligner stedet før objektet.",
+    },
+    {
+      number: "03",
+      title: "Finn tomten eller boligen",
+      text: "Når området er riktig, snevrer vi inn søket mot en eksisterende bolig eller en tomt som faktisk passer prosjektet og budsjettet.",
+    },
+    {
+      number: "04",
+      title: "Kontroller før du binder deg",
+      text: "Planstatus, byggbarhet, adkomst, vann, strøm, avløp, kostnader og dokumentasjon må henge sammen før drømmen blir en beslutning.",
+    },
+  ];
 
   return (
     <main>
       <SiteHeader />
 
-      <section id="top" className="hero">
-        <div className="hero-video hero-image" />
-        <div className="hero-overlay" />
-        <div className="hero-content">
-          <p className="eyebrow">Pinoso Eco Life · Innlandet · Store tomter</p>
-          <h1>Ikke bare et nytt hjem. En annen måte å leve på.</h1>
-          <p className="hero-copy">
-            Mer plass. Mer ro. Mer av livet ute. Vi hjelper deg å velge område, finne riktig tomt og vurdere boligen
-            som passer livet du faktisk ønsker å skape i innlandet.
+      <section className={styles.hero} id="top">
+        <div className={styles.heroMedia} aria-hidden="true" />
+        <div className={styles.heroShade} aria-hidden="true" />
+        <div className={styles.heroInner}>
+          <p className={styles.kicker}>Pinoso Eco Life · Alicante & Murcia</p>
+          <h1 className={styles.heroTitle}>Ikke bare et nytt hjem. En annen måte å leve på.</h1>
+          <p className={styles.heroLead}>
+            Mer plass. Mer ro. Mer av livet ute. Vi starter med hverdagen du ønsker, finner området som passer og går
+            derfra videre til riktig tomt eller bolig.
           </p>
-          <div className="hero-primary-actions">
-            <Link className="hero-primary-button" href="/tomter">
-              Se tomter <MapPinned size={18} />
-            </Link>
-            <Link className="hero-secondary-button" href="/livet-i-innlandet">
-              Oppdag Eco Life <Leaf size={18} />
+
+          <div className={styles.heroBottom}>
+            <div className={styles.heroActions}>
+              <Link className={styles.primaryAction} href="/livet-i-innlandet">
+                Oppdag livet i innlandet <Leaf size={18} />
+              </Link>
+              <Link className={styles.secondaryAction} href="/tomter">
+                Se aktuelle tomter <MapPinned size={18} />
+              </Link>
+            </div>
+            <form className={styles.heroSearch} action="/tomter">
+              <input name="q" aria-label="Søk område eller tomt" placeholder="Pinoso, Biar, Jumilla, referanse..." />
+              <button type="submit">
+                Søk <ArrowRight size={17} />
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.intro}>
+        <div className={styles.introTop}>
+          <h2 className={styles.statement}>
+            10 000 m² er ikke bare tomt. Det er <em>10 000 m² med muligheter.</em>
+          </h2>
+          <div className={styles.introCopy}>
+            <p>
+              En stor tomt kan bli kjøkkenhage, frukttrær, noen vinranker, uteplasser, plass til familie og hobbyer –
+              eller ganske enkelt mer luft mellom deg og neste nabo.
+            </p>
+            <p>
+              <strong>Du trenger ikke bruke all plassen.</strong> Poenget er at du får valget. Hva som faktisk kan bygges
+              eller gjøres på en konkret tomt må alltid kontrolleres separat.
+            </p>
+            <Link className={styles.editorialLink} href="/magasin/10000-m2-hva-gjor-du-med-plassen">
+              Les historien om 10 000 m² <ArrowRight size={17} />
             </Link>
           </div>
-          <form className="search-card hero-search" action="/tomter">
-            <input name="q" placeholder="Søk tomt, kommune eller område..." />
-            <select name="type" defaultValue="">
-              <option value="">Hva ser du etter?</option>
-              <option>Tomt</option>
-              <option>Villa</option>
-              <option>Nybygg</option>
-            </select>
-            <button type="submit">
-              Se tomter <ArrowRight size={18} />
-            </button>
-          </form>
+        </div>
+
+        <div className={styles.pillars}>
+          <article className={styles.pillar}>
+            <div className={styles.pillarIcon}><SunMedium size={22} /></div>
+            <div>
+              <h2>Et annet tempo</h2>
+              <p>
+                Ikke fordi klokken går saktere, men fordi hverdagen kan fylles av mindre hastverk, mer utetid og mer av
+                det som skjer rett rundt hjemmet.
+              </p>
+              <Link className={styles.editorialLink} href="/magasin/et-annet-tempo-vanlig-tirsdag-innlandet">
+                En vanlig tirsdag i innlandet <ArrowRight size={17} />
+              </Link>
+            </div>
+          </article>
+
+          <article className={styles.pillar}>
+            <div className={styles.pillarIcon}><Sprout size={22} /></div>
+            <div>
+              <h2>Plass til å skape</h2>
+              <p>La hagen, trærne, uteområdene og de små prosjektene utvikle seg sammen med måten du faktisk lever på.</p>
+              <Link className={styles.editorialLink} href="/magasin/fra-blank-tomt-til-eget-landskap">
+                Fra tomt til eget landskap <ArrowRight size={17} />
+              </Link>
+            </div>
+          </article>
+
+          <article className={styles.pillar}>
+            <div className={styles.pillarIcon}><Grape size={22} /></div>
+            <div>
+              <h2>Mer selvberget</h2>
+              <p>Ikke et løfte om selvforsyning – men kanskje egne tomater, frukt, urter, egg eller druer fra egen jord.</p>
+              <Link className={styles.editorialLink} href="/magasin/fra-supermarked-til-egen-hage">
+                Start med egen hage <ArrowRight size={17} />
+              </Link>
+            </div>
+          </article>
         </div>
       </section>
 
-      <section className="trust-band home-trust">
-        <div>
-          <strong>Livsstil først</strong>
-          <span>Vi starter med hvordan du vil leve før vi begynner å velge tomt og bolig</span>
-        </div>
-        <div>
-          <strong>Norsk oppfølging</strong>
-          <span>Én trygg prosess med dialog, dokumenter og shortlist</span>
-        </div>
-        <div>
-          <strong>Tomten er en del av hjemmet</strong>
-          <span>Vi vurderer areal, adkomst, vann, strøm, regulering og hva du faktisk vil bruke plassen til</span>
+      <section className={styles.propertyStage}>
+        <div className={styles.stageInner}>
+          <div className={styles.stageHeading}>
+            <h2>Boligen kommer etter området.</h2>
+            <p>
+              Her er et utvalg publiserte innlandsboliger fra RealtyFlow. Se dem som konkrete muligheter – ikke som
+              erstatning for å finne ut hvor og hvordan du faktisk ønsker å bo.
+            </p>
+          </div>
+          <div className="property-grid">
+            {properties.map((property, index) => (
+              <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 3} />
+            ))}
+          </div>
+          <div className={styles.stageActions}>
+            <Link className="text-button" href="/eiendommer">
+              Se alle boliger <ArrowRight size={18} />
+            </Link>
+            <Link className="text-button" href="/tomter">
+              Se tomter <MapPinned size={18} />
+            </Link>
+            <Link className="text-button" href="/livet-i-innlandet">
+              Sammenlign områdene <Leaf size={18} />
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Hva ville du gjort med 10 000 m²?</p>
-          <h2>Plassen rundt huset kan forandre hele hverdagen</h2>
+      <section className={styles.journey}>
+        <div className={styles.journeyHeader}>
+          <p className="eyebrow">Fra idé til gjennomførbart prosjekt</p>
+          <h2>En roligere måte å ta en stor beslutning på.</h2>
           <p>
-            En stor tomt er ikke bare avstand til naboen. Den kan gi rom for kjøkkenhage, frukttrær, vinranker,
-            dyr der reglene tillater det, lange måltider ute, sykler, familie på besøk – eller bare stillhet og utsikt.
+            Det er lett å forelske seg i en boligannonse. Vi snur rekkefølgen og bygger beslutningen fra livet og stedet
+            og inn mot den konkrete eiendommen.
           </p>
         </div>
-        <div className="proof-grid">
-          <article>
-            <strong><SunMedium size={24} /></strong>
-            <h3>Et annet tempo</h3>
-            <p>Mindre hastverk, mer tid ute og en hverdag der landsbyen, naturen og hjemmet får større plass.</p>
-          </article>
-          <article>
-            <strong><Sprout size={24} /></strong>
-            <h3>Plass til å skape</h3>
-            <p>Hage, trær, uteområder, hobbyer og små prosjekter kan vokse frem over tid sammen med livet ditt.</p>
-          </article>
-          <article>
-            <strong><Grape size={24} /></strong>
-            <h3>Mer selvberget</h3>
-            <p>Ikke nødvendigvis selvforsynt – men kanskje egne tomater, frukt, urter, egg eller noen druer fra egen jord.</p>
-          </article>
-        </div>
-        <div className="center-action">
-          <Link className="text-button" href="/livet-i-innlandet">
-            Finn din type innlandsliv <ArrowRight size={18} />
-          </Link>
-          <Link className="text-button" href="/magasin/10000-m2-hva-gjor-du-med-plassen">
-            Hva kan du gjøre med 10 000 m²? <ArrowRight size={18} />
-          </Link>
-          <Link className="text-button" href="/magasin">
-            Les Eco Life-artiklene <Leaf size={18} />
-          </Link>
-        </div>
-      </section>
-
-      <section className="section sales-section">
-        <div className="section-heading">
-          <p className="eyebrow">Eiendommer</p>
-          <h2>Aktuelle innlandsboliger og villaer</h2>
-          <p>Et spisset utvalg fra RealtyFlow for Pinoso, Aspe, Monforte og Hondon-dalen.</p>
-        </div>
-        <div className="property-grid">
-          {properties.map((property, index) => (
-            <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 3} />
+        <div className={styles.steps}>
+          {journey.map((step) => (
+            <article className={styles.step} key={step.number}>
+              <span className={styles.stepNumber}>{step.number}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </article>
           ))}
-        </div>
-        <div className="center-action">
-          <Link className="text-button" href="/eiendommer">
-            Se alle boliger <ArrowRight size={18} />
-          </Link>
-          <Link className="text-button" href="/tomter">
-            Se tomter <MapPinned size={18} />
-          </Link>
-        </div>
-      </section>
-
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Fra drøm til gjennomførbar tomt</p>
-          <h2>Livsstilen kommer først. Deretter må tomten faktisk fungere.</h2>
-          <p>
-            Store tomter, vann, strøm, regulering, adkomst og mikrobeliggenhet avgjør om prosjektet blir riktig.
-            Pinoso Eco Life hjelper deg å skille det inspirerende fra det som faktisk lar seg gjennomføre.
-          </p>
-        </div>
-        <div className="proof-grid">
-          <article>
-            <strong>01</strong>
-            <h3>Først livsstil</h3>
-            <p>Privatliv, uteområder, hage, dyr, aktivitet, reisevei og bruk gjennom året er en del av behovsavklaringen.</p>
-          </article>
-          <article>
-            <strong>02</strong>
-            <h3>Så riktig område og tomt</h3>
-            <p>Vi sammenligner Pinoso, Aspe, Hondon-dalen, Monforte del Cid og nærliggende landsbyer.</p>
-          </article>
-          <article>
-            <strong>03</strong>
-            <h3>Deretter trygg prosess</h3>
-            <p>Tomtesjekk, prospekt, visning, kostnader, advokat og neste steg må henge sammen før du binder deg.</p>
-          </article>
         </div>
       </section>
 
       <BuyerMatchQuiz />
 
-      <section className="section split">
-        <div>
-          <p className="eyebrow">Trygg kjøpsreise</p>
-          <h2>Drømmen skal være stor. Beslutningen skal være konkret.</h2>
+      <section className={styles.story}>
+        <div className={styles.storyImage} aria-hidden="true" />
+        <div className={styles.storyCopy}>
+          <p className={styles.kicker}>Tomten som en del av hjemmet</p>
+          <h2>Du kjøper også rommet rundt huset.</h2>
           <p>
-            Bak livsstilen ligger en praktisk kjøpsreise med boligsøk, tomtekontroll, boligmatch, kundeportal og
-            oppfølging via RealtyFlow. Teknologien skal gjøre prosessen enklere – ikke være selve salgsargumentet.
+            Utsikt er én ting. Hverdagen handler også om hva du hører, hvor nært naboen er, hvor du går en kveldstur,
+            hvor barna leker og om du faktisk får brukt uteområdet slik du forestilte deg.
           </p>
-          <div className="check-list">
-            {["Tomter med kart og filter", "Dokumenter og meldinger på Min Side", "Strukturert lead- og shortlistoppfølging"].map(
-              (item) => (
-                <span key={item}>
-                  <Check size={18} /> {item}
-                </span>
-              ),
-            )}
+          <div className={styles.storyPoints}>
+            <span className={styles.storyPoint}><Check size={17} /> Privatliv og plassering</span>
+            <span className={styles.storyPoint}><Check size={17} /> Hage, dyrking og vann</span>
+            <span className={styles.storyPoint}><Check size={17} /> Natur, aktivitet og lokalmiljø</span>
+            <span className={styles.storyPoint}><Check size={17} /> Vedlikehold du faktisk ønsker</span>
           </div>
-        </div>
-        <div className="feature-panel">
-          <div>
-            <ShieldCheck /> Norsk trygghet
-          </div>
-          <div>
-            <Leaf /> Livsstil og plass først
-          </div>
-          <div>
-            <Sparkles /> AI-støttet boligmatch
-          </div>
-          <div>
-            <Building2 /> Villaer, tomter og prosjekter
-          </div>
-        </div>
-      </section>
-
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Hvorfor Pinoso Eco Life</p>
-          <h2>Tomten er ikke bare noe huset står på</h2>
-          <p>
-            Den kan være kjøkkenhage, utsikt, privatliv, trening, frukttrær, familieplass eller ganske enkelt luft mellom deg og neste nabo.
-            Vi vil forstå hva du ønsker å gjøre med stedet før vi begynner å anbefale det.
-          </p>
-        </div>
-        <div className="proof-grid">
-          <article>
-            <strong>01</strong>
-            <h3>Område først</h3>
-            <p>Vi hjelper deg å sortere Pinoso, Aspe, Hondon og nærliggende områder før du forelsker deg i feil tomt.</p>
-          </article>
-          <article>
-            <strong>02</strong>
-            <h3>Moderne hjem med plass</h3>
-            <p>Fokus på nybygg, energieffektive løsninger, privatliv, basseng og store uteområder.</p>
-          </article>
-          <article>
-            <strong>03</strong>
-            <h3>Et sted som kan utvikle seg</h3>
-            <p>Du trenger ikke gjøre alt første året. Hage, trær, uteområder og små prosjekter kan vokse frem over tid.</p>
-          </article>
+          <Link className={styles.storyLink} href="/magasin/du-kjoper-rommet-rundt-huset">
+            Les om rommet rundt huset <ArrowRight size={17} />
+          </Link>
         </div>
       </section>
 
@@ -218,7 +202,10 @@ export default async function Home() {
         <div>
           <p className="eyebrow">Klar for en prat?</p>
           <h2>Fortell oss hvordan du ønsker å leve</h2>
-          <p>Ikke bare antall soverom. Fortell oss om plass, privatliv, hage, aktivitet, familie og hva du vil bruke tomten til.</p>
+          <p>
+            Ikke bare antall soverom. Fortell om plass, privatliv, hage, aktivitet, familie, logistikk og hva du ser for
+            deg å bruke tomten til.
+          </p>
         </div>
         <ContactForm source="pinosoecolife-home" />
       </section>
