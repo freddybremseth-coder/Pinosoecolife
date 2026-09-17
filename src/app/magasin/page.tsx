@@ -6,9 +6,10 @@ import { fetchPublishedPosts } from "@/lib/website-content";
 import styles from "../ecolife-editorial.module.css";
 
 export const metadata = {
-  title: "Eco Life-magasin | Livet i innlandet | Pinoso Eco Life",
+  title: "Eco Life-magasin | Livet i innlandet",
   description:
     "Historier, ideer og praktiske guider om livet i innlandet: store tomter, ro, kjøkkenhage, privatliv, områder og trygg gjennomføring.",
+  alternates: { canonical: "/magasin" },
 };
 
 function formatDate(value?: string | null) {
