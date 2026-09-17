@@ -5,12 +5,10 @@ import { ArrowLeft, ArrowRight, Check, MapPin, Sprout } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
-import {
-  getAlternativeAreaSlugs,
-  getAreaArticleSlugs,
-} from "@/lib/ecolife-content-links";
+import { getAlternativeAreaSlugs, getAreaArticleSlugs } from "@/lib/ecolife-content-links";
 import { ecoLifeAreas, getEcoLifeArea } from "@/lib/ecolife-areas";
 import { fetchPublishedPosts } from "@/lib/website-content";
+import styles from "../../ecolife-editorial.module.css";
 
 type Params = { slug: string };
 
@@ -83,134 +81,121 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
     <main>
       <SiteHeader />
 
-      <section className="page-hero compact-hero image-hero">
-        <p className="eyebrow">{area.region} · {area.eyebrow}</p>
-        <h1>Livet i {area.name}</h1>
-        <p>{area.summary}</p>
+      <section className={styles.editorialHero}>
+        <img className={styles.heroMedia} src={area.photo} alt={area.name} />
+        <div className={`${styles.heroInner} ${styles.heroInnerNarrow}`}>
+          <p className={styles.heroEyebrow}>{area.region} · {area.eyebrow}</p>
+          <h1 className={styles.heroTitle}>Livet i {area.name}</h1>
+          <p className={styles.heroLead}>{area.summary}</p>
+        </div>
       </section>
 
-      <section className="section split">
-        <div>
-          <p className="eyebrow">Hverdagen</p>
-          <h2>Hvordan kan det faktisk føles å bo her?</h2>
+      <section className={styles.storySection}>
+        <div className={styles.storyCopy}>
+          <p className={styles.sectionEyebrow}>Hverdagen</p>
+          <h2 className={styles.storyTitle}>Hvordan kan det faktisk føles å bo her?</h2>
           {area.story.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
-        <div className="feature-panel">
+        <aside className={styles.factPanel}>
           {area.highlights.map((highlight) => (
-            <div key={highlight}><MapPin /> {highlight}</div>
+            <div className={styles.factItem} key={highlight}><MapPin size={19} /><span>{highlight}</span></div>
           ))}
-        </div>
+        </aside>
       </section>
 
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Passer særlig for</p>
-          <h2>Er {area.name} riktig type innlandsliv for deg?</h2>
+      <section className={styles.contentSection}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.sectionEyebrow}>Passer særlig for</p>
+          <h2 className={styles.sectionTitle}>Er {area.name} riktig type innlandsliv for deg?</h2>
         </div>
-        <div className="proof-grid">
+        <div className={styles.editorialCards}>
           {area.bestFor.map((item, index) => (
-            <article key={item}>
-              <strong>0{index + 1}</strong>
+            <article className={styles.editorialCard} key={item}>
+              <span className={styles.cardEyebrow}>0{index + 1}</span>
               <h3>{item}</h3>
-              <p>Bruk dette som et filter når du vurderer området, tomten og hvordan du ønsker å bruke eiendommen.</p>
+              <p>Bruk dette som et filter når du vurderer området, tomten og hvordan du faktisk ønsker å bruke eiendommen.</p>
             </article>
           ))}
         </div>
       </section>
 
+      <section className={styles.storySection}>
+        <div className={styles.storyCopy}>
+          <p className={styles.sectionEyebrow}>Tomten som del av hjemmet</p>
+          <h2 className={styles.storyTitle}>Ikke planlegg livet rundt en tomt før tomten er kontrollert.</h2>
+          <p>
+            Stor tomt kan gi rom for hage, trær, uteplasser, dyrking, hobbyer og privatliv, men hva som faktisk kan bygges og brukes må vurderes konkret. Arealklassifisering, byggbarhet, vann, strøm, avløp, adkomst og lokale bestemmelser må være på plass før prosjektet behandles som realistisk.
+          </p>
+        </div>
+        <aside className={styles.factPanel}>
+          <div className={styles.factItem}><Check size={19} /><span>Området og hverdagen passer deg</span></div>
+          <div className={styles.factItem}><Check size={19} /><span>Tomten er egnet og dokumentasjonen kontrollert</span></div>
+          <div className={styles.factItem}><Sprout size={19} /><span>Bolig og uteområder tilpasses tomt og lokale rammer</span></div>
+        </aside>
+      </section>
+
       {relevantArticles.length > 0 && (
-        <section className="section proof-section">
-          <div className="section-heading">
-            <p className="eyebrow">Les deg inn på hverdagen</p>
-            <h2>Artikler som er særlig relevante for {area.name}</h2>
-            <p>
-              Områdevalget blir lettere når du også ser for deg hvordan tomten, uteområdet og hverdagen faktisk kan brukes.
-            </p>
+        <section className={styles.relatedSection}>
+          <div className={styles.sectionHeader}>
+            <p className={styles.sectionEyebrow}>Les deg inn på hverdagen</p>
+            <h2 className={styles.sectionTitle}>Artikler som passer særlig godt til {area.name}</h2>
+            <p className={styles.sectionLead}>Områdevalget blir lettere når du også ser for deg hvordan tomten, uteområdet og hverdagen kan brukes.</p>
           </div>
-          <div className="proof-grid">
+          <div className={styles.editorialCards}>
             {relevantArticles.map((post) => (
-              <article key={post.slug}>
-                <strong>Eco Life</strong>
+              <article className={styles.editorialCard} key={post.slug}>
+                <span className={styles.cardEyebrow}>Eco Life</span>
                 <h3>{post.title}</h3>
                 <p>{post.summary}</p>
-                <Link className="text-button" href={`/magasin/${post.slug}`}>
-                  Les artikkelen <ArrowRight size={16} />
-                </Link>
+                <Link className={styles.editorialLink} href={`/magasin/${post.slug}`}>Les artikkelen <ArrowRight size={16} /></Link>
               </article>
             ))}
           </div>
         </section>
       )}
-
-      <section className="section split">
-        <div>
-          <p className="eyebrow">Tomten som del av hjemmet</p>
-          <h2>Ikke planlegg livet rundt en tomt før tomten er kontrollert</h2>
-          <p>
-            Stor tomt kan gi rom for hage, trær, uteplasser, dyrking, hobbyer og privatliv, men hva som faktisk kan
-            bygges og brukes må vurderes konkret. Arealklassifisering, byggbarhet, vann, strøm, avløp, adkomst og
-            lokale bestemmelser må være på plass før prosjektet behandles som realistisk.
-          </p>
-          <div className="check-list">
-            <span><Check size={18} /> Området og hverdagen passer deg</span>
-            <span><Check size={18} /> Tomten er egnet og dokumentasjonen kontrollert</span>
-            <span><Check size={18} /> Boligmodellen tilpasses tomt og lokale rammer</span>
-          </div>
-        </div>
-        <div className="feature-panel">
-          <div><Sprout /> Hva vil du dyrke eller skape?</div>
-          <div><MapPin /> Hvor langt vil du ha til daglig service?</div>
-          <div><Check /> Hvor mye vedlikehold ønsker du?</div>
-        </div>
-      </section>
-
-      <section className="section proof-section">
-        <div className="section-heading">
-          <p className="eyebrow">Fra idé til konkret prosjekt</p>
-          <h2>Se hva som finnes i og rundt {area.name}</h2>
-          <p>
-            Vi starter med område og livsstil. Deretter kan vi se etter tomt eller bolig og vurdere om prosjektet faktisk
-            passer behov, budsjett og lokale rammer.
-          </p>
-        </div>
-        <div className="center-action">
-          <Link className="text-button" href={`/tomter?q=${primarySearch}`}>Se tomter <ArrowRight size={18} /></Link>
-          <Link className="text-button" href={`/eiendommer?area=${primarySearch}`}>Se boliger <ArrowRight size={18} /></Link>
-          <a className="text-button" href="#kontakt">Snakk med oss <ArrowRight size={18} /></a>
-        </div>
-      </section>
 
       {alternativeAreas.length > 0 && (
-        <section className="section proof-section">
-          <div className="section-heading">
-            <p className="eyebrow">Sammenlign før du bestemmer deg</p>
-            <h2>Andre områder du bør se sammen med {area.name}</h2>
-            <p>
-              Et godt områdevalg handler ofte om å se to eller tre realistiske alternativer ved siden av hverandre før du velger tomt.
-            </p>
+        <section className={styles.relatedSection}>
+          <div className={styles.sectionHeader}>
+            <p className={styles.sectionEyebrow}>Sammenlign før du bestemmer deg</p>
+            <h2 className={styles.sectionTitle}>Andre steder du bør se sammen med {area.name}</h2>
+            <p className={styles.sectionLead}>Et godt områdevalg blir ofte tydeligere når to eller tre realistiske alternativer ligger ved siden av hverandre.</p>
           </div>
-          <div className="proof-grid">
+          <div className={styles.imageCardGrid}>
             {alternativeAreas.map((candidate) => (
-              <article key={candidate.slug}>
-                <strong>{candidate.region}</strong>
-                <h3>{candidate.name}</h3>
-                <p>{candidate.summary}</p>
-                <Link className="text-button" href={`/livet-i-innlandet/${candidate.slug}`}>
-                  Se livet i {candidate.name} <ArrowRight size={16} />
-                </Link>
+              <article className={styles.imageCard} key={candidate.slug}>
+                <img className={styles.imageCardPhoto} src={candidate.photo} alt={candidate.name} />
+                <div className={styles.imageCardBody}>
+                  <span className={styles.cardEyebrow}>{candidate.region}</span>
+                  <h3>{candidate.name}</h3>
+                  <p>{candidate.summary}</p>
+                  <Link className={styles.editorialLink} href={`/livet-i-innlandet/${candidate.slug}`}>Se livet i {candidate.name} <ArrowRight size={16} /></Link>
+                </div>
               </article>
             ))}
           </div>
         </section>
       )}
+
+      <section className={styles.actionBand}>
+        <div>
+          <p className={styles.heroEyebrow}>Fra område til konkret prosjekt</p>
+          <h2>Se hva som finnes i og rundt {area.name}.</h2>
+          <p>Start med stedet og hverdagen. Deretter kan vi vurdere tomt eller bolig mot behov, budsjett og lokale rammer.</p>
+        </div>
+        <div className={styles.actionLinks}>
+          <Link href={`/tomter?q=${primarySearch}`}>Se tomter <ArrowRight size={17} /></Link>
+          <Link href={`/eiendommer?area=${primarySearch}`}>Se boliger <ArrowRight size={17} /></Link>
+          <a href="#kontakt">Snakk med oss <ArrowRight size={17} /></a>
+        </div>
+      </section>
 
       <section className="contact-section" id="kontakt">
         <div>
           <p className="eyebrow">{area.name}</p>
           <h2>Fortell oss hvordan du ønsker å leve her</h2>
           <p>
-            Område og Eco Life-retning er allerede fylt inn. Legg til budsjett, tidslinje og det som er viktig for deg,
-            så kan vi vurdere aktuelle tomter, boliger og neste steg.
+            Område og Eco Life-retning er allerede fylt inn. Legg til budsjett, tidslinje og det som er viktig for deg, så kan vi vurdere aktuelle tomter, boliger og neste steg.
           </p>
         </div>
         <ContactForm
@@ -221,8 +206,8 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
         />
       </section>
 
-      <section className="section">
-        <Link className="text-button" href="/livet-i-innlandet"><ArrowLeft size={16} /> Se alle Eco Life-områder</Link>
+      <section className={styles.contentSection}>
+        <Link className={styles.editorialLink} href="/livet-i-innlandet"><ArrowLeft size={16} /> Se alle Eco Life-områder</Link>
       </section>
 
       <Footer />
