@@ -18,9 +18,10 @@ import {
   getPropertyTitle,
   getPropertyType,
 } from "@/lib/realtyflow";
+import styles from "./property-detail.module.css";
 
 export async function generateStaticParams() {
-  const properties = await getProperties(30);
+  const properties = await getProperties(0);
   return properties.map((property) => ({ id: encodeURIComponent(getPropertyRef(property)) }));
 }
 
@@ -68,7 +69,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
     { icon: <Home />, label: getPropertyType(property) },
     property.bedrooms ? { icon: <BedDouble />, label: `${property.bedrooms} soverom` } : null,
     property.bathrooms ? { icon: <Bath />, label: `${property.bathrooms} bad` } : null,
-    getPropertyArea(property) ? { icon: <Ruler />, label: `${getPropertyArea(property)} m²` } : null,
+    getPropertyArea(property) ? { icon: <Ruler />, label: `${getPropertyArea(property)} m² bolig` } : null,
   ].filter(Boolean) as Array<{ icon: ReactNode; label: string }>;
 
   return (
@@ -101,15 +102,16 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           }),
         }}
       />
-      <section className="property-detail-hero" style={{ backgroundImage: `url(${mainImage})` }}>
-        <div>
-          <Link className="back-link" href="/eiendommer">
-            <ArrowLeft size={18} /> Alle boliger
+
+      <section className={styles.hero} style={{ backgroundImage: `url(${mainImage})` }}>
+        <div className={styles.heroInner}>
+          <Link className={styles.back} href="/eiendommer">
+            <ArrowLeft size={17} /> Alle boliger
           </Link>
-          <p className="eyebrow">{property.location || property.town || "Pinoso-regionen"}</p>
-          <h1>{getPropertyTitle(property)}</h1>
-          <strong>{formatPrice(property.price)}</strong>
-          <div className="hero-actions">
+          <p className={styles.eyebrow}>{location}</p>
+          <h1 className={styles.title}>{getPropertyTitle(property)}</h1>
+          <strong className={styles.price}>{formatPrice(property.price)}</strong>
+          <div className={styles.heroActions}>
             <FavoriteButton
               favorite={{
                 ref: getPropertyRef(property),
@@ -119,24 +121,25 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
                 href: `/eiendommer/${encodeURIComponent(getPropertyRef(property))}`,
               }}
             />
-            <a href="#kontakt">
-              <MessageCircle size={17} /> Book visning
+            <a className={styles.heroAction} href="#kontakt">
+              <MessageCircle size={17} /> Be om prospekt eller visning
             </a>
           </div>
         </div>
       </section>
 
-      <section className="detail-layout">
-        <div>
-          <div className="detail-facts">
+      <section className={styles.shell}>
+        <div className={styles.main}>
+          <div className={styles.factGrid}>
             {detailFacts.map((fact) => (
-              <span key={fact.label}>
-                {fact.icon} {fact.label}
-              </span>
+              <div className={styles.fact} key={fact.label}>
+                {fact.icon}
+                <span>{fact.label}</span>
+              </div>
             ))}
           </div>
 
-          <article className="rich-text">
+          <article className={styles.story}>
             <h2>Om boligen</h2>
             <ReadMoreText
               actionLabel="Be om komplett tilbud"
@@ -147,8 +150,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
             />
           </article>
 
-          <section className="decision-grid">
-            <article>
+          <section className={styles.decisionGrid}>
+            <article className={styles.decisionCard}>
               <h2>Dette bør sjekkes før reservasjon</h2>
               <ul>
                 <li>Oppdatert tilgjengelighet, pris og hva som faktisk er inkludert.</li>
@@ -157,28 +160,26 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
                 <li>Daglig service, helse, flyplass, adkomst og hvordan området fungerer gjennom året.</li>
               </ul>
             </article>
-            <article>
+            <article className={styles.decisionCard}>
               <h2>Kjøpskostnader må beregnes konkret</h2>
               <p>
-                Skatter og omkostninger varierer blant annet med om boligen er ny eller brukt, hvilken region den ligger i,
-                kjøpesummen og hvilke tjenester som inngår i handelen. Vi lager derfor et konkret kostnadsestimat for boligen
-                i stedet for å bruke én fast prosentsats for alle kjøp.
+                Skatter og omkostninger varierer med blant annet boligtype, region, kjøpesum og hvilke tjenester som inngår.
+                Vi lager derfor et konkret estimat i stedet for å bruke én fast prosentsats for alle kjøp.
               </p>
-              <div className="cost-box">
+              <div className={styles.costBox}>
                 <span>Oppgitt boligpris</span>
                 <strong>{formatPrice(property.price)}</strong>
                 <span>Skatter og omkostninger</span>
-                <strong>Beregnes for denne handelen</strong>
+                <strong>Beregnes konkret</strong>
               </div>
             </article>
-            <article>
+            <article className={styles.decisionCard}>
               <h2>Hvis utleie er relevant</h2>
               <p>
-                Vi baserer ikke et kjøp på en generell antakelse om leieinntekt. Regler, tillatelser, etterspørsel,
-                sesong, kostnader og faktisk bruk må vurderes for den konkrete boligen og kommunen.
+                Regler, tillatelser, etterspørsel, sesong, kostnader og faktisk bruk må vurderes for den konkrete boligen og kommunen.
               </p>
             </article>
-            <article>
+            <article className={styles.decisionCard}>
               <h2>Hva er inkludert?</h2>
               <p>
                 Be om komplett tilbud, så sjekker vi hvitevarer, belysning, basseng, hage, parkering, møbler, klima,
@@ -187,51 +188,41 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
             </article>
           </section>
 
-          <section className="buyer-next-steps">
+          <section className={styles.steps}>
             <h2>Neste steg</h2>
-            <div>
-              <span>1</span>
-              <p>Vi sjekker oppdatert tilgjengelighet, pris og betalingsplan.</p>
-            </div>
-            <div>
-              <span>2</span>
-              <p>Du får prospekt, områdevurdering og relevante alternativer.</p>
-            </div>
-            <div>
-              <span>3</span>
-              <p>Vi planlegger digital eller fysisk visning og hjelper deg videre i kjøpsprosessen.</p>
-            </div>
+            <div className={styles.step}><span className={styles.stepNumber}>1</span><p>Vi sjekker oppdatert tilgjengelighet, pris og betalingsplan.</p></div>
+            <div className={styles.step}><span className={styles.stepNumber}>2</span><p>Du får prospekt, områdevurdering og relevante alternativer.</p></div>
+            <div className={styles.step}><span className={styles.stepNumber}>3</span><p>Vi planlegger digital eller fysisk visning og hjelper deg videre i kjøpsprosessen.</p></div>
           </section>
 
           {images.length > 1 && (
-            <section className="premium-gallery">
+            <section className={styles.gallery}>
               <h2>Bilder</h2>
-              <div className="gallery-grid">
+              <div className={styles.galleryGrid}>
                 {images.slice(1, 10).map((image) => (
-                  <div key={image} style={{ backgroundImage: `url(${image})` }} />
+                  <div className={styles.galleryImage} key={image} style={{ backgroundImage: `url(${image})` }} />
                 ))}
               </div>
             </section>
           )}
-          <section className="area-context">
+
+          <section className={styles.area}>
             <h2>Område og beliggenhet</h2>
             <p>
               Boligen ligger i {location}. Vi vurderer området sammen med deg ut fra hverdagsservice, helsetjenester,
-              flyplass/reisevei, natur og uteområder, samt hvordan stedet fungerer gjennom hele året.
+              reisevei, natur og uteområder, samt hvordan stedet fungerer gjennom hele året.
             </p>
-            <div>
+            <div className={styles.areaTags}>
               <span>Norsk vurdering av området</span>
               <span>Alternativer som passer samme behov</span>
               <span>Digital eller fysisk visning</span>
             </div>
           </section>
-          <nav className="breadcrumb-nav" aria-label="Brødsmule">
-            <Link href="/">Forside</Link>
-            <span>/</span>
-            <Link href="/eiendommer">Boliger</Link>
-            <span>/</span>
-            <span>{getPropertyTitle(property)}</span>
+
+          <nav className={styles.breadcrumb} aria-label="Brødsmule">
+            <Link href="/">Forside</Link><span>/</span><Link href="/eiendommer">Boliger</Link><span>/</span><span>{getPropertyTitle(property)}</span>
           </nav>
+
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -253,16 +244,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           />
         </div>
 
-        <aside className="sticky-card">
+        <aside className={styles.aside}>
           <h2>Interessert?</h2>
           <p>Send forespørsel, så hjelper vi deg med prospekt, visning og neste steg.</p>
-          <div className="property-cta-row">
-            <a className="mini-cta" href="#kontakt">
-              <MessageCircle size={16} /> Spør om boligen
-            </a>
-            <a className="mini-cta" href="#kontakt">
-              <Download size={16} /> Be om komplett tilbud
-            </a>
+          <div className={styles.asideActions}>
+            <a className={styles.asideAction} href="#kontakt"><MessageCircle size={16} /> Spør om boligen</a>
+            <a className={styles.asideAction} href="#kontakt"><Download size={16} /> Be om komplett tilbud</a>
           </div>
           <div id="kontakt" />
           <ContactForm
@@ -274,6 +261,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           />
         </aside>
       </section>
+
       <Footer />
     </main>
   );

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import {
   formatPrice,
   getPrimaryImage,
@@ -8,31 +9,35 @@ import {
   getPropertyType,
   type Property,
 } from "@/lib/realtyflow";
+import styles from "./PropertyCard.module.css";
 
 export function PropertyCard({ property, priority = false }: { property: Property; priority?: boolean }) {
-  const href = `/eiendommer/${encodeURIComponent(getPropertyRef(property))}`;
+  const ref = getPropertyRef(property);
+  const href = `/eiendommer/${encodeURIComponent(ref)}`;
   const title = getPropertyTitle(property);
   const image = getPrimaryImage(property);
   const facts = [
-    property.bedrooms ? `${property.bedrooms} sov` : "",
+    property.bedrooms ? `${property.bedrooms} soverom` : "",
     property.bathrooms ? `${property.bathrooms} bad` : "",
-    getPropertyArea(property) ? `${getPropertyArea(property)} m²` : "",
+    getPropertyArea(property) ? `${getPropertyArea(property)} m² bolig` : "",
+    property.plot_size ? `${Number(property.plot_size).toLocaleString("nb-NO")} m² tomt` : "",
   ].filter(Boolean);
 
   return (
-    <Link className="property-card" href={href} prefetch={priority}>
-      <div className="property-image" style={{ backgroundImage: `url(${image})` }}>
-        <span>{getPropertyType(property)}</span>
+    <Link className={styles.card} href={href} prefetch={priority}>
+      <div className={styles.media}>
+        <div className={styles.image} style={{ backgroundImage: `url(${image})` }} />
+        <span className={styles.badge}>{getPropertyType(property)}</span>
+        {ref && <span className={styles.ref}>{ref}</span>}
+        <span className={styles.arrow} aria-hidden="true"><ArrowUpRight size={18} /></span>
       </div>
-      <div className="property-body">
-        <p>{property.location || property.town || "Pinoso-regionen"}</p>
-        <h3>{title}</h3>
-        <strong>{formatPrice(property.price)}</strong>
+      <div className={styles.body}>
+        <p className={styles.location}>{property.location || property.town || "Innlandet"}</p>
+        <h3 className={styles.title}>{title}</h3>
+        <strong className={styles.price}>{formatPrice(property.price)}</strong>
         {facts.length > 0 && (
-          <div className="facts">
-            {facts.map((fact) => (
-              <span key={fact}>{fact}</span>
-            ))}
+          <div className={styles.facts}>
+            {facts.map((fact) => <span className={styles.fact} key={fact}>{fact}</span>)}
           </div>
         )}
       </div>
