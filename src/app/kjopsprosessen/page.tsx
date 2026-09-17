@@ -6,8 +6,9 @@ import { processSteps } from "@/lib/content";
 import styles from "./process.module.css";
 
 export const metadata = {
-  title: "Kjøpsprosessen | Pinoso Eco Life",
+  title: "Kjøpsprosessen",
   description: "Fra livsstil og områdevalg til egnet tomt, bolig, dokumentkontroll og overtakelse i innlandet i Spania.",
+  alternates: { canonical: "/kjopsprosessen" },
 };
 
 export default function BuyingProcessPage() {

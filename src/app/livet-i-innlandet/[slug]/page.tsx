@@ -38,9 +38,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const area = getEcoLifeArea(slug);
-  if (!area) return { title: "Område ikke funnet | Pinoso Eco Life" };
+  if (!area) return { title: "Område ikke funnet" };
   return {
-    title: `Livet i ${area.name} | Pinoso Eco Life`,
+    title: `Livet i ${area.name}`,
     description: area.summary,
     alternates: { canonical: `/livet-i-innlandet/${area.slug}` },
   };

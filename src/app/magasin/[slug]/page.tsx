@@ -37,9 +37,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await fetchPublishedPost("magasin", slug);
-  if (!post) return { title: "Artikkel ikke funnet | Pinoso Eco Life" };
+  if (!post) return { title: "Artikkel ikke funnet" };
   return {
-    title: `${post.title} | Pinoso Eco Life`,
+    title: post.title,
     description: post.summary || "Guider og innsikt fra Pinoso Eco Life.",
     alternates: { canonical: `/magasin/${post.slug}` },
   };
