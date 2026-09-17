@@ -53,7 +53,7 @@ export default function BuyingProcessPage() {
             </div>
             <div className={styles.principle}>
               <CheckCircle2 size={20} />
-              <span>Strukturert RealtyFlow-oppfølging</span>
+              <span>Tydelig oppfølging hele veien</span>
             </div>
           </aside>
         </div>
