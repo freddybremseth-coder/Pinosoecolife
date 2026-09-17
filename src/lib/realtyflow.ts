@@ -5,6 +5,7 @@ export type Property = {
   title?: string;
   title_no?: string;
   title_en?: string;
+  model_name?: string;
   description?: string;
   description_no?: string;
   description_en?: string;
@@ -217,7 +218,11 @@ export const regions: Array<{ key: RegionKey; label: string; description: string
 ];
 
 export function getPropertyTitle(property: Property) {
-  return property.title_no || property.title || property.title_en || "Nybygg i Spania";
+  const baseTitle = property.title_no || property.title || property.title_en || "Nybygg i Spania";
+  const modelName = property.model_name?.trim();
+  if (!modelName) return baseTitle;
+  if (normalizeSearchText(baseTitle).includes(normalizeSearchText(modelName))) return baseTitle;
+  return `${modelName} – ${baseTitle}`;
 }
 
 export function getPropertyDescription(property: Property) {
@@ -305,6 +310,7 @@ export function getPropertySearchText(property: Property) {
       property.region,
       property.location,
       property.town,
+      property.model_name,
       property.title,
       property.title_no,
       property.title_en,
@@ -386,6 +392,8 @@ export function areaMatchesRegion(profile: AreaProfile, region?: string) {
 }
 
 export async function getProperties(limit = 12): Promise<Property[]> {
+  const fallback = limit ? fallbackProperties.slice(0, limit) : fallbackProperties;
+
   try {
     const url = new URL("/api/properties", REALTYFLOW_BASE);
     url.searchParams.set("brandId", REALTYFLOW_BRAND_ID);
@@ -394,7 +402,7 @@ export async function getProperties(limit = 12): Promise<Property[]> {
       cache: "no-store",
       headers: { Accept: "application/json" },
     });
-    if (!res.ok) return fallbackProperties.slice(0, limit);
+    if (!res.ok) return fallback;
     const data = await res.json();
     const items = (Array.isArray(data) ? data : [])
       .filter((property: Property) => {
@@ -405,7 +413,7 @@ export async function getProperties(limit = 12): Promise<Property[]> {
       .filter(propertyMatchesInlandFocus);
     return (limit ? items.slice(0, limit) : items) as Property[];
   } catch {
-    return fallbackProperties.slice(0, limit);
+    return fallback;
   }
 }
 
@@ -450,7 +458,7 @@ export async function getLandPlots(): Promise<LandPlot[]> {
 }
 
 export async function getProperty(id: string): Promise<Property | null> {
-  const properties = await getProperties();
+  const properties = await getProperties(0);
   return (
     properties.find((property) => {
       const ref = getPropertyRef(property);
