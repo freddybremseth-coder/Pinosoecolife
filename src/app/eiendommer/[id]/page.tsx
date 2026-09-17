@@ -64,8 +64,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
     garage?: boolean;
     year_built?: number;
     floor_label?: string;
+    floorplans?: string[];
   };
   const images = getPropertyImages(property);
+  const floorplans = Array.isArray(buyerProperty.floorplans) ? buyerProperty.floorplans.filter(Boolean) : [];
   const mainImage = getPrimaryImage(property);
   const description = getPropertyDescription(property);
   const location = property.location || property.town || "Spania";
@@ -205,6 +207,27 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
             <div className={styles.step}><span className={styles.stepNumber}>2</span><p>Du får prospekt, områdevurdering og relevante alternativer.</p></div>
             <div className={styles.step}><span className={styles.stepNumber}>3</span><p>Vi planlegger digital eller fysisk visning og hjelper deg videre i kjøpsprosessen.</p></div>
           </section>
+
+          {floorplans.length > 0 && (
+            <section className={styles.gallery}>
+              <h2>Plantegninger</h2>
+              <p className={styles.galleryIntro}>
+                Se planløsningen som er registrert for boligen. Endelige mål og utførelse bekreftes alltid i det komplette prospektet.
+              </p>
+              <div className={styles.galleryGrid}>
+                {floorplans.slice(0, 6).map((floorplan, index) => (
+                  <img
+                    className={styles.floorplanImage}
+                    src={floorplan}
+                    alt={`Plantegning ${index + 1} for ${getPropertyTitle(property)}`}
+                    loading="lazy"
+                    decoding="async"
+                    key={floorplan}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
 
           {images.length > 1 && (
             <section className={styles.gallery}>
