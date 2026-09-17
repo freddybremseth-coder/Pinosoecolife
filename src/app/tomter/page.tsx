@@ -104,6 +104,42 @@ function getParcel(plot: PlotWithCatastro) {
   return direct || getParcelFromRef(getCatastroRef(plot));
 }
 
+function parseSourceArea(notes?: string) {
+  if (!notes) return 0;
+  const matches = Array.from(notes.matchAll(/(\d{1,3}(?:[.\s-]\d{3})+|\d{4,6})\s*m(?:²|2)/gi));
+  const values = matches
+    .map((match) => Number(String(match[1] || "").replace(/[.\s-]/g, "")))
+    .filter((value) => Number.isFinite(value) && value > 0);
+  return values.length ? Math.max(...values) : 0;
+}
+
+function getPlotArea(plot: PlotWithCatastro) {
+  const importedArea = Number(plot.area || 0);
+  const sourceArea = parseSourceArea(plot.notes);
+
+  if (!sourceArea) return importedArea;
+  if (!importedArea) return sourceArea;
+  if (importedArea < 1000 && sourceArea >= 1000) return sourceArea;
+  if (sourceArea >= importedArea * 5) return sourceArea;
+  return importedArea;
+}
+
+function getPlotZoning(plot: PlotWithCatastro) {
+  const sourceText = normalize([plotRef(plot), plot.location, plot.notes].filter(Boolean).join(" "));
+  if (/\burbanizable\b/.test(sourceText)) return "urbanizable";
+  if (/\burbano\b|\burbana\b/.test(sourceText)) return "urbano";
+  if (/\brustico\b|\brustica\b/.test(sourceText)) return "rustico";
+  return normalize(plot.zoning) || "";
+}
+
+function formatZoning(plot: PlotWithCatastro) {
+  const zoning = getPlotZoning(plot);
+  if (zoning === "rustico") return "Rústico";
+  if (zoning === "urbano") return "Urbano";
+  if (zoning === "urbanizable") return "Urbanizable";
+  return plot.zoning || "Ikke oppgitt";
+}
+
 function matchesPolygonParcel(plot: PlotWithCatastro, polygon?: string, parcel?: string) {
   const selectedPolygon = normalizeNumber(polygon);
   const selectedParcel = normalizeNumber(parcel);
@@ -167,18 +203,18 @@ const ecoLifePlotTerms = [
 ];
 
 const ecoLifeCadastralPrefixes = [
-  "03105", // Pinoso / El Pinós
-  "03089", // Monóvar / Monòver
-  "03114", // La Romana
-  "03077", // Hondón de las Nieves
-  "03078", // Hondón de los Frailes
-  "03019", // Aspe
-  "03093", // Novelda
-  "03088", // Monforte del Cid
-  "03043", // Biar
-  "03140", // Villena
-  "03123", // Sax
-  "30022", // Jumilla
+  "03105",
+  "03089",
+  "03114",
+  "03077",
+  "03078",
+  "03019",
+  "03093",
+  "03088",
+  "03043",
+  "03140",
+  "03123",
+  "30022",
 ];
 
 const outsideEcoLifeTerms = [
@@ -199,7 +235,7 @@ const outsideEcoLifeTerms = [
   "daimes",
 ];
 
-const inactivePlotTerms = ["sold", "reservado", "reserved", "kjopt"];
+const inactivePlotTerms = ["sold", "solgt", "reservado", "reserved", "reservert", "kjopt", "kjøpt"];
 
 function plotText(plot: PlotWithCatastro) {
   return normalize(
@@ -255,8 +291,8 @@ export default async function PlotsPage({
     return (
       (!q || haystack.includes(q)) &&
       matchesPolygonParcel(plot, polygon, parcel) &&
-      (!zoning || normalize(plot.zoning) === zoning) &&
-      (!minArea || Number(plot.area || 0) >= minArea) &&
+      (!zoning || getPlotZoning(plot) === zoning) &&
+      (!minArea || getPlotArea(plot) >= minArea) &&
       (!maxPrice || Number(plot.price || 0) <= maxPrice)
     );
   });
@@ -308,7 +344,7 @@ export default async function PlotsPage({
           </select>
           <select name="zoning" defaultValue={params.zoning || ""}>
             <option value="">Regulering</option>
-            <option value="rustico">Rustico</option>
+            <option value="rustico">Rústico</option>
             <option value="urbano">Urbano</option>
             <option value="urbanizable">Urbanizable</option>
           </select>
@@ -375,6 +411,7 @@ export default async function PlotsPage({
             const catastroRef = getCatastroRef(plot);
             const plotPolygon = getPolygon(plot);
             const plotParcel = getParcel(plot);
+            const plotArea = getPlotArea(plot);
 
             return (
               <article className={styles.card} id={`plot-${plot.id || encodeURIComponent(plotRef(plot))}`} key={plot.id || plotRef(plot)}>
@@ -387,8 +424,8 @@ export default async function PlotsPage({
                 </div>
 
                 <dl className={styles.facts}>
-                  <div className={styles.fact}><dt>Areal</dt><dd>{Number(plot.area || 0).toLocaleString("nb-NO")} m²</dd></div>
-                  <div className={styles.fact}><dt>Regulering</dt><dd>{plot.zoning || "Ikke oppgitt"}</dd></div>
+                  <div className={styles.fact}><dt>Areal</dt><dd>{plotArea ? `${plotArea.toLocaleString("nb-NO")} m²` : "Ikke oppgitt"}</dd></div>
+                  <div className={styles.fact}><dt>Regulering</dt><dd>{formatZoning(plot)}</dd></div>
                   <div className={styles.fact}><dt>Vann</dt><dd>{plot.water ? "Ja" : "Ikke oppgitt"}</dd></div>
                   <div className={styles.fact}><dt>Strøm</dt><dd>{plot.electricity ? "Ja" : "Ikke oppgitt"}</dd></div>
                   {(plotPolygon || plotParcel) && <div className={styles.fact}><dt>Catastro</dt><dd>{plotPolygon ? `Pol. ${plotPolygon}` : "Pol. -"} / {plotParcel ? `Parc. ${plotParcel}` : "Parc. -"}</dd></div>}
