@@ -1519,6 +1519,44 @@ select {
   resize: vertical;
 }
 
+.lead-form-details {
+  border-top: 1px solid #d7dce2;
+  padding-top: 4px;
+}
+
+.lead-form-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 800;
+  list-style: none;
+}
+
+.lead-form-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.lead-form-details summary::after {
+  content: "+";
+  color: var(--gold);
+  font-size: 1.15rem;
+}
+
+.lead-form-details[open] summary::after {
+  content: "–";
+}
+
+.lead-form-details-content {
+  display: grid;
+  gap: 14px;
+  padding-top: 10px;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
