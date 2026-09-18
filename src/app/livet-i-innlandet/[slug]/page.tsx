@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, MapPin, Sprout } from "lucide-react";
 
 import { ContactForm } from "@/components/ContactForm";
@@ -11,6 +12,8 @@ import { fetchPublishedPosts } from "@/lib/website-content";
 import styles from "../../ecolife-editorial.module.css";
 
 type Params = { slug: string };
+
+const BASE = "https://www.pinosoecolife.com";
 
 const lifestyleContext = {
   vinland: {
@@ -40,9 +43,18 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const area = getEcoLifeArea(slug);
   if (!area) return { title: "Område ikke funnet" };
   return {
-    title: `Livet i ${area.name}`,
+    title: `${area.name}: bolig, tomt og livet i innlandet`,
     description: area.summary,
     alternates: { canonical: `/livet-i-innlandet/${area.slug}` },
+    openGraph: {
+      title: `${area.name}: bolig, tomt og livet i innlandet`,
+      description: area.summary,
+      url: `${BASE}/livet-i-innlandet/${area.slug}`,
+      siteName: "Pinoso Eco Life",
+      locale: "nb_NO",
+      type: "website",
+      images: [{ url: area.photo, alt: area.name }],
+    },
   };
 }
 
@@ -50,19 +62,7 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
   const { slug } = await params;
   const area = getEcoLifeArea(slug);
 
-  if (!area) {
-    return (
-      <main>
-        <SiteHeader />
-        <section className="page-hero compact-hero">
-          <p className="eyebrow">Livet i innlandet</p>
-          <h1>Området ble ikke funnet</h1>
-          <Link className="text-button" href="/livet-i-innlandet"><ArrowLeft size={16} /> Tilbake til områdene</Link>
-        </section>
-        <Footer />
-      </main>
-    );
-  }
+  if (!area) notFound();
 
   const primarySearch = encodeURIComponent(area.searchTerms[0] || area.name);
   const leadContext = lifestyleContext[area.zone];
@@ -76,10 +76,48 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
     const candidate = getEcoLifeArea(areaSlug);
     return candidate ? [candidate] : [];
   });
+  const pageUrl = `${BASE}/livet-i-innlandet/${area.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: `${area.name}: bolig, tomt og livet i innlandet`,
+        description: area.summary,
+        inLanguage: "nb-NO",
+        isPartOf: { "@id": `${BASE}/#website` },
+        about: { "@id": `${pageUrl}#place` },
+      },
+      {
+        "@type": "Place",
+        "@id": `${pageUrl}#place`,
+        name: area.name,
+        description: area.summary,
+        image: area.photo,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: area.name,
+          addressRegion: area.region,
+          addressCountry: "ES",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Forside", item: BASE },
+          { "@type": "ListItem", position: 2, name: "Livet i innlandet", item: `${BASE}/livet-i-innlandet` },
+          { "@type": "ListItem", position: 3, name: area.name, item: pageUrl },
+        ],
+      },
+    ],
+  };
 
   return (
     <main>
       <SiteHeader />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <section className={styles.editorialHero}>
         <img className={styles.heroMedia} src={area.photo} alt={area.name} />
@@ -186,6 +224,7 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
         <div className={styles.actionLinks}>
           <Link href={`/tomter?q=${primarySearch}`}>Se tomter <ArrowRight size={17} /></Link>
           <Link href={`/eiendommer?area=${primarySearch}`}>Se boliger <ArrowRight size={17} /></Link>
+          {area.slug === "pinoso" && <Link href="/bolig-i-pinoso">Guide: kjøpe bolig i Pinoso <ArrowRight size={17} /></Link>}
           <a href="#kontakt">Snakk med oss <ArrowRight size={17} /></a>
         </div>
       </section>
