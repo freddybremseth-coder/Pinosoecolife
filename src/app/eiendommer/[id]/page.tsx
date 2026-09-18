@@ -32,6 +32,52 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const decoded = decodeURIComponent(id);
   const property = await getProperty(decoded);
 
+  if (!property) {
+    return {
+      title: "Bolig ikke funnet",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const ref = getPropertyRef(property);
+  const title = getPropertyTitle(property);
+  const location = property.location || property.town || "Alicante innland";
+  const rawDescription = getPropertyDescription(property).replace(/\s+/g, " ").trim();
+  const fallbackDescription = `${getPropertyType(property)} i ${location} · ${formatPrice(property.price)}. Se bilder, nøkkeldata og be Pinoso Eco Life om oppdatert tilgjengelighet og komplett prospekt.`;
+  const description = rawDescription
+    ? rawDescription.length > 158
+      ? `${rawDescription.slice(0, 155).replace(/\s+\S*$/, "")}…`
+      : rawDescription
+    : fallbackDescription;
+  const canonicalPath = `/eiendommer/${encodeURIComponent(ref)}`;
+  const image = getPrimaryImage(property);
+
+  return {
+    title,
+    description,
+    alternates: { canonical: canonicalPath },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.pinosoecolife.com${canonicalPath}`,
+      siteName: "Pinoso Eco Life",
+      locale: "nb_NO",
+      type: "website",
+      images: [{ url: image, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
+}
+
+export default async function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const property = await getProperty(decodeURIComponent(id));
+
   if (!property) notFound();
 
   const images = getPropertyImages(property);
