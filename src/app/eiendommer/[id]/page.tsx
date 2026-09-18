@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowLeft, Bath, BedDouble, Download, Home, MessageCircle, Ruler, Tag } from "lucide-react";
+import { ArrowLeft, Bath, BedDouble, Download, FileText, Home, MessageCircle, Ruler, Tag } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Footer } from "@/components/Footer";
@@ -60,14 +60,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
     );
   }
 
-  const buyerProperty = property as typeof property & {
-    garage?: boolean;
-    year_built?: number;
-    floor_label?: string;
-    floorplans?: string[];
-  };
   const images = getPropertyImages(property);
-  const floorplans = Array.isArray(buyerProperty.floorplans) ? buyerProperty.floorplans.filter(Boolean) : [];
+  const floorplans = Array.isArray(property.floorplans) ? property.floorplans.filter(Boolean) : [];
+  const floorplanCanBeRequested =
+    floorplans.length > 0 ||
+    (Array.isArray(property.amenities_no) &&
+      property.amenities_no.some((item) => /floorplan|plantegning/i.test(String(item))));
   const mainImage = getPrimaryImage(property);
   const description = getPropertyDescription(property);
   const location = property.location || property.town || "Spania";
@@ -79,10 +77,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
     getPropertyArea(property) ? { icon: <Ruler />, label: `${getPropertyArea(property)} m² bolig` } : null,
     property.plot_size ? { icon: <Ruler />, label: `${Number(property.plot_size).toLocaleString("nb-NO")} m² tomt` } : null,
     property.pool ? { icon: <Home />, label: "Basseng" } : null,
-    buyerProperty.garage ? { icon: <Home />, label: "Garasje" } : null,
+    property.garage ? { icon: <Home />, label: "Garasje" } : null,
     property.energy_rating ? { icon: <Tag />, label: `Energi ${property.energy_rating}` } : null,
-    buyerProperty.year_built ? { icon: <Tag />, label: `Byggeår ${buyerProperty.year_built}` } : null,
-    buyerProperty.floor_label ? { icon: <Tag />, label: buyerProperty.floor_label } : null,
+    property.year_built ? { icon: <Tag />, label: `Byggeår ${property.year_built}` } : null,
+    property.floor_label ? { icon: <Tag />, label: property.floor_label } : null,
   ].filter(Boolean) as Array<{ icon: ReactNode; label: string }>;
 
   return (
@@ -140,9 +138,11 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
             {images.length > 1 && (
               <a className={styles.heroAction} href="#bilder">Bilder ({images.length})</a>
             )}
-            {floorplans.length > 0 && (
+            {floorplans.length > 0 ? (
               <a className={styles.heroAction} href="#plantegninger">Plantegninger ({floorplans.length})</a>
-            )}
+            ) : floorplanCanBeRequested ? (
+              <a className={styles.heroAction} href="#kontakt"><FileText size={17} /> Be om plantegning</a>
+            ) : null}
           </div>
         </div>
       </section>
@@ -300,6 +300,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           <div className={styles.asideActions}>
             <a className={styles.asideAction} href="#kontakt"><MessageCircle size={16} /> Spør om boligen</a>
             <a className={styles.asideAction} href="#kontakt"><Download size={16} /> Be om komplett tilbud</a>
+            {floorplanCanBeRequested && floorplans.length === 0 && (
+              <a className={styles.asideAction} href="#kontakt"><FileText size={16} /> Be om plantegning</a>
+            )}
           </div>
           <div id="kontakt" />
           <ContactForm
