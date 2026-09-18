@@ -360,6 +360,34 @@
   line-height: 1.7;
 }
 
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.emptyPrimary,
+.emptySecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.emptyPrimary {
+  background: var(--olive-strong);
+  color: white;
+}
+
+.emptySecondary {
+  border: 1px solid var(--line);
+  color: var(--olive-strong);
+}
+
 .nextStep {
   margin-bottom: 112px;
   padding: clamp(38px, 6vw, 70px);
