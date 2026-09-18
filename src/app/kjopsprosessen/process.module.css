@@ -236,6 +236,18 @@
   color: rgba(23, 35, 28, 0.5);
 }
 
+.formShell :global(.lead-form-details) {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.formShell :global(.lead-form-details summary) {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.formShell :global(.lead-form-details summary::after) {
+  color: #f4efe3;
+}
+
 .formShell :global(.lead-form input:focus),
 .formShell :global(.lead-form select:focus),
 .formShell :global(.lead-form textarea:focus) {
