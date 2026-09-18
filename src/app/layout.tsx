@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Newsreader } from "next/font/google";
 import Script from "next/script";
 import { PinosoChatbot } from "@/components/PinosoChatbot";
+import { SearchDiscoveryTracker } from "@/components/SearchDiscoveryTracker";
 import "./globals.css";
 import "./design-system.css";
 
@@ -137,6 +138,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           data-config-url="https://realtyflow.chatgenius.pro/api/public/booking-config?brand_id=pinosoecolife"
         />
         <PinosoChatbot />
+        <SearchDiscoveryTracker />
       </body>
     </html>
   );

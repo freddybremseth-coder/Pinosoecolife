@@ -5,6 +5,8 @@ import { ecoLifePhase2Articles } from "@/lib/ecolife-phase2";
 import { ecoLifePhase2bArticles } from "@/lib/ecolife-phase2b";
 
 const fallbackArticles = [...articles, ...ecoLifePhase2Articles, ...ecoLifePhase2bArticles];
+const PINOSO_BRAND_ID = "pinosoecolife";
+const MAGAZINE_DESTINATIONS = ["magasin", "artikler", "boligartikler", "guider"];
 
 export type PublicWebsitePost = {
   id: string;
@@ -20,6 +22,7 @@ export type PublicWebsitePost = {
   tags: string[];
   published_at: string | null;
   created_at: string;
+  updated_at: string | null;
 };
 
 const selectColumns = [
@@ -36,6 +39,7 @@ const selectColumns = [
   "tags",
   "published_at",
   "created_at",
+  "updated_at",
 ].join(",");
 
 function getSupabase() {
@@ -62,6 +66,7 @@ function toFallbackPost(article: (typeof fallbackArticles)[number]): PublicWebsi
     tags: article.tags || [],
     published_at: article.date,
     created_at: article.date,
+    updated_at: article.date,
   };
 }
 
@@ -90,12 +95,19 @@ export async function fetchPublishedPosts(destinationId: string): Promise<Public
     return destinationId === "magasin" ? fallbackArticles.map(toFallbackPost) : [];
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("website_posts")
     .select(selectColumns)
-    .eq("status", "published")
-    .eq("destination_id", destinationId)
+    .eq("brand_id", PINOSO_BRAND_ID)
+    .eq("status", "published");
+
+  query = destinationId === "magasin"
+    ? query.in("destination_id", MAGAZINE_DESTINATIONS)
+    : query.eq("destination_id", destinationId);
+
+  const { data, error } = await query
     .order("published_at", { ascending: false, nullsFirst: false })
+    .order("updated_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -115,12 +127,20 @@ export async function fetchPublishedPost(destinationId: string, slug: string): P
     return fallback ? toFallbackPost(fallback) : null;
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("website_posts")
     .select(selectColumns)
+    .eq("brand_id", PINOSO_BRAND_ID)
     .eq("status", "published")
-    .eq("destination_id", destinationId)
-    .eq("slug", slug)
+    .eq("slug", slug);
+
+  query = destinationId === "magasin"
+    ? query.in("destination_id", MAGAZINE_DESTINATIONS)
+    : query.eq("destination_id", destinationId);
+
+  const { data, error } = await query
+    .order("updated_at", { ascending: false, nullsFirst: false })
+    .limit(1)
     .maybeSingle();
 
   if (error) {
