@@ -7,7 +7,7 @@ import { areaMatchesRegion, getAreaProfiles, regions } from "@/lib/realtyflow";
 import styles from "./areas.module.css";
 
 export const metadata = {
-  title: "Innlandsområder | Pinoso Eco Life",
+  title: "Innlandsområder",
   description:
     "Utforsk Pinoso, Monóvar, La Romana, Hondón, Aspe, Novelda, Monforte del Cid, Biar, Villena, Sax og Jumilla før du velger tomt eller bolig.",
   alternates: {
