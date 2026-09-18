@@ -34,6 +34,8 @@ export type Property = {
   amenities_no?: string[];
   status?: string;
   region?: string;
+  updated_at?: string;
+  updatedAt?: string;
   show_on_website?: boolean | null;
   website_visible?: boolean | null;
 };
