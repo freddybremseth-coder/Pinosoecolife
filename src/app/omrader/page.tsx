@@ -15,7 +15,6 @@ export const metadata = {
   },
 };
 
-export const dynamic = "force-dynamic";
 
 export default async function AreasPage() {
   const profiles = await getAreaProfiles();
