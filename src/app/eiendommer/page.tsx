@@ -15,7 +15,7 @@ import {
 import styles from "./properties.module.css";
 
 export const metadata = {
-  title: "Innlandsboliger og villaer | Pinoso Eco Life",
+  title: "Innlandsboliger og villaer",
   description:
     "Søk blant villaer, nybygg og landlige boliger i Pinoso, Vinalopó og utvalgte innlandsområder i Alicante og Murcia.",
   alternates: {
