@@ -333,6 +333,7 @@
   background: var(--surface);
 }
 
+.editorialCard h2,
 .editorialCard h3 {
   margin: 10px 0 12px;
   color: var(--ink);
@@ -345,6 +346,28 @@
 .editorialCard p {
   color: var(--muted);
   line-height: 1.72;
+}
+
+.editorialCard ul {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.editorialCard li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.editorialCard li svg {
+  flex: 0 0 auto;
+  margin-top: 4px;
+  color: var(--olive-strong);
 }
 
 .editorialCard .editorialLink {
