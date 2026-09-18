@@ -11,9 +11,16 @@ function inlineMarkdown(text: string) {
   });
 }
 
-export default function MarkdownArticle({ markdown }: { markdown: string }) {
+export default function MarkdownArticle({
+  markdown,
+  skipFirstH1 = false,
+}: {
+  markdown: string;
+  skipFirstH1?: boolean;
+}) {
   const blocks: React.ReactNode[] = [];
   let listItems: string[] = [];
+  let firstH1Handled = false;
 
   const flushList = () => {
     if (!listItems.length) return;
@@ -47,7 +54,12 @@ export default function MarkdownArticle({ markdown }: { markdown: string }) {
     } else if (line.startsWith("## ")) {
       blocks.push(<h2 key={blocks.length}>{inlineMarkdown(line.slice(3))}</h2>);
     } else if (line.startsWith("# ")) {
-      blocks.push(<h1 key={blocks.length}>{inlineMarkdown(line.slice(2))}</h1>);
+      if (skipFirstH1 && !firstH1Handled) {
+        firstH1Handled = true;
+        continue;
+      }
+      firstH1Handled = true;
+      blocks.push(<h2 key={blocks.length}>{inlineMarkdown(line.slice(2))}</h2>);
     } else {
       blocks.push(<p key={blocks.length}>{inlineMarkdown(line)}</p>);
     }

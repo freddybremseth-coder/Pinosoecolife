@@ -28,7 +28,7 @@
 
 .top {
   display: grid;
-  grid-template-columns: minmax(280px, 1.3fr) repeat(2, minmax(150px, 0.55fr));
+  grid-template-columns: minmax(280px, 1.3fr) repeat(3, minmax(145px, 0.52fr));
   gap: clamp(36px, 6vw, 88px);
   padding-bottom: 58px;
 }

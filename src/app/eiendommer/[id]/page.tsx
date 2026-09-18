@@ -1,4 +1,6 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ArrowLeft, Bath, BedDouble, Download, FileText, Home, MessageCircle, Ruler, Tag } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
@@ -25,18 +27,49 @@ export async function generateStaticParams() {
   return properties.map((property) => ({ id: encodeURIComponent(getPropertyRef(property)) }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const property = await getProperty(decodeURIComponent(id));
-  const title = property ? getPropertyTitle(property) : "Bolig";
-  const description = property
-    ? `${formatPrice(property.price)} · ${property.location || property.town || "Spania"} · ${getPropertyType(property)}`
-    : "Bolig til salgs i Spania hos Pinoso Eco Life.";
+  const decoded = decodeURIComponent(id);
+  const property = await getProperty(decoded);
+
+  if (!property) {
+    return {
+      title: "Bolig ikke funnet",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const ref = getPropertyRef(property);
+  const title = getPropertyTitle(property);
+  const location = property.location || property.town || "Alicante innland";
+  const rawDescription = getPropertyDescription(property).replace(/\s+/g, " ").trim();
+  const fallbackDescription = `${getPropertyType(property)} i ${location} · ${formatPrice(property.price)}. Se bilder, nøkkeldata og be Pinoso Eco Life om oppdatert tilgjengelighet og komplett prospekt.`;
+  const description = rawDescription
+    ? rawDescription.length > 158
+      ? `${rawDescription.slice(0, 155).replace(/\s+\S*$/, "")}…`
+      : rawDescription
+    : fallbackDescription;
+  const canonicalPath = `/eiendommer/${encodeURIComponent(ref)}`;
+  const image = getPrimaryImage(property);
+
   return {
     title,
     description,
-    alternates: {
-      canonical: `/eiendommer/${encodeURIComponent(id)}`,
+    alternates: { canonical: canonicalPath },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.pinosoecolife.com${canonicalPath}`,
+      siteName: "Pinoso Eco Life",
+      locale: "nb_NO",
+      type: "website",
+      images: [{ url: image, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
     },
   };
 }
@@ -45,20 +78,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
   const { id } = await params;
   const property = await getProperty(decodeURIComponent(id));
 
-  if (!property) {
-    return (
-      <main>
-        <SiteHeader />
-        <section className="page-hero compact-hero">
-          <h1>Bolig ikke funnet</h1>
-          <Link className="text-button" href="/eiendommer">
-            <ArrowLeft size={18} /> Tilbake til boliger
-          </Link>
-        </section>
-        <Footer />
-      </main>
-    );
-  }
+  if (!property) notFound();
 
   const images = getPropertyImages(property);
   const floorplans = Array.isArray(property.floorplans) ? property.floorplans.filter(Boolean) : [];
@@ -92,11 +112,22 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Residence",
+            "@id": `https://www.pinosoecolife.com/eiendommer/${encodeURIComponent(getPropertyRef(property))}#residence`,
+            url: `https://www.pinosoecolife.com/eiendommer/${encodeURIComponent(getPropertyRef(property))}`,
+            identifier: getPropertyRef(property),
             name: getPropertyTitle(property),
             description:
               description ||
               "Moderne bolig til salgs i Spania. Kontakt Pinoso Eco Life for prospekt, tilgjengelighet og visning.",
             image: images.length ? images : [mainImage],
+            mainEntityOfPage: `https://www.pinosoecolife.com/eiendommer/${encodeURIComponent(getPropertyRef(property))}`,
+            floorSize: getPropertyArea(property)
+              ? {
+                  "@type": "QuantitativeValue",
+                  value: getPropertyArea(property),
+                  unitCode: "MTK",
+                }
+              : undefined,
             address: {
               "@type": "PostalAddress",
               addressLocality: location,
@@ -108,6 +139,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
                   price: property.price,
                   priceCurrency: "EUR",
                   availability: "https://schema.org/InStock",
+                  url: `https://www.pinosoecolife.com/eiendommer/${encodeURIComponent(getPropertyRef(property))}`,
+                  seller: { "@id": "https://www.pinosoecolife.com/#organization" },
                 }
               : undefined,
           }),

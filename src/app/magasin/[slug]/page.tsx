@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { ContactForm } from "@/components/ContactForm";
 import MarkdownArticle from "@/components/MarkdownArticle";
@@ -29,6 +30,12 @@ function inferLifestyleIntent(tags: string[]) {
 
 type Params = { slug: string };
 
+const BASE = "https://www.pinosoecolife.com";
+
+function absoluteUrl(value: string) {
+  return value.startsWith("http://") || value.startsWith("https://") ? value : `${BASE}${value}`;
+}
+
 export async function generateStaticParams() {
   const posts = await fetchPublishedPosts("magasin");
   return posts.map((post) => ({ slug: post.slug }));
@@ -37,11 +44,32 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await fetchPublishedPost("magasin", slug);
-  if (!post) return { title: "Artikkel ikke funnet" };
+  if (!post) return { title: "Artikkel ikke funnet", robots: { index: false, follow: false } };
+
+  const description = post.summary || "Guider og innsikt fra Pinoso Eco Life.";
+  const image = post.image_url || "/assets/hero-pinoso-dream.jpg";
+  const publishedTime = post.published_at || post.created_at;
+
   return {
     title: post.title,
-    description: post.summary || "Guider og innsikt fra Pinoso Eco Life.",
+    description,
     alternates: { canonical: `/magasin/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description,
+      url: `${BASE}/magasin/${post.slug}`,
+      siteName: "Pinoso Eco Life",
+      locale: "nb_NO",
+      type: "article",
+      publishedTime,
+      images: [{ url: image, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description,
+      images: [image],
+    },
   };
 }
 
@@ -49,20 +77,7 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
   const { slug } = await params;
   const post = await fetchPublishedPost("magasin", slug);
 
-  if (!post) {
-    return (
-      <main>
-        <SiteHeader />
-        <section className="page-hero compact-hero">
-          <p className="eyebrow">Magasin</p>
-          <h1>Artikkelen ble ikke funnet</h1>
-          <p>Denne saken er ikke publisert, eller lenken er ikke lenger aktiv.</p>
-          <Link className="text-button" href="/magasin"><ArrowLeft size={16} /> Tilbake til magasin</Link>
-        </section>
-        <Footer />
-      </main>
-    );
-  }
+  if (!post) notFound();
 
   const lifestyleIntent = inferLifestyleIntent(post.tags || []);
   const allPosts = await fetchPublishedPosts("magasin");
@@ -75,13 +90,55 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
     return article ? [article] : [];
   });
   const heroImage = post.image_url || "/assets/hero-pinoso-dream.jpg";
+  const publishedTime = post.published_at || post.created_at;
+  const articleUrl = `${BASE}/magasin/${post.slug}`;
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${articleUrl}#article`,
+        headline: post.title,
+        description: post.summary || "Guider og innsikt fra Pinoso Eco Life.",
+        image: [absoluteUrl(heroImage)],
+        datePublished: publishedTime,
+        dateModified: publishedTime,
+        inLanguage: "nb-NO",
+        keywords: post.tags || [],
+        author: { "@id": `${BASE}/#organization` },
+        publisher: { "@id": `${BASE}/#organization` },
+        mainEntityOfPage: { "@id": `${articleUrl}#webpage` },
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${articleUrl}#webpage`,
+        url: articleUrl,
+        name: post.title,
+        description: post.summary || "Guider og innsikt fra Pinoso Eco Life.",
+        inLanguage: "nb-NO",
+        isPartOf: { "@id": `${BASE}/#website` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Forside", item: BASE },
+          { "@type": "ListItem", position: 2, name: "Magasin", item: `${BASE}/magasin` },
+          { "@type": "ListItem", position: 3, name: post.title, item: articleUrl },
+        ],
+      },
+    ],
+  };
 
   return (
     <main>
       <SiteHeader />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
 
       <section className={styles.articleHero}>
-        <img className={styles.heroMedia} src={heroImage} alt="" />
+        <img className={styles.heroMedia} src={heroImage} alt={`${post.title} – Pinoso Eco Life`} />
         <div className={styles.articleHeroContent}>
           <p className={styles.heroEyebrow}>Livet i innlandet · Eco Life-magasin</p>
           <h1 className={styles.articleTitle}>{post.title}</h1>
@@ -92,9 +149,10 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
       <article className={styles.articleShell}>
         <div className={styles.articleMeta}>
           <Link href="/magasin"><ArrowLeft size={16} /> Tilbake til magasinet</Link>
-          {post.published_at && <span><Calendar size={16} /> {formatDate(post.published_at)}</span>}
+          {publishedTime && <span><Calendar size={16} /> {formatDate(publishedTime)}</span>}
+          <span>Pinoso Eco Life</span>
         </div>
-        <MarkdownArticle markdown={post.markdown} />
+        <MarkdownArticle markdown={post.markdown} skipFirstH1 />
       </article>
 
       {relevantAreas.length > 0 && (

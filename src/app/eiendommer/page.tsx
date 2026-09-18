@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -14,14 +15,24 @@ import {
 } from "@/lib/realtyflow";
 import styles from "./properties.module.css";
 
-export const metadata = {
-  title: "Innlandsboliger og villaer",
-  description:
-    "Søk blant villaer, nybygg og landlige boliger i Pinoso, Vinalopó og utvalgte innlandsområder i Alicante og Murcia.",
-  alternates: {
-    canonical: "/eiendommer",
-  },
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const isFiltered = Object.values(params).some((value) =>
+    Array.isArray(value) ? value.some(Boolean) : Boolean(value),
+  );
+
+  return {
+    title: "Innlandsboliger og villaer",
+    description:
+      "Søk blant villaer, nybygg og landlige boliger i Pinoso, Vinalopó og utvalgte innlandsområder i Alicante og Murcia.",
+    alternates: { canonical: "/eiendommer" },
+    ...(isFiltered ? { robots: { index: false, follow: true } } : {}),
+  };
+}
 
 export default async function PropertiesPage({
   searchParams,

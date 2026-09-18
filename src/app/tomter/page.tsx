@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { CatastroSummary } from "@/components/CatastroSummary";
@@ -25,14 +26,24 @@ type PlotWithCatastro = LandPlot & {
   finca_registral?: string;
 };
 
-export const metadata = {
-  title: "Tomter i innlandet i Alicante og Murcia",
-  description:
-    "Utforsk tomter i Pinoso, Monóvar, La Romana, Hondón, Aspe, Novelda, Monforte del Cid, Biar, Villena, Sax og Jumilla med kart og Catastro-referanser som utgangspunkt for videre kontroll.",
-  alternates: {
-    canonical: "/tomter",
-  },
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const isFiltered = Object.values(params).some((value) =>
+    Array.isArray(value) ? value.some(Boolean) : Boolean(value),
+  );
+
+  return {
+    title: "Tomter i innlandet i Alicante og Murcia",
+    description:
+      "Utforsk tomter i Pinoso, Monóvar, La Romana, Hondón, Aspe, Novelda, Monforte del Cid, Biar, Villena, Sax og Jumilla med kart og Catastro-referanser som utgangspunkt for videre kontroll.",
+    alternates: { canonical: "/tomter" },
+    ...(isFiltered ? { robots: { index: false, follow: true } } : {}),
+  };
+}
 
 function formatEuro(value?: number) {
   if (!value) return "Pris på forespørsel";
