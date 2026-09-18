@@ -7,8 +7,6 @@ import { fetchPublishedPosts } from "@/lib/website-content";
 const baseUrl = "https://www.pinosoecolife.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
-
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
     "/livet-i-innlandet",
@@ -22,7 +20,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/magasin",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: now,
     changeFrequency:
       route === "/eiendommer" || route === "/tomter"
         ? "daily"
@@ -41,25 +38,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const ecoLifeAreaRoutes: MetadataRoute.Sitemap = ecoLifeAreas.map((area) => ({
     url: `${baseUrl}/livet-i-innlandet/${area.slug}`,
-    lastModified: now,
     changeFrequency: "monthly",
     priority: 0.82,
   }));
 
   const properties = await getProperties(0);
   const propertyRoutes = properties
-    .map((property) => getPropertyRef(property))
-    .filter(Boolean)
-    .map((ref) => ({
+    .map((property) => ({
+      ref: getPropertyRef(property),
+      updatedAt: property.updated_at || property.updatedAt,
+    }))
+    .filter((property) => Boolean(property.ref))
+    .map(({ ref, updatedAt }) => ({
       url: `${baseUrl}/eiendommer/${encodeURIComponent(ref)}`,
-      lastModified: now,
+      ...(updatedAt ? { lastModified: new Date(updatedAt) } : {}),
       changeFrequency: "daily" as const,
       priority: 0.72,
     }));
 
   const articleRoutes = (await fetchPublishedPosts("magasin")).map((post) => ({
     url: `${baseUrl}/magasin/${post.slug}`,
-    lastModified: new Date(post.updated_at || post.published_at || post.created_at || now),
+    lastModified: new Date(post.updated_at || post.published_at || post.created_at),
     changeFrequency: "monthly" as const,
     priority: 0.74,
   }));
