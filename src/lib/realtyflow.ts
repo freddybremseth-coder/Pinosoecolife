@@ -34,6 +34,8 @@ export type Property = {
   amenities_no?: string[];
   status?: string;
   region?: string;
+  updated_at?: string;
+  updatedAt?: string;
   show_on_website?: boolean | null;
   website_visible?: boolean | null;
 };
@@ -411,7 +413,7 @@ export async function getProperties(limit = 12): Promise<Property[]> {
     url.searchParams.set("brandId", REALTYFLOW_BRAND_ID);
 
     const res = await fetch(url.toString(), {
-      cache: "no-store",
+      next: { revalidate: 60 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return fallback;
@@ -432,7 +434,7 @@ export async function getProperties(limit = 12): Promise<Property[]> {
 export async function getAreaProfiles(): Promise<AreaProfile[]> {
   try {
     const res = await fetch(`${REALTYFLOW_BASE}/api/area-profiles?brandId=pinosoecolife&public=1`, {
-      cache: "no-store",
+      next: { revalidate: 60 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];
@@ -458,7 +460,7 @@ export async function getLandPlots(): Promise<LandPlot[]> {
     url.searchParams.set("brandId", REALTYFLOW_BRAND_ID);
 
     const res = await fetch(url.toString(), {
-      cache: "no-store",
+      next: { revalidate: 60 },
       headers: { Accept: "application/json" },
     });
     if (!res.ok) return [];

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { revalidatePath } from "next/cache";
 import { submitIndexNow } from "@/lib/indexnow";
 
 function cleanString(value: unknown) {
@@ -127,6 +128,10 @@ export async function POST(request: NextRequest) {
   }
 
   const url = `${destinationPath.replace(/\/$/, "")}/${slug}`;
+  revalidatePath("/magasin");
+  revalidatePath(url);
+  revalidatePath("/sitemap.xml");
+
   const indexNow =
     status === "published"
       ? await submitIndexNow([`https://www.pinosoecolife.com${url}`])
@@ -186,6 +191,12 @@ export async function DELETE(request: NextRequest) {
     .map((row) => cleanString(row.slug))
     .filter(Boolean);
   if (!deletedSlugs.length && slug) deletedSlugs.push(slug);
+
+  revalidatePath("/magasin");
+  revalidatePath("/sitemap.xml");
+  for (const deletedSlug of deletedSlugs) {
+    revalidatePath(`/magasin/${deletedSlug}`);
+  }
 
   const indexNow = deletedSlugs.length
     ? await submitIndexNow(
