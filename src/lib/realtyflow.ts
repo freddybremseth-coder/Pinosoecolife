@@ -26,7 +26,12 @@ export type Property = {
   property_type?: string;
   type?: string;
   pool?: boolean;
+  garage?: boolean;
   energy_rating?: string;
+  year_built?: number;
+  floor_label?: string;
+  floorplans?: string[];
+  amenities_no?: string[];
   status?: string;
   region?: string;
   show_on_website?: boolean | null;
@@ -219,10 +224,17 @@ export const regions: Array<{ key: RegionKey; label: string; description: string
 
 export function getPropertyTitle(property: Property) {
   const baseTitle = property.title_no || property.title || property.title_en || "Nybygg i Spania";
+  const normalizedBase = normalizeSearchText(baseTitle);
+  const area = Number(property.built_area || property.area || 0);
+  const isGenericVillaTitle = /^villa med \d+ soverom/.test(normalizedBase);
+  const displayTitle =
+    isGenericVillaTitle && area > 0 && !/\d+\s*m²/i.test(baseTitle)
+      ? `${baseTitle} · ${area.toLocaleString("nb-NO")} m²`
+      : baseTitle;
   const modelName = property.model_name?.trim();
-  if (!modelName) return baseTitle;
-  if (normalizeSearchText(baseTitle).includes(normalizeSearchText(modelName))) return baseTitle;
-  return `${modelName} – ${baseTitle}`;
+  if (!modelName) return displayTitle;
+  if (normalizeSearchText(displayTitle).includes(normalizeSearchText(modelName))) return displayTitle;
+  return `${modelName} – ${displayTitle}`;
 }
 
 export function getPropertyDescription(property: Property) {
