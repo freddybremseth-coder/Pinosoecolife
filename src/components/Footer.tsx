@@ -43,6 +43,7 @@ export function Footer() {
             <span className={styles.columnTitle}>Neste steg</span>
             <Link href="/livet-i-innlandet">Finn riktig område</Link>
             <Link href="/kjopsprosessen">Kjøpsprosessen</Link>
+            <Link href="/om-freddy">Om Freddy Bremseth</Link>
             <Link href="/min-side">Min side</Link>
             <Link href="/#kontakt">Kontakt oss</Link>
           </nav>
