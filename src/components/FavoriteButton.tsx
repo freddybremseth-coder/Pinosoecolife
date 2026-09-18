@@ -9,6 +9,11 @@ type Favorite = {
   location: string;
   price: string;
   href: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  builtArea?: number;
+  plotSize?: number;
+  pool?: boolean;
 };
 
 export function FavoriteButton({ favorite }: { favorite: Favorite }) {
