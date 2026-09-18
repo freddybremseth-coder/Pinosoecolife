@@ -61,7 +61,7 @@ export function SeoLandingView({ page }: { page: SeoLandingPage }) {
           <p className={styles.heroEyebrow}>{page.eyebrow}</p>
           <h1 className={styles.heroTitle}>{page.hero}</h1>
           <p className={styles.heroLead}>{page.description}</p>
-          <div className={styles.actionLinks}>
+          <div className={styles.actionLinks} style={{ marginTop: 28 }}>
             <Link href={page.primaryCta.href}>
               {page.primaryCta.label} <ArrowRight size={17} />
             </Link>
