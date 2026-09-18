@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { submitIndexNow } from "@/lib/indexnow";
 
 function cleanString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -72,7 +73,8 @@ export async function POST(request: NextRequest) {
   const destination = payload?.destination || {};
   const destinationId = cleanString(destination.id) || "magasin";
   const destinationLabel = cleanString(destination.label) || "Magasin";
-  const destinationPath = cleanPath(cleanString(destination.path) || `/${destinationId}`);
+  const requestedDestinationPath = cleanPath(cleanString(destination.path) || `/${destinationId}`);
+  const destinationPath = "/magasin";
   const slug = slugify(cleanString(payload?.content?.slug) || title);
   const sourceSystem = cleanString(payload?.source?.system) || "realtyflow";
   const sourceType = cleanString(payload?.source?.type) || "content";
@@ -99,7 +101,11 @@ export async function POST(request: NextRequest) {
     tags: Array.isArray(payload?.content?.tags) ? payload.content.tags.map((tag: unknown) => String(tag).trim()).filter(Boolean) : [],
     status,
     published_at: publishedAt,
-    raw_payload: payload,
+    raw_payload: {
+      ...payload,
+      canonicalDestinationPath: destinationPath,
+      requestedDestinationPath,
+    },
     updated_at: new Date().toISOString(),
   };
 
@@ -121,6 +127,11 @@ export async function POST(request: NextRequest) {
   }
 
   const url = `${destinationPath.replace(/\/$/, "")}/${slug}`;
+  const indexNow =
+    status === "published"
+      ? await submitIndexNow([`https://www.pinosoecolife.com${url}`])
+      : { ok: true, submitted: 0, status: 204, urlList: [] as string[] };
+
   return NextResponse.json({
     success: true,
     id: data.id,
@@ -129,6 +140,7 @@ export async function POST(request: NextRequest) {
     url,
     external_url: url,
     published_at: data.published_at,
+    indexNow,
   });
 }
 
@@ -152,7 +164,7 @@ export async function DELETE(request: NextRequest) {
   const brandId = cleanString(payload?.brand?.id) || "pinosoecolife";
   const slug = slugify(cleanString(payload?.content?.slug) || cleanString(payload?.content?.title));
 
-  let query = supabase.from("website_posts").delete();
+  let query = supabase.from("website_posts").delete().select("slug");
   if (sourceId) {
     query = query
       .eq("source_system", sourceSystem)
@@ -165,10 +177,27 @@ export async function DELETE(request: NextRequest) {
       .eq("slug", slug);
   }
 
-  const { error } = await query;
+  const { data, error } = await query;
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true, deleted: true, slug });
+  const deletedSlugs = (data || [])
+    .map((row) => cleanString(row.slug))
+    .filter(Boolean);
+  if (!deletedSlugs.length && slug) deletedSlugs.push(slug);
+
+  const indexNow = deletedSlugs.length
+    ? await submitIndexNow(
+        deletedSlugs.map((deletedSlug) => `https://www.pinosoecolife.com/magasin/${deletedSlug}`),
+      )
+    : { ok: true, submitted: 0, status: 204, urlList: [] as string[] };
+
+  return NextResponse.json({
+    success: true,
+    deleted: true,
+    slug,
+    deletedSlugs,
+    indexNow,
+  });
 }
