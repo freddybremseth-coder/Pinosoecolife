@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -197,7 +198,11 @@ export default async function PropertiesPage({
         ) : (
           <div className={styles.empty}>
             <h3>Ingen boliger traff disse filtrene.</h3>
-            <p>Prøv et annet område, større prisintervall eller færre kriterier.</p>
+            <p>Prøv et annet område, større prisintervall eller færre kriterier – eller fortell oss hva du leter etter, så kan vi lete mer konkret.</p>
+            <div className={styles.emptyActions}>
+              <Link className={styles.emptyPrimary} href="/eiendommer">Nullstill filtre</Link>
+              <Link className={styles.emptySecondary} href="/#kontakt">Fortell oss hva du leter etter</Link>
+            </div>
           </div>
         )}
       </section>
