@@ -27,6 +27,16 @@ export function Footer() {
             <Link href="/eiendommer">Boliger</Link>
             <Link href="/tomter">Tomter</Link>
             <Link href="/magasin">Magasin</Link>
+            <Link href="/bolig-i-alicante-innland">Bolig i Alicante innland</Link>
+          </nav>
+
+          <nav className={styles.column} aria-label="Pinoso kjøpsguider">
+            <span className={styles.columnTitle}>Pinoso-guider</span>
+            <Link href="/bolig-i-pinoso">Bolig i Pinoso</Link>
+            <Link href="/nybygg-i-pinoso">Nybygg i Pinoso</Link>
+            <Link href="/tomt-i-pinoso">Tomt i Pinoso</Link>
+            <Link href="/bygge-hus-i-pinoso">Bygge hus i Pinoso</Link>
+            <Link href="/villa-med-stor-tomt-i-spania">Villa med stor tomt</Link>
           </nav>
 
           <nav className={styles.column} aria-label="Rådgivning og neste steg">
