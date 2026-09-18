@@ -105,7 +105,7 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
         dateModified: publishedTime,
         inLanguage: "nb-NO",
         keywords: post.tags || [],
-        author: { "@id": `${BASE}/#organization` },
+        author: { "@id": `${BASE}/om-freddy#person` },
         publisher: { "@id": `${BASE}/#organization` },
         mainEntityOfPage: { "@id": `${articleUrl}#webpage` },
       },
@@ -150,7 +150,7 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
         <div className={styles.articleMeta}>
           <Link href="/magasin"><ArrowLeft size={16} /> Tilbake til magasinet</Link>
           {publishedTime && <span><Calendar size={16} /> {formatDate(publishedTime)}</span>}
-          <span>Pinoso Eco Life</span>
+          <Link href="/om-freddy">Av Freddy Bremseth</Link>
         </div>
         <MarkdownArticle markdown={post.markdown} skipFirstH1 />
       </article>
