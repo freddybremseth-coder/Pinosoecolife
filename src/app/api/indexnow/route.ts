@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { submitIndexNow } from "@/lib/indexnow";
 
 function cleanString(value: unknown) {
@@ -38,6 +39,22 @@ export async function POST(request: NextRequest) {
   if (!values.length) {
     return NextResponse.json({ error: "url or urls is required" }, { status: 400 });
   }
+
+  for (const value of values) {
+    try {
+      const url = new URL(value, "https://www.pinosoecolife.com");
+      if (url.hostname !== "www.pinosoecolife.com" && url.hostname !== "pinosoecolife.com") continue;
+
+      revalidatePath(url.pathname);
+      if (url.pathname.startsWith("/eiendommer/")) {
+        revalidatePath("/eiendommer");
+        revalidatePath("/");
+      }
+    } catch {
+      // URL validation is also handled by submitIndexNow.
+    }
+  }
+  revalidatePath("/sitemap.xml");
 
   const result = await submitIndexNow(values);
   return NextResponse.json(result, { status: result.ok ? 200 : 502 });
