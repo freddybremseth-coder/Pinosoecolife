@@ -36,6 +36,7 @@ export default async function PropertiesPage({
     bedrooms?: string;
     bathrooms?: string;
     lifestyle?: string;
+    sort?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -48,6 +49,7 @@ export default async function PropertiesPage({
   const minBedrooms = Number(params.bedrooms || 0);
   const minBathrooms = Number(params.bathrooms || 0);
   const lifestyle = params.lifestyle || "";
+  const sort = params.sort || "";
   const properties = await getProperties(0);
 
   const filtered = properties.filter((property) => {
@@ -72,6 +74,14 @@ export default async function PropertiesPage({
       matchesBathrooms &&
       matchesLifestyle
     );
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (sort === "price-asc") return Number(a.price || Number.MAX_SAFE_INTEGER) - Number(b.price || Number.MAX_SAFE_INTEGER);
+    if (sort === "price-desc") return Number(b.price || 0) - Number(a.price || 0);
+    if (sort === "area-desc") return Number(b.built_area || b.area || 0) - Number(a.built_area || a.area || 0);
+    if (sort === "plot-desc") return Number(b.plot_size || 0) - Number(a.plot_size || 0);
+    return 0;
   });
 
   const locationLabel = area || getRegionLabel(region);
@@ -161,19 +171,26 @@ export default async function PropertiesPage({
             <option value="pool">Basseng</option>
             <option value="golf">Golf</option>
           </select>
+          <select name="sort" defaultValue={params.sort || ""}>
+            <option value="">Standard rekkefølge</option>
+            <option value="price-asc">Pris: lavest først</option>
+            <option value="price-desc">Pris: høyest først</option>
+            <option value="area-desc">Størst bolig først</option>
+            <option value="plot-desc">Størst tomt først</option>
+          </select>
           <button type="submit">Vis treff</button>
         </form>
       </div>
 
       <section className={styles.catalogue}>
         <div className={styles.catalogueHeading}>
-          <h2>{filtered.length} boliger{area ? ` i ${area}` : ""}</h2>
+          <h2>{sorted.length} boliger{area ? ` i ${area}` : ""}</h2>
           <p>Pris og tilgjengelighet kan endre seg og bekreftes alltid på nytt før reservasjon eller kjøpsbeslutning.</p>
         </div>
 
-        {filtered.length > 0 ? (
+        {sorted.length > 0 ? (
           <div className={styles.grid}>
-            {filtered.map((property, index) => (
+            {sorted.map((property, index) => (
               <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 6} />
             ))}
           </div>
