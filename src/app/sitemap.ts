@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...regions.map((region) => `/omrader/${region.key}`),
     ...seoLandingPages.map((page) => `/${page.slug}`),
     "/kjopsprosessen",
+    "/om-freddy",
     "/magasin",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
