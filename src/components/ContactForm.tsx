@@ -53,7 +53,7 @@ export function ContactForm({
   const selectedArea = preferredArea || "Åpen for forslag";
   const selectedLifestyle = lifestyleIntent && lifestyleInterests.includes(lifestyleIntent)
     ? lifestyleIntent
-    : "Usikker – ønsker rådgivning";
+    : "";
   const isPropertyInquiry = Boolean(propertyRef || propertyTitle);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -120,6 +120,7 @@ export function ContactForm({
           <label>
             Hva betyr mest for deg i innlandet?
             <select name="lifestyle_interest" defaultValue={selectedLifestyle}>
+              <option value="">Ikke valgt</option>
               {lifestyleInterests.map((interest) => <option key={interest}>{interest}</option>)}
             </select>
           </label>
@@ -151,6 +152,7 @@ export function ContactForm({
               <label>
                 Hva betyr mest for deg?
                 <select name="lifestyle_interest" defaultValue={selectedLifestyle}>
+                  <option value="">Ikke valgt</option>
                   {lifestyleInterests.map((interest) => <option key={interest}>{interest}</option>)}
                 </select>
               </label>
@@ -161,7 +163,8 @@ export function ContactForm({
             <div className="form-grid">
               <label>
                 Boligtype
-                <select name="property_type" defaultValue="Nybygg">
+                <select name="property_type" defaultValue="">
+                  <option value="">Ikke valgt</option>
                   <option>Nybygg</option>
                   <option>Tomt og bygging</option>
                   <option>Villa</option>
@@ -249,4 +252,6 @@ export function ContactForm({
       {status === "sent" && <p className="form-success">Takk. Vi har mottatt forespørselen din.</p>}
       {status === "error" && <p className="form-error">Noe gikk galt. Prøv igjen eller send e-post direkte.</p>}
     </form>
-  );}
+  );
+}
+
