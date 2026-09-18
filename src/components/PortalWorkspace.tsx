@@ -32,6 +32,11 @@ type SavedProperty = {
   location: string;
   price: string;
   href: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  builtArea?: number;
+  plotSize?: number;
+  pool?: boolean;
 };
 
 const savedProperties: SavedProperty[] = [];
@@ -398,6 +403,13 @@ export function PortalWorkspace() {
     setMustChangePassword(false);
   }
 
+  function removeFavorite(ref: string) {
+    const next = favorites.filter((item) => item.ref !== ref);
+    localStorage.setItem("pinosoecolife:favorites", JSON.stringify(next));
+    setFavorites(next);
+    window.dispatchEvent(new Event("pinosoecolife:favorites-updated"));
+  }
+
   async function savePreferences(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!supabase) return;
@@ -626,11 +638,29 @@ export function PortalWorkspace() {
           </article>
 
           <article className="portal-panel">
-            <div className="panel-title"><Heart size={20} /><h3>Favoritter</h3></div>
+            <div className="panel-title"><Heart size={20} /><h3>Favoritter og shortlist</h3></div>
             <ul className="portal-list">
-              {favorites.map((property) => (
-                <li key={property.ref}><Building2 size={17} /><a href={property.href}><span>{property.title}</span><small>{property.location} · {property.price}</small></a></li>
-              ))}
+              {favorites.map((property) => {
+                const facts = [
+                  property.location,
+                  property.price,
+                  property.bedrooms ? `${property.bedrooms} sov` : "",
+                  property.bathrooms ? `${property.bathrooms} bad` : "",
+                  property.builtArea ? `${property.builtArea.toLocaleString("nb-NO")} m² bolig` : "",
+                  property.plotSize ? `${property.plotSize.toLocaleString("nb-NO")} m² tomt` : "",
+                  property.pool ? "Basseng" : "",
+                ].filter(Boolean);
+                return (
+                  <li key={property.ref}>
+                    <Building2 size={17} />
+                    <a href={property.href}>
+                      <span>{property.title}</span>
+                      <small>{facts.join(" · ")}</small>
+                    </a>
+                    <button className="text-button" type="button" onClick={() => removeFavorite(property.ref)}>Fjern</button>
+                  </li>
+                );
+              })}
               {!favorites.length && <li>Du har ingen lagrede boliger eller tomter ennå.</li>}
             </ul>
           </article>

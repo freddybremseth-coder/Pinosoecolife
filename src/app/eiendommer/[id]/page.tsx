@@ -130,6 +130,11 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
                 location,
                 price: formatPrice(property.price),
                 href: `/eiendommer/${encodeURIComponent(getPropertyRef(property))}`,
+                bedrooms: property.bedrooms,
+                bathrooms: property.bathrooms,
+                builtArea: getPropertyArea(property) || undefined,
+                plotSize: property.plot_size,
+                pool: property.pool,
               }}
             />
             <a className={styles.heroAction} href="#kontakt">
