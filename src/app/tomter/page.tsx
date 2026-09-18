@@ -403,7 +403,11 @@ export default async function PlotsPage({
           {filtered.length === 0 && (
             <article className={styles.empty}>
               <h2>Ingen tomter traff disse filtrene.</h2>
-              <p>Prøv et annet område eller et bredere pris-/arealfilter. Du kan også kontakte oss hvis du vil at vi skal lete etter en bestemt type tomt.</p>
+              <p>Prøv et annet område eller et bredere pris-/arealfilter. Hvis du har en bestemt tomtetype i tankene, kan du også fortelle oss hva du leter etter.</p>
+              <div className={styles.emptyActions}>
+                <Link className={styles.emptyPrimary} href="/tomter">Nullstill filtre</Link>
+                <Link className={styles.emptySecondary} href="/#kontakt">Fortell oss hva du leter etter</Link>
+              </div>
             </article>
           )}
 
