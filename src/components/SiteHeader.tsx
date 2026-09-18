@@ -10,7 +10,6 @@ const navLinks = [
   { href: "/livet-i-innlandet", label: "Livet i innlandet" },
   { href: "/eiendommer", label: "Boliger" },
   { href: "/tomter", label: "Tomter" },
-  { href: "/omrader", label: "Områder" },
   { href: "/kjopsprosessen", label: "Kjøpsprosess" },
   { href: "/magasin", label: "Magasin" },
 ];
