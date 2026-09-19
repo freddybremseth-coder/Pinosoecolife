@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 const SOURCE_BY_HOST: Array<[RegExp, string]> = [
-  [/(^|\.)google\./i, "google_search"],
+  [/(^|\.)google\.(?:com|[a-z]{2}|com\.[a-z]{2}|co\.[a-z]{2})$/i, "google_search"],
   [/(^|\.)bing\.com$/i, "bing_search"],
   [/(^|\.)chatgpt\.com$/i, "chatgpt"],
   [/^copilot\.microsoft\.com$/i, "microsoft_copilot"],
@@ -41,21 +41,45 @@ export async function POST(request: NextRequest) {
     return new NextResponse(null, { status: 204 });
   }
 
+  const cleanPath = path.split("?")[0].split("#")[0];
+  const localDbUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const sharesRealtyFlowDatabase = (() => {
+    try { return new URL(localDbUrl).hostname === "ereapsfcsqtdmzosgnnn.supabase.co"; }
+    catch { return false; }
+  })();
+
+  // Retain the local dashboard. If the Pinoso website uses a separate database,
+  // ALSO deliver one aggregated referral arrival to RealtyFlow's central
+  // portfolio endpoint so Sam SEO can include inland properties in his review.
+  // Do not send twice when both apps use the same Supabase project.
   const supabase = getSupabase();
-  if (!supabase) {
-    return new NextResponse(null, { status: 204 });
+  if (supabase) {
+    const { error } = await supabase.from("search_discovery_events").insert({
+      brand_id: "pinosoecolife",
+      source: classified.source,
+      path: cleanPath,
+      referrer_host: classified.host,
+      occurred_at: new Date().toISOString(),
+    });
+    if (error) console.warn("[SearchDiscovery] Local insert failed", error.message);
   }
 
-  const { error } = await supabase.from("search_discovery_events").insert({
-    brand_id: "pinosoecolife",
-    source: classified.source,
-    path: path.split("?")[0],
-    referrer_host: classified.host,
-    occurred_at: new Date().toISOString(),
-  });
-
-  if (error) {
-    console.warn("[SearchDiscovery] Could not store event", error.message);
+  if (!sharesRealtyFlowDatabase) {
+    try {
+      const response = await fetch("https://realtyflow.chatgenius.pro/api/public/search-discovery", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Origin: "https://www.pinosoecolife.com",
+        },
+        body: JSON.stringify({ path: cleanPath, referrer: new URL(referrer).origin }),
+        cache: "no-store",
+        signal: AbortSignal.timeout(3500),
+      });
+      if (!response.ok) console.warn("[SearchDiscovery] Central ingestion returned HTTP", response.status);
+    } catch (error) {
+      console.warn("[SearchDiscovery] Central ingestion unavailable", error instanceof Error ? error.message : "request failed");
+    }
   }
 
   return new NextResponse(null, { status: 204 });
