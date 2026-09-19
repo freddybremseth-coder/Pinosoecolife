@@ -6,7 +6,7 @@ function knownDiscoveryReferrer(value: string) {
   try {
     const host = new URL(value).hostname.toLowerCase();
     return (
-      host.includes("google.") ||
+      /(^|\\.)google\\.(?:com|[a-z]{2}|com\\.[a-z]{2}|co\\.[a-z]{2})$/.test(host) ||
       host === "bing.com" ||
       host.endsWith(".bing.com") ||
       host === "chatgpt.com" ||
@@ -26,9 +26,12 @@ function knownDiscoveryReferrer(value: string) {
 
 export function SearchDiscoveryTracker() {
   useEffect(() => {
-    const referrer = document.referrer;
-    if (!referrer || !knownDiscoveryReferrer(referrer)) return;
+    const rawReferrer = document.referrer;
+    if (!rawReferrer || !knownDiscoveryReferrer(rawReferrer)) return;
 
+    // Forward only the referring origin: query terms and unrelated URL paths
+    // are not required to categorize a genuine search/AI arrival.
+    const referrer = new URL(rawReferrer).origin;
     const path = window.location.pathname;
     const storageKey = `pinoso:search-discovery:${path}:${referrer}`;
     try {
