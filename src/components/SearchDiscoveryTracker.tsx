@@ -6,7 +6,7 @@ function knownDiscoveryReferrer(value: string) {
   try {
     const host = new URL(value).hostname.toLowerCase();
     return (
-      /(^|\\.)google\\.(?:com|[a-z]{2}|com\\.[a-z]{2}|co\\.[a-z]{2})$/.test(host) ||
+      /(^|\.)google\.(?:com|[a-z]{2}|com\.[a-z]{2}|co\.[a-z]{2})$/.test(host) ||
       host === "bing.com" ||
       host.endsWith(".bing.com") ||
       host === "chatgpt.com" ||
