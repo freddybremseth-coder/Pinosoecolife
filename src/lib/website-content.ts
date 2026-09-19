@@ -78,13 +78,28 @@ function mergeMagazinePosts(rows: PublicWebsitePost[]) {
   for (const article of fallbackArticles) {
     bySlug.set(article.slug, toFallbackPost(article));
   }
+  // The CMS query is ordered by published_at. A later edit can occur on an
+  // older publication, so compare updated_at explicitly; never let the last
+  // (often oldest) duplicate slug win merely because of iteration order.
   for (const row of rows) {
-    bySlug.set(row.slug, row);
+    const current = bySlug.get(row.slug);
+    if (!current || current.id.startsWith("fallback-")) {
+      bySlug.set(row.slug, row);
+      continue;
+    }
+    const currentUpdated = Date.parse(current.updated_at || current.published_at || current.created_at) || 0;
+    const candidateUpdated = Date.parse(row.updated_at || row.published_at || row.created_at) || 0;
+    if (candidateUpdated > currentUpdated ||
+        (candidateUpdated === currentUpdated &&
+          (Date.parse(row.published_at || row.created_at) || 0) >
+          (Date.parse(current.published_at || current.created_at) || 0))) {
+      bySlug.set(row.slug, row);
+    }
   }
 
   return Array.from(bySlug.values()).sort((a, b) => {
-    const aDate = new Date(a.published_at || a.created_at).getTime();
-    const bDate = new Date(b.published_at || b.created_at).getTime();
+    const aDate = Date.parse(a.published_at || a.created_at) || 0;
+    const bDate = Date.parse(b.published_at || b.created_at) || 0;
     return bDate - aDate;
   });
 }

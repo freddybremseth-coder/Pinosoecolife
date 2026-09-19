@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     source_system: sourceSystem,
     source_type: sourceType,
     source_id: sourceId || null,
-    brand_id: cleanString(payload?.brand?.id) || "pinosoecolife",
+    brand_id: "pinosoecolife",
     destination_id: destinationId,
     destination_label: destinationLabel,
     destination_path: destinationPath,
@@ -166,10 +166,10 @@ export async function DELETE(request: NextRequest) {
   const sourceId = cleanString(payload?.source?.id || "");
   const destination = payload?.destination || {};
   const destinationId = cleanString(destination.id) || "magasin";
-  const brandId = cleanString(payload?.brand?.id) || "pinosoecolife";
+  const brandId = "pinosoecolife";
   const slug = slugify(cleanString(payload?.content?.slug) || cleanString(payload?.content?.title));
 
-  let query = supabase.from("website_posts").delete().select("slug");
+  let query = supabase.from("website_posts").delete().select("slug").eq("brand_id", brandId);
   if (sourceId) {
     query = query
       .eq("source_system", sourceSystem)
@@ -190,7 +190,6 @@ export async function DELETE(request: NextRequest) {
   const deletedSlugs = (data || [])
     .map((row) => cleanString(row.slug))
     .filter(Boolean);
-  if (!deletedSlugs.length && slug) deletedSlugs.push(slug);
 
   revalidatePath("/magasin");
   revalidatePath("/sitemap.xml");

@@ -91,6 +91,10 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
   });
   const heroImage = post.image_url || "/assets/hero-pinoso-dream.jpg";
   const publishedTime = post.published_at || post.created_at;
+  const modifiedTime = post.updated_at || publishedTime;
+  const explicitlyFreddyAuthored = (post.tags || []).some((tag) =>
+    /^(author|forfatter):freddy-bremseth$/i.test(tag.trim()),
+  );
   const articleUrl = `${BASE}/magasin/${post.slug}`;
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -102,10 +106,12 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
         description: post.summary || "Guider og innsikt fra Pinoso Eco Life.",
         image: [absoluteUrl(heroImage)],
         datePublished: publishedTime,
-        dateModified: publishedTime,
+        dateModified: modifiedTime,
         inLanguage: "nb-NO",
         keywords: post.tags || [],
-        author: { "@id": `${BASE}/om-freddy#person` },
+        author: explicitlyFreddyAuthored
+          ? { "@id": `${BASE}/om-freddy#person` }
+          : { "@type": "Organization", "@id": `${BASE}/#organization`, name: "Pinoso Eco Life" },
         publisher: { "@id": `${BASE}/#organization` },
         mainEntityOfPage: { "@id": `${articleUrl}#webpage` },
       },
@@ -150,7 +156,9 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
         <div className={styles.articleMeta}>
           <Link href="/magasin"><ArrowLeft size={16} /> Tilbake til magasinet</Link>
           {publishedTime && <span><Calendar size={16} /> {formatDate(publishedTime)}</span>}
-          <Link href="/om-freddy">Av Freddy Bremseth</Link>
+          {explicitlyFreddyAuthored
+            ? <Link href="/om-freddy">Av Freddy Bremseth</Link>
+            : <span>Fra Pinoso Eco Life</span>}
         </div>
         <MarkdownArticle markdown={post.markdown} skipFirstH1 />
       </article>
