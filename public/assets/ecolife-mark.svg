@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title">
+  <title id="title">Pinoso Eco Life</title>
+  <rect width="96" height="96" rx="23" fill="#193A2C"/>
+  <circle cx="71" cy="22" r="7" fill="#EBC77F"/>
+  <path d="M15 48 46 21 80 49" fill="none" stroke="#FFF8E9" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M23 67c14-12 30-13 51-5" fill="none" stroke="#C2D4B0" stroke-width="7" stroke-linecap="round"/>
+  <path d="M26 81c15-10 30-10 43-5" fill="none" stroke="#A0BB89" stroke-width="5" stroke-linecap="round"/>
+</svg>
