@@ -3,6 +3,7 @@ import { Manrope, Newsreader } from "next/font/google";
 import Script from "next/script";
 import { PinosoChatbot } from "@/components/PinosoChatbot";
 import { SearchDiscoveryTracker } from "@/components/SearchDiscoveryTracker";
+import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import "./globals.css";
 import "./design-system.css";
 import "./ecolife-advisor.css";
@@ -87,22 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         logo: `${BASE}/assets/logo.png`,
         description:
           "Eiendomsrådgivning med fokus på Pinoso og innlandet i Alicante og Murcia: områdevalg, tomter, fincaer, villaer og moderne nybygg.",
-        areaServed: [
-          "Pinoso",
-          "Monóvar",
-          "La Romana",
-          "Hondón de las Nieves",
-          "Aspe",
-          "Novelda",
-          "Monforte del Cid",
-          "Biar",
-          "Villena",
-          "Sax",
-          "Jumilla",
-          "Alicante",
-          "Murcia",
-          "Spain",
-        ],
+        areaServed: [...ecoLifeAreas.map((area) => area.name), "Alicante", "Murcia", "Spain"],
         knowsAbout: [
           "Bolig i Pinoso",
           "Tomt i Pinoso",
