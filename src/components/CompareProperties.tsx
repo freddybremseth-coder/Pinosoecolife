@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { compareUrl } from "@/lib/property-comparison";
 import styles from "./CompareProperties.module.css";
 
 const STORAGE_KEY = "pinosoecolife-comparison-v1";
@@ -23,12 +24,6 @@ function validRefs(values: unknown): string[] {
     if (unique.size >= MAX_PROPERTIES) break;
   }
   return [...unique];
-}
-
-export function compareUrl(refs: string[]): string {
-  const query = new URLSearchParams();
-  refs.forEach((ref) => query.append("ref", ref));
-  return `/sammenlign?${query.toString()}`;
 }
 
 export function CompareProvider({ children }: { children: ReactNode }) {
