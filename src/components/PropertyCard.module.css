@@ -18,6 +18,27 @@
   box-shadow: 0 24px 54px rgba(23, 35, 28, 0.1);
 }
 
+.mainLink { display: block; color: inherit; }
+
+.preview {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: .91rem;
+  line-height: 1.6;
+}
+
+.priceBasis {
+  margin: 6px 0 0;
+  color: #28503b;
+  font-size: .84rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.sqm { margin: 12px 0 0; color: var(--muted); font-size: .79rem; line-height: 1.5; }
+.viewLink { display: inline-flex; align-items: center; gap: 6px; margin-top: 15px; color: #28503b; font-size: .84rem; font-weight: 750; }
+.compareAction { padding: 0 24px 22px; }
+@media(max-width: 720px) { .compareAction { padding: 0 20px 20px; } }
+
 .media {
   position: relative;
   aspect-ratio: 4 / 3;
