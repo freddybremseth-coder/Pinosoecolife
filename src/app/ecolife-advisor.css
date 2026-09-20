@@ -49,13 +49,6 @@
   .chatbot-2027 .chatbot-panel { max-height: min(78dvh, 680px); }
 }
 
-.chatbot-2027 {
-  --chat-ink: var(--ze-ink, #172027);
-  --chat-paper: var(--ze-limestone, #f3f0e9);
-  --chat-accent: var(--ze-travertine, #c6a76d);
-  --chat-muted: rgba(23, 32, 39, 0.62);
-}
-
 .chatbot-2027 .chatbot-panel {
   width: min(430px, calc(100vw - 32px));
   max-height: min(720px, calc(100vh - 110px));
