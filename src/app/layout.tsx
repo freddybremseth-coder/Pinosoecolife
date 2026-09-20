@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Newsreader } from "next/font/google";
 import Script from "next/script";
+import { CompareProvider } from "@/components/CompareProperties";
 import { PinosoChatbot } from "@/components/PinosoChatbot";
 import { SearchDiscoveryTracker } from "@/components/SearchDiscoveryTracker";
 import { ecoLifeAreas } from "@/lib/ecolife-areas";
@@ -118,7 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(entityGraph) }}
         />
-        {children}
+        <CompareProvider>{children}</CompareProvider>
         <Script
           src="https://appointment.chatgenius.pro/embed.js"
           strategy="lazyOnload"

@@ -123,6 +123,14 @@
   color: var(--olive);
 }
 
+.heroPriceNote { margin: 10px 0 0; color: #edf5e6; font-weight: 750; line-height: 1.5; }
+.priceClarity { margin-bottom: 18px; padding: 30px; border: 1px solid #a7bea4; border-radius: var(--radius-lg); background: #f0f5e9; color: #203c2b; }
+.priceClarity h2 { margin: 0 0 17px; font-family: var(--font-display), Georgia, serif; font-size: clamp(1.75rem,3vw,2.5rem); font-weight: 500; }
+.priceClarity p { margin: 10px 0; line-height: 1.65; overflow-wrap: anywhere; }
+.priceClarity strong { color: #143d2a; }
+.priceClarity .priceDisclaimer { border-top: 1px solid #c9d6c2; margin-top: 18px; padding-top: 16px; color: #465a47; font-size: .86rem; }
+.priceContact { display: inline-block; margin-top: 12px; font-weight: 750; color: #1d5133; text-decoration: underline; }
+
 .story {
   padding: clamp(32px, 5vw, 56px);
   border: 1px solid var(--line);

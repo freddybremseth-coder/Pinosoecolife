@@ -1,0 +1,32 @@
+.hero { padding: 150px max(24px,calc((100vw - 1250px)/2)) 60px; background: #19372a; color: white; }
+.kicker { margin: 0 0 14px; font-size: .76rem; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; color: #d5c6a8; }
+.hero h1 { margin: 0; font-family: var(--font-display),Georgia,serif; font-weight: 500; font-size: clamp(2.5rem,6vw,5rem); }
+.hero p:not(.kicker) { max-width: 760px; line-height: 1.7; color: #e3e9dc; }
+.back { display: inline-block; margin-top: 10px; color: #fff; text-decoration: underline; }
+.shell { width: min(1360px,calc(100% - 36px)); margin: 0 auto; padding: 45px 0 100px; }
+.notice, .footnote { margin: 0 0 24px; padding: 18px 20px; background: #f4f0e5; color: #293d30; border-left: 4px solid #718d67; line-height: 1.75; }
+.footnote { margin: 24px 0 0; font-size: .86rem; }
+.scroll { max-width: 100%; overflow-x: auto; border: 1px solid #d4dccf; border-radius: 16px; background: #fff; }
+.scroll:focus-visible { outline: 3px solid #9ab585; outline-offset: 3px; }
+.table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 750px; table-layout: fixed; color: #213529; }
+.caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.table th, .table td { padding: 17px 15px; text-align: left; vertical-align: top; border-bottom: 1px solid #e4e9df; line-height: 1.55; overflow-wrap: anywhere; }
+.table thead th { width: 260px; background: #f3f7f0; }
+.table thead th:first-child, .table tbody th { width: 165px; position: sticky; left: 0; z-index: 2; background: #eaf1e5; font-weight: 750; }
+.table tbody tr:nth-child(even) td { background: #fbfcf9; }
+.table tbody tr:last-child th, .table tbody tr:last-child td { border-bottom: 0; }
+.table tbody td { font-size: .91rem; }
+.propertyLink { display: grid; gap: 9px; color: #19372a; }
+.propertyLink img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 9px; }
+.propertyLink strong { font-size: .99rem; line-height: 1.3; }
+.detailLink { color: #235a3b; text-decoration: underline; font-weight: 750; }
+.empty { padding: 38px; background: #f3f5ee; border-radius: 16px; line-height: 1.75; }
+.empty a { display: inline-flex; margin-top: 12px; color: #22583a; text-decoration: underline; font-weight: 750; }
+@media(max-width:680px) {
+  .hero { padding-top: 112px; padding-bottom: 35px; }
+  .shell { padding-top: 25px; }
+  .table { min-width: 680px; }
+  .table thead th:first-child,.table tbody th { width: 135px; }
+  .table thead th { width: 200px; }
+  .table th,.table td { padding: 12px 10px; }
+}
