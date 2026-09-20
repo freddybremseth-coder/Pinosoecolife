@@ -121,6 +121,16 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
 
       <section className={styles.editorialHero}>
         <img className={styles.heroMedia} src={area.photo} alt={area.name} />
+        {area.slug === "jumilla" && (
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Castillo_de_Jumilla.jpg"
+            target="_blank"
+            rel="noopener noreferrer license"
+            style={{ position: "absolute", zIndex: 2, right: 16, bottom: 12, color: "#fff", fontSize: 11, textShadow: "0 1px 4px #000", opacity: 0.9 }}
+          >
+            Foto: Leire navagil / Wikimedia Commons · CC BY-SA 4.0
+          </a>
+        )}
         <div className={`${styles.heroInner} ${styles.heroInnerNarrow}`}>
           <p className={styles.heroEyebrow}>{area.region} · {area.eyebrow}</p>
           <h1 className={styles.heroTitle}>Livet i {area.name}</h1>
