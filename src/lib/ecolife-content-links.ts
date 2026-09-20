@@ -1,14 +1,14 @@
 const articleAreaLinks: Record<string, string[]> = {
   "10000-m2-hva-gjor-du-med-plassen": ["pinoso", "la-romana", "hondon-de-las-nieves", "biar"],
-  "et-annet-tempo-vanlig-tirsdag-innlandet": ["pinoso", "monovar", "biar", "villena"],
+  "et-annet-tempo-vanlig-tirsdag-innlandet": ["pinoso", "monovar", "biar", "villena", "castalla", "banyeres-de-mariola"],
   "fra-supermarked-til-egen-hage": ["pinoso", "la-romana", "monovar", "jumilla"],
   "ferske-egg-frukttraer-mer-selvberget-liv": ["pinoso", "la-romana", "biar", "hondon-de-las-nieves"],
-  "sykkel-fra-ytterdoren-innlandet": ["biar", "sax", "pinoso", "jumilla"],
-  "naboen-mer-enn-personen-bak-veggen": ["la-romana", "monovar", "hondon-de-las-nieves", "villena"],
-  "du-kjoper-rommet-rundt-huset": ["pinoso", "hondon-de-las-nieves", "la-romana", "biar"],
+  "sykkel-fra-ytterdoren-innlandet": ["biar", "castalla", "banyeres-de-mariola", "sax", "busot", "pinoso", "jumilla"],
+  "naboen-mer-enn-personen-bak-veggen": ["la-romana", "monovar", "hondon-de-las-nieves", "villena", "castalla", "banyeres-de-mariola", "busot"],
+  "du-kjoper-rommet-rundt-huset": ["pinoso", "hondon-de-las-nieves", "la-romana", "biar", "castalla", "busot"],
   "fra-blank-tomt-til-eget-landskap": ["pinoso", "aspe", "monforte-del-cid", "biar"],
   "egne-druer-og-lage-vin": ["pinoso", "monovar", "jumilla"],
-  "nar-familien-kommer-pa-besok": ["hondon-de-las-nieves", "aspe", "monforte-del-cid", "pinoso"],
+  "nar-familien-kommer-pa-besok": ["hondon-de-las-nieves", "aspe", "monforte-del-cid", "pinoso", "busot"],
   "privatliv-er-den-nye-luksusen": ["pinoso", "la-romana", "biar", "hondon-de-las-nieves"],
   "10000-m2-i-praksis-for-du-bygger": ["pinoso", "aspe", "monforte-del-cid", "hondon-de-las-nieves"],
 };
@@ -21,10 +21,13 @@ const alternativeAreaLinks: Record<string, string[]> = {
   aspe: ["novelda", "monforte-del-cid", "hondon-de-las-nieves"],
   novelda: ["aspe", "monforte-del-cid", "monovar"],
   "monforte-del-cid": ["aspe", "novelda", "hondon-de-las-nieves"],
-  biar: ["villena", "sax", "pinoso"],
-  villena: ["biar", "sax", "novelda"],
-  sax: ["villena", "biar", "novelda"],
+  biar: ["banyeres-de-mariola", "castalla", "villena"],
+  villena: ["biar", "sax", "castalla"],
+  sax: ["villena", "biar", "castalla"],
   jumilla: ["pinoso", "monovar", "biar"],
+  castalla: ["biar", "banyeres-de-mariola", "busot"],
+  "banyeres-de-mariola": ["biar", "castalla", "villena"],
+  busot: ["castalla", "aspe", "monforte-del-cid"],
 };
 
 export function getArticleAreaSlugs(articleSlug: string, limit = 4) {
