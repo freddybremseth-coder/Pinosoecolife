@@ -230,7 +230,7 @@ export const ecoLifeAreas: EcoLifeArea[] = [
     ],
     bestFor: ["Vin- og matinteresserte", "Finca og større tomter", "Tydelig innlandsliv i Murcia"],
     highlights: ["DOP Jumilla og Monastrell", "Castillo de Jumilla", "Sierra de Santa Ana og vinruter"],
-    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Castillo_de_Jumilla.jpg/1024px-Castillo_de_Jumilla.jpg",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/1/16/Castillo_de_Jumilla.jpg",
     searchTerms: ["Jumilla"],
   },
   {
