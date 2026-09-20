@@ -2,229 +2,119 @@ import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
-import { ecoLifeAreas } from "@/lib/ecolife-areas";
-import { areaMatchesRegion, getAreaProfiles, regions } from "@/lib/realtyflow";
+import { ecoLifeAreaGroups, ecoLifeAreas } from "@/lib/ecolife-areas";
 import styles from "./areas.module.css";
 
 export const metadata = {
   title: "Innlandsområder",
   description:
-    "Utforsk 14 områder i Alicante og Murcia – fra Pinoso og Jumilla til Castalla, Banyeres de Mariola og kystnære Busot – før du velger tomt eller bolig.",
-  alternates: {
-    canonical: "/omrader",
-  },
+    "Les om 14 ulike steder i innlandet i Alicante og Murcia. Sammenlign hverdagsliv, natur, vinland, nærhet til tjenester og muligheter for tomt eller bolig.",
+  alternates: { canonical: "/omrader" },
 };
 
-
-export default async function AreasPage() {
-  const profiles = await getAreaProfiles();
-  const groupedProfiles = regions.map((region) => ({
-    ...region,
-    profiles: profiles.filter((profile) => areaMatchesRegion(profile, region.key)),
-  }));
-  const ungroupedProfiles = profiles.filter(
-    (profile) => !regions.some((region) => areaMatchesRegion(profile, region.key)),
-  );
-
+export default function AreasPage() {
   return (
     <main>
       <SiteHeader />
 
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <p className={styles.eyebrow}>Områder</p>
-          <h1>Finn riktig sted før du velger tomt og bolig</h1>
+          <p className={styles.eyebrow}>Områder i Alicante og Murcia</p>
+          <h1>Hvilket innlandsliv passer deg?</h1>
           <p className={styles.heroCopy}>
-            Pinoso Eco Life starter med hverdagen: ro, natur, vinland, byservice, flyplass, fjell eller landsbyliv. Når
-            området passer, begynner jakten på riktig tomt eller bolig.
+            Start med stedet og hverdagen. Her kan du lese om 14 ulike områder –
+            fra vinmarkene rundt Pinoso til fjellandsbyer og byer med enkel hverdagslogistikk.
+            Først når du finner et sted du liker, ser vi på aktuell tomt eller bolig.
           </p>
           <div className={styles.heroActions}>
-            <Link className={styles.primaryAction} href="/livet-i-innlandet">
-              Utforsk Eco Life-områdene <ArrowRight size={17} />
-            </Link>
-            <Link className={styles.secondaryAction} href="/eiendommer">
-              Se boliger
-            </Link>
+            <a className={styles.primaryAction} href="#finn-livsstil">
+              Finn din type innland <ArrowRight size={17} />
+            </a>
+            <Link className={styles.secondaryAction} href="/eiendommer">Se aktuelle boliger</Link>
           </div>
         </div>
       </section>
 
-      <section className={styles.section}>
+      <section className={styles.section} id="finn-livsstil">
         <div className={styles.introGrid}>
           <div>
-            <p className={styles.sectionEyebrow}>Eco Life-områdene</p>
-            <h2 className={styles.sectionTitle}>{ecoLifeAreas.length} steder – ulike måter å leve i innlandet på</h2>
+            <p className={styles.sectionEyebrow}>Velg etter hverdagen du ønsker</p>
+            <h2 className={styles.sectionTitle}>Ulike steder. Ulike muligheter.</h2>
             <p className={styles.sectionCopy}>
-              Områdeguidene forklarer hvordan hverdagen kan føles, hvem stedet kan passe for, hva slags plass du kan se
-              etter og hvilke nærliggende alternativer som er verdt å sammenligne.
+              Et lite landsbymiljø, en by med flere tjenester, vinlandskap eller fjell og turstier:
+              det som føles riktig for én kjøper, er ikke nødvendigvis riktig for en annen.
+              Utforsk flere steder før du bestemmer deg.
             </p>
           </div>
           <aside className={styles.introAside}>
             <span className={styles.bigNumber}>{ecoLifeAreas.length}</span>
-            <p>steder du kan sammenligne før søket snevres inn til en konkret tomt eller bolig.</p>
+            <p>områder med egne guider om hverdagsliv, natur, plass og hva du bør undersøke før kjøp.</p>
             <Link className={styles.inlineLink} href="/livet-i-innlandet">
-              Sammenlign stedene <ArrowRight size={16} />
+              Les mer om livet i innlandet <ArrowRight size={16} />
             </Link>
           </aside>
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="stedsguider">
-        <div className={styles.groupHeader}>
-          <div>
-            <p className={styles.sectionEyebrow}>Les om stedene</p>
-            <h2 className={styles.sectionTitle} id="stedsguider">Finn stedet som passer hverdagen din</h2>
-            <p className={styles.sectionCopy}>
-              Velg en guide for å se hva som kjennetegner området, hvordan hverdagen kan se ut,
-              og hva du bør undersøke før du velger tomt eller bolig.
-            </p>
-          </div>
-        </div>
-        <nav className={styles.groupGrid} aria-label="Alle innlandsområder">
-          {ecoLifeAreas.map((area) => (
-            <Link className={styles.groupCard} href={`/livet-i-innlandet/${area.slug}`} key={area.slug}>
-              <div>
-                <strong>{area.name}</strong>
-                <p>{area.summary}</p>
-              </div>
-              <span>Les om {area.name} <ArrowRight size={16} /></span>
-            </Link>
-          ))}
-        </nav>
-      </section>
-
-      <section className={`${styles.section} ${styles.dataIntro}`}>
-        <p className={styles.sectionEyebrow}>Aktuelle boliger</p>
-        <h2 className={styles.sectionTitle}>Se hvor vi har boliger akkurat nå</h2>
-        <p className={styles.sectionCopy}>
-          Utvalget endrer seg med tilgjengeligheten. Hvis du først vil finne området som passer livet du ønsker, kan du
-          utforske alle Eco Life-guidene før du går videre til konkrete boliger og tomter.
-        </p>
-        <Link className={styles.inlineLink} href="/livet-i-innlandet">
-          Utforsk alle områdene <ArrowRight size={16} />
-        </Link>
-      </section>
-
-      <nav className={styles.groupGrid} aria-label="Aktuelle boligområder">
-        {regions.map((region) => (
-          <a className={styles.groupCard} href={`#${region.key}`} key={region.key}>
+      <nav className={styles.groupGrid} aria-label="Velg hva slags hverdagsliv du ønsker">
+        {ecoLifeAreaGroups.map((group) => (
+          <a className={styles.groupCard} href={`#${group.key}`} key={group.key}>
             <div>
-              <strong>{region.label}</strong>
-              <p>{region.description}</p>
+              <strong>{group.title}</strong>
+              <p>{group.text}</p>
             </div>
-            <span>Utforsk området ↓</span>
+            <span>Utforsk {ecoLifeAreas.filter((area) => area.zone === group.key).length} steder ↓</span>
           </a>
         ))}
       </nav>
 
-      {groupedProfiles.map((group) => (
+      {ecoLifeAreaGroups.map((group) => (
         <section className={`${styles.section} ${styles.groupSection}`} id={group.key} key={group.key}>
           <div className={styles.groupHeader}>
             <div>
-              <p className={styles.sectionEyebrow}>Området og aktuelle boliger</p>
-              <h2 className={styles.sectionTitle}>{group.label}</h2>
-              <p className={styles.sectionCopy}>{group.description}</p>
+              <p className={styles.sectionEyebrow}>Steder å utforske</p>
+              <h2 className={styles.sectionTitle}>{group.title}</h2>
+              <p className={styles.sectionCopy}>{group.text}</p>
             </div>
-            <div className={styles.groupActions}>
-              <Link className={styles.pillLink} href={`/omrader/${group.key}`}>
-                Se området
-              </Link>
-              <Link className={styles.pillLink} href={`/eiendommer?region=${group.key}`}>
-                Se boliger
-              </Link>
-            </div>
+            <Link className={styles.pillLink} href="/livet-i-innlandet">
+              Om livet i innlandet <ArrowRight size={16} />
+            </Link>
           </div>
-
-          <div className={styles.profileList}>
-            {group.profiles.length > 0 ? (
-              group.profiles.map((profile) => (
-                <article
-                  className={`${styles.profileCard} ${profile.photo_url ? "" : styles.profileCardNoPhoto}`}
-                  key={profile.id || profile.slug || profile.name}
-                >
-                  {profile.photo_url && (
-                    <div className={styles.profileImage} style={{ backgroundImage: `url(${profile.photo_url})` }} />
-                  )}
-                  <div className={styles.profileBody}>
-                    <span className={styles.profileMeta}>{profile.region || profile.country || "Spania"}</span>
-                    <h2>{profile.name}</h2>
-                    {profile.hero_blurb && <strong>{profile.hero_blurb}</strong>}
-                    {profile.description && <p>{profile.description}</p>}
-                    {Array.isArray(profile.highlights) && profile.highlights.length > 0 && (
-                      <ul>
-                        {profile.highlights.slice(0, 5).map((highlight) => (
-                          <li key={highlight}>{highlight}</li>
-                        ))}
-                      </ul>
-                    )}
-                    <Link
-                      className={styles.inlineLink}
-                      href={`/eiendommer?region=${group.key}&area=${encodeURIComponent(profile.name)}`}
-                    >
-                      Se boliger i {profile.name} <ArrowRight size={16} />
-                    </Link>
-                  </div>
-                </article>
-              ))
-            ) : (
-              <article className={styles.emptyCard}>
-                <MapPin size={24} />
+          <nav className={styles.groupGrid} aria-label={`Les om områder: ${group.title}`}>
+            {ecoLifeAreas.filter((area) => area.zone === group.key).map((area) => (
+              <Link className={styles.groupCard} href={`/livet-i-innlandet/${area.slug}`} key={area.slug}>
                 <div>
-                  <h3>Vil du utforske dette området nærmere?</h3>
-                  <p>
-                    Les om stedene og livsstilen i «Livet i innlandet», eller kontakt oss hvis du vil at vi skal lete
-                    konkret etter bolig eller tomt her.
-                  </p>
+                  <img
+                    src={area.photo}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 12, marginBottom: 18 }}
+                  />
+                  <strong>{area.name}</strong>
+                  <p>{area.summary}</p>
                 </div>
-              </article>
-            )}
-          </div>
+                <span>Les om livet i {area.name} <ArrowRight size={16} /></span>
+              </Link>
+            ))}
+          </nav>
         </section>
       ))}
 
-      {ungroupedProfiles.length > 0 && (
-        <section className={`${styles.section} ${styles.groupSection}`}>
-          <div className={styles.groupHeader}>
-            <div>
-              <p className={styles.sectionEyebrow}>Flere områder</p>
-              <h2 className={styles.sectionTitle}>Andre steder å se nærmere på</h2>
-            </div>
-          </div>
-          <div className={styles.profileList}>
-            {ungroupedProfiles.map((profile) => (
-              <article
-                className={`${styles.profileCard} ${profile.photo_url ? "" : styles.profileCardNoPhoto}`}
-                key={profile.id || profile.slug || profile.name}
-              >
-                {profile.photo_url && (
-                  <div className={styles.profileImage} style={{ backgroundImage: `url(${profile.photo_url})` }} />
-                )}
-                <div className={styles.profileBody}>
-                  <span className={styles.profileMeta}>{profile.region || profile.country || "Spania"}</span>
-                  <h2>{profile.name}</h2>
-                  {profile.hero_blurb && <strong>{profile.hero_blurb}</strong>}
-                  {profile.description && <p>{profile.description}</p>}
-                  <Link className={styles.inlineLink} href={`/eiendommer?area=${encodeURIComponent(profile.name)}`}>
-                    Se boliger i {profile.name} <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
       <section className={styles.section}>
         <div className={styles.closing}>
-          <p className={styles.sectionEyebrow}>Usikker på hvor du skal starte?</p>
-          <h2>Velg livsstilen først – deretter området</h2>
+          <p className={styles.sectionEyebrow}>Fra områdevalg til ditt eget sted</p>
+          <h2>Har du funnet et område som frister?</h2>
           <p>
-            Hvis du ikke allerede kjenner innlandet, start med «Livet i innlandet». Der kan du sammenligne konkrete
-            steder før bolig- og tomtesøket snevres inn.
+            Neste steg er å undersøke aktuelle boliger eller finne en tomt som passer både
+            ønskene dine og lokale regler. En stor tomt alene betyr ikke at den kan bebygges.
+            Vi hjelper deg å avklare alternativene før du bestemmer deg.
           </p>
-          <Link className={styles.primaryAction} href="/livet-i-innlandet">
-            Finn din type innlandsliv <ArrowRight size={17} />
-          </Link>
+          <div className={styles.heroActions} style={{ justifyContent: "center" }}>
+            <Link className={styles.pillLink} href="/eiendommer">Se boliger <ArrowRight size={16} /></Link>
+            <Link className={styles.pillLink} href="/tomter">Se tomter <MapPin size={16} /></Link>
+            <Link className={styles.pillLink} href="/#kontakt">Fortell oss hva du ser etter</Link>
+          </div>
         </div>
       </section>
 
