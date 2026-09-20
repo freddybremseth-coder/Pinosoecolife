@@ -8,6 +8,7 @@ import styles from "./SiteHeader.module.css";
 
 const navLinks = [
   { href: "/livet-i-innlandet", label: "Livet i innlandet" },
+  { href: "/omrader", label: "Områder" },
   { href: "/eiendommer", label: "Boliger" },
   { href: "/tomter", label: "Tomter" },
   { href: "/kjopsprosessen", label: "Kjøpsprosess" },
@@ -15,6 +16,10 @@ const navLinks = [
 ];
 
 function isActivePath(pathname: string, href: string) {
+  // Individual area guides live under /livet-i-innlandet/[slug], but belong
+  // to the Områder navigation item rather than the lifestyle overview.
+  if (href === "/livet-i-innlandet") return pathname === href;
+  if (href === "/omrader") return pathname === href || pathname.startsWith("/livet-i-innlandet/");
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
