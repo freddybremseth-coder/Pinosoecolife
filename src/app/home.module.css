@@ -283,6 +283,19 @@
   line-height: 1.8;
 }
 
+.emptyHomes {
+  padding: 36px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.emptyHomes p {
+  margin: 0 0 14px;
+}
+
 .stageActions {
   display: flex;
   flex-wrap: wrap;
