@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ArrowLeft, Bath, BedDouble, Download, FileText, Home, MessageCircle, Ruler, Tag } from "lucide-react";
+import { CompareButton } from "@/components/CompareProperties";
 import { ContactForm } from "@/components/ContactForm";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Footer } from "@/components/Footer";
@@ -20,6 +21,7 @@ import {
   getPropertyTitle,
   getPropertyType,
 } from "@/lib/realtyflow";
+import { formatEuroPerSqm, getPlotInPriceLabel, getPricingFacts } from "@/lib/property-comparison";
 import styles from "./property-detail.module.css";
 
 export async function generateStaticParams() {
@@ -88,6 +90,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
       property.amenities_no.some((item) => /floorplan|plantegning/i.test(String(item))));
   const mainImage = getPrimaryImage(property);
   const description = getPropertyDescription(property);
+  const pricing = getPricingFacts(property);
   const location = property.location || property.town || "Spania";
   const detailFacts = [
     { icon: <Tag />, label: `Ref ${getPropertyRef(property)}` },
@@ -155,7 +158,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           <p className={styles.eyebrow}>{location}</p>
           <h1 className={styles.title}>{getPropertyTitle(property)}</h1>
           <strong className={styles.price}>{formatPrice(property.price)}</strong>
+          <p className={styles.heroPriceNote}>{getPlotInPriceLabel(property)}</p>
           <div className={styles.heroActions}>
+            <CompareButton refId={getPropertyRef(property)} />
             <FavoriteButton
               favorite={{
                 ref: getPropertyRef(property),
@@ -196,6 +201,18 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
             ))}
           </div>
 
+          <section className={styles.priceClarity} aria-labelledby="pricing-heading">
+            <h2 id="pricing-heading">Hva er inkludert i prisen?</h2>
+            <p><strong>Tomt:</strong> {getPlotInPriceLabel(property)}.</p>
+            {property.plot_size ? <p><strong>Tomtestørrelse:</strong> {Number(property.plot_size).toLocaleString("nb-NO")} m² (tomtestørrelse alene bekrefter ikke at tomten følger med).</p> : <p>Tomtestørrelse er ikke oppgitt.</p>}
+            {pricing.plotInPrice === "excluded" && pricing.plotPrice !== null && <p><strong>Separat tomtepris:</strong> {formatPrice(pricing.plotPrice)}</p>}
+            <p><strong>Oppgitt boligpris:</strong> {formatPrice(property.price)}</p>
+            <p><strong>Pris per m² boligareal:</strong> {formatEuroPerSqm(pricing.pricePerBuiltSqm)} (oppgitt pris delt på boligareal; kan omfatte tomt dersom den er inkludert).</p>
+            <p><strong>Bolig + tomt:</strong> {pricing.totalHouseAndPlot !== null ? formatPrice(pricing.totalHouseAndPlot) : "Kan ikke beregnes før tomtens pris og inkludering er bekreftet"}.</p>
+            <p className={styles.priceDisclaimer}>Skatter, notar, registrering, grunnarbeid, tilkoblinger, basseng, andre tilvalg og kostnader som ikke uttrykkelig er oppgitt kan komme i tillegg. Be om skriftlig, spesifisert pristilbud for dette prosjektet.</p>
+            <a href="#kontakt" className={styles.priceContact}>Be om bekreftet totalpris og spesifikasjon →</a>
+          </section>
+
           <article className={styles.story}>
             <h2>Om boligen</h2>
             <ReadMoreText
@@ -226,6 +243,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
               <div className={styles.costBox}>
                 <span>Oppgitt boligpris</span>
                 <strong>{formatPrice(property.price)}</strong>
+                <span>Tomt inkludert?</span>
+                <strong>{pricing.plotInPrice === "included" ? "Ja" : pricing.plotInPrice === "excluded" ? "Nei" : "Ikke bekreftet"}</strong>
+                <span>Bolig + tomt, før omkostninger</span>
+                <strong>{pricing.totalHouseAndPlot !== null ? formatPrice(pricing.totalHouseAndPlot) : "Ikke beregnet"}</strong>
                 <span>Skatter og omkostninger</span>
                 <strong>Beregnes konkret</strong>
               </div>
