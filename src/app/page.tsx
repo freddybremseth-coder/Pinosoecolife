@@ -160,7 +160,7 @@ export default async function Home() {
               <p>Vi oppdaterer utvalget av villaer og fincaer med egne boligbilder. Ta kontakt for aktuelle muligheter i innlandet.</p>
               <Link className="text-button" href="/#kontakt">Fortell oss hva du ser etter <ArrowRight size={18} /></Link>
             </div>
-          )
+          )}
           <div className={styles.stageActions}>
             <Link className="text-button" href="/eiendommer">
               Se alle boliger <ArrowRight size={18} />
