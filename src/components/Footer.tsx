@@ -24,6 +24,7 @@ export function Footer() {
           <nav className={styles.column} aria-label="Utforsk Pinoso Eco Life">
             <span className={styles.columnTitle}>Utforsk</span>
             <Link href="/livet-i-innlandet">Livet i innlandet</Link>
+            <Link href="/omrader">Områder</Link>
             <Link href="/eiendommer">Boliger</Link>
             <Link href="/tomter">Tomter</Link>
             <Link href="/magasin">Magasin</Link>
@@ -41,7 +42,7 @@ export function Footer() {
 
           <nav className={styles.column} aria-label="Rådgivning og neste steg">
             <span className={styles.columnTitle}>Neste steg</span>
-            <Link href="/livet-i-innlandet">Finn riktig område</Link>
+            <Link href="/omrader">Finn riktig område</Link>
             <Link href="/kjopsprosessen">Kjøpsprosessen</Link>
             <Link href="/om-freddy">Om Freddy Bremseth</Link>
             <Link href="/min-side">Min side</Link>
