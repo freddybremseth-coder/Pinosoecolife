@@ -56,7 +56,7 @@ function parseProfile(text: string, previous: Profile): Profile {
   if (/tomt|parsell|parcela|plot|bygge/.test(lower)) next.propertyType = "Tomt og bygging";
   else if (/finca|landsted|gard|gård/.test(lower)) next.propertyType = "Finca / landsted";
   else if (/villa|nybygg|hus/.test(lower)) next.propertyType = "Villa / nybygg";
-  const budget = text.match(/(?:€|eur|euro|budsjett|maks|under|ca\.?)\s*([\d][\d .]{3,})/i);
+  const budget = text.match(/(?:€|eur|euro|budsjett|maks|under|ca\.?)\s*([\d][\d .]{3,})/i) || text.match(/\b([1-9]\d{1,2}(?:[ .]\d{3})+)\s*(?:€|eur|euro)?\b/i);
   if (budget) {
     const value = Number(budget[1].replace(/[^\d]/g, ""));
     if (value >= 50000 && value <= 10000000) next.budget = "€" + value.toLocaleString("nb-NO");
@@ -89,7 +89,7 @@ function answer(text: string, profile: Profile, turns: number) {
     return "Skill tomtepris, selve huset, grunnarbeid, vann/strøm/avløp og kjøps- og byggekostnader. Skatt og avgifter avhenger av type handel og region; en fast prosent blir misvisende. Har du et samlet budsjett for tomt og ferdig bolig?";
   }
   if (/tillat|bygge|tomt|parsell|reguler|rustic|rustik|10.?000|hektar/.test(lower)) {
-    return "Velg området først. Deretter må den konkrete tomten undersøkes: planstatus, byggbarhet, adkomst, vannrettigheter/tilgang, strøm, avløp, terreng og totale kostnader. 10 000 m² gir ikke automatisk byggetillatelse. Har du allerede en tomt, eller skal vi starte med områdene?";
+    return "Velg området først. Deretter må den konkrete tomten undersøkes: planstatus, byggbarhet, adkomst, vannrettigheter/tilgang, strøm, avløp, terreng og totale kostnader. 10 000 m² gir ikke automatisk byggetillatelse. Villa-modeller fra Aspe/Pinoso kan inspirere også i andre innlandsområder, men tomten og lokale rammer avgjør hva som kan bygges. Har du allerede en tomt, eller skal vi starte med områdene?";
   }
   if (/hage|dyrk|frukt|egg|honer|høner|selvforsyn|oliven/.test(lower)) {
     return "En stor tomt kan gi plass til kjøkkenhage, frukttrær og kanskje høner, men vann, frost, jord, stell og lokale regler avgjør hva som er realistisk. Ønsker du en liten hage som er lett å holde, eller vil du bruke mye av hverdagen på tomten?";
@@ -160,6 +160,12 @@ export function PinosoChatbot() {
     const turns = userTurns + 1;
     setProfile(next);
     setUserTurns(turns);
+    if (/kontakt|snakk med freddy|ringe meg|ring meg|ta kontakt|folges opp|følges opp/.test(normalize(text))) {
+      setStage("name");
+      setMessages(prev => [...prev, { role: "user", text },
+        { role: "assistant", text: "Gjerne. Hva heter du, så Freddy kan følge opp med konkrete forslag?" }]);
+      return;
+    }
     setMessages(prev => [...prev,
       { role: "user", text },
       { role: "assistant", text: answer(text, next, turns) },
