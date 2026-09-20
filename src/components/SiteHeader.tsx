@@ -52,7 +52,7 @@ export function SiteHeader() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <Link className={styles.brand} href="/" aria-label="Pinoso Eco Life – forside">
-          <img className={styles.logo} src="/assets/logo.png" alt="" />
+          <img className={styles.logo} src="/assets/ecolife-mark.svg" alt="" width={56} height={56} />
           <span className={styles.brandCopy}>
             <span className={styles.wordmark}>Pinoso Eco Life</span>
             <span className={styles.brandLine}>Innlandet i Alicante &amp; Murcia</span>
