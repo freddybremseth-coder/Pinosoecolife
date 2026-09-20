@@ -2,6 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
+import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import { ArrowRight, MessageCircle, Send, Sprout, X } from "lucide-react";
 
 type Stage = "chat" | "name" | "phone" | "email" | "done";
@@ -88,6 +89,19 @@ function parseProfile(text: string, previous: Profile): Profile {
 
 function answer(text: string, profile: Profile, turns: number) {
   const lower = normalize(text);
+  // Keep comparisons grounded in the same editorial area profiles the buyer can read.
+  const compared = AREAS.filter((area) => area.match.test(lower));
+  if (compared.length >= 2 && /sammenlign|forskjell|eller|versus|vs\\.?|hvilk/.test(lower)) {
+    const [first, second] = compared;
+    const firstGuide = ecoLifeAreas.find((area) => area.slug === first.slug);
+    const secondGuide = ecoLifeAreas.find((area) => area.slug === second.slug);
+    if (firstGuide && secondGuide) {
+      return `Du sammenligner ${first.name} og ${second.name}. ${first.name}: ${firstGuide.summary} ${second.name}: ${secondGuide.summary} Les gjerne begge områdeguidene. Hva betyr mest for deg – lokalmiljø, turmuligheter, reisevei eller plass til dyrking?`;
+    }
+  }
+  if (/hondon de los frailes|hondon-dalene|hondondalene/.test(lower)) {
+    return "Hondón-dalene omfatter blant annet Hondón de las Nieves og Hondón de los Frailes. Det er forskjellige landsbymiljøer; den konkrete adressen avgjør service, reisevei og hvilke tomter som kan brukes. Du kan starte med guiden vår til Hondón de las Nieves, så sammenligner vi konkrete steder videre.";
+  }
   if (/skatt|kost|avgift|pris|finansier|budsjett/.test(lower)) {
     return "Skill tomtepris, selve huset, grunnarbeid, vann/strøm/avløp og kjøps- og byggekostnader. Skatt og avgifter avhenger av type handel og region; en fast prosent blir misvisende. Har du et samlet budsjett for tomt og ferdig bolig?";
   }
@@ -287,6 +301,13 @@ export function PinosoChatbot() {
               <p className={message.role} key={index}>{message.text}</p>
             ))}
           </div>
+          {stage === "chat" && !profile.areaSlug && (
+            <div className="chatbot-area-links">
+              <Link href="/omrader" onClick={() => setOpen(false)}>
+                Utforsk alle {ecoLifeAreas.length} innlandsområdene <ArrowRight size={14} />
+              </Link>
+            </div>
+          )}
           {profile.areaSlug && stage === "chat" && (
             <div className="chatbot-area-links">
               <Link href={"/livet-i-innlandet/" + profile.areaSlug} onClick={() => setOpen(false)}>
