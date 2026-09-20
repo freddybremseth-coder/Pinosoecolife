@@ -77,3 +77,9 @@ export function getPropertyPreview(property: Property, maxLength = 220): string 
   const lastSpace = truncated.lastIndexOf(" ");
   return `${truncated.slice(0, lastSpace > maxLength / 2 ? lastSpace : maxLength).trimEnd()}…`;
 }
+
+export function compareUrl(refs: string[]): string {
+  const query = new URLSearchParams();
+  refs.forEach((ref) => query.append("ref", ref));
+  return `/sammenlign?${query.toString()}`;
+}
