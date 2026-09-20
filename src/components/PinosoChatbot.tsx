@@ -91,7 +91,7 @@ function answer(text: string, profile: Profile, turns: number) {
   const lower = normalize(text);
   // Keep comparisons grounded in the same editorial area profiles the buyer can read.
   const compared = AREAS.filter((area) => area.match.test(lower));
-  if (compared.length >= 2 && /sammenlign|forskjell|eller|versus|vs\\.?|hvilk/.test(lower)) {
+  if (compared.length >= 2 && /sammenlign|forskjell|eller|versus|vs\.?|hvilk/.test(lower)) {
     const [first, second] = compared;
     const firstGuide = ecoLifeAreas.find((area) => area.slug === first.slug);
     const secondGuide = ecoLifeAreas.find((area) => area.slug === second.slug);
