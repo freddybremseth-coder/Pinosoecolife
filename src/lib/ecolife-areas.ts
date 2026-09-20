@@ -72,6 +72,24 @@ export const ecoLifeAreas: EcoLifeArea[] = [
     searchTerms: ["La Romana", "Romana"],
   },
   {
+    slug: "hondon-dalene",
+    name: "Hondón-dalene",
+    region: "Alicante",
+    zone: "landsby",
+    eyebrow: "Hondón de las Nieves · Hondón de los Frailes · vinland",
+    summary:
+      "Hondón-dalene er et naturlig område å sammenligne hvis du ønsker vinlandskap, landsbyliv og større uteområder, men vil vurdere flere lokale miljøer før du bestemmer deg.",
+    story: [
+      "Hondón-dalene brukes her som en felles inngang til området rundt Hondón de las Nieves og Hondón de los Frailes. De ligger i samme innlandsbelte, men hverdagen, servicetilbudet og eiendommene varierer nok til at det er verdt å besøke begge.",
+      "Landskapet preges av vinmarker, mandel- og oliventrær, og rundt landsbyene finnes villaer, fincaer og landsteder med svært forskjellig standard, størrelse og dokumentasjon. Derfor bør du velge lokalmiljø først og deretter kontrollere den konkrete eiendommen.",
+      "For noen er et etablert internasjonalt miljø viktig. Andre vil ha mest mulig lokal landsbyfølelse, utsikt eller plass til hage og dyrking. Bruk dalene som et område å utforske, ikke som én ensartet boligdestinasjon.",
+    ],
+    bestFor: ["Villa eller finca i vinlandskap", "Landsbyliv med større uteområder", "Deg som vil sammenligne flere lokale miljøer"],
+    highlights: ["Hondón de las Nieves og Hondón de los Frailes", "Vinmarker, mandel og oliven", "Bolig og tomt må vurderes konkret"],
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Hond%C3%B3n_de_las_Nieves_-_Plaza_de_la_Villa_y_Ayuntamiento.jpg/960px-Hond%C3%B3n_de_las_Nieves_-_Plaza_de_la_Villa_y_Ayuntamiento.jpg",
+    searchTerms: ["Hondón-dalene", "Hondon dalene", "Hondón de los Frailes", "Hondon de los Frailes", "Hondón", "Hondon"],
+  },
+  {
     slug: "hondon-de-las-nieves",
     name: "Hondón de las Nieves",
     region: "Alicante",
