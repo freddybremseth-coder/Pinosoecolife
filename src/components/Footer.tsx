@@ -8,7 +8,7 @@ export function Footer() {
         <div className={styles.top}>
           <section className={styles.brandBlock}>
             <Link className={styles.brand} href="/" aria-label="Pinoso Eco Life – forside">
-              <img className={styles.logo} src="/assets/logo.png" alt="" />
+              <img className={styles.logo} src="/assets/ecolife-mark.svg" alt="" width={56} height={56} />
               <span className={styles.wordmark}>
                 <strong>Pinoso Eco Life</strong>
                 <span>Innlandet i Alicante &amp; Murcia</span>
