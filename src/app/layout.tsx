@@ -5,6 +5,7 @@ import { PinosoChatbot } from "@/components/PinosoChatbot";
 import { SearchDiscoveryTracker } from "@/components/SearchDiscoveryTracker";
 import "./globals.css";
 import "./design-system.css";
+import "./ecolife-advisor.css";
 
 const manrope = Manrope({
   subsets: ["latin"],
