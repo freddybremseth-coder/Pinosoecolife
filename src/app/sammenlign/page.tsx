@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Footer } from "@/components/Footer";
-import { CompareRemoveLink, compareUrl } from "@/components/CompareProperties";
+import { CompareRemoveLink } from "@/components/CompareProperties";
 import { SiteHeader } from "@/components/SiteHeader";
 import {
   formatPrice,
@@ -15,6 +15,7 @@ import {
   type Property,
 } from "@/lib/realtyflow";
 import {
+  compareUrl,
   formatEuroPerSqm,
   formatSquareMetres,
   getPricingFacts,
