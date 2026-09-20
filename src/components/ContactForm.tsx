@@ -2,24 +2,9 @@
 
 import { useState } from "react";
 import { Send } from "lucide-react";
+import { ecoLifeAreas } from "@/lib/ecolife-areas";
 
-const standardAreas = [
-  "Pinoso",
-  "Monóvar",
-  "La Romana",
-  "Hondón de las Nieves",
-  "Aspe",
-  "Novelda",
-  "Monforte del Cid",
-  "Biar",
-  "Villena",
-  "Sax",
-  "Jumilla",
-  "Castalla",
-  "Banyeres de Mariola",
-  "Busot",
-  "Åpen for forslag",
-];
+const standardAreas = [...ecoLifeAreas.map((area) => area.name), "Åpen for forslag"];
 
 const lifestyleInterests = [
   "Privatliv og ro",

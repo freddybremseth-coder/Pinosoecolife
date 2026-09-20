@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import { ArrowRight, MessageCircle, Send, Sprout, X } from "lucide-react";
@@ -19,22 +19,36 @@ type Profile = {
 };
 type Lead = { name: string; phone: string; email?: string };
 
-const AREAS = [
-  { name: "Pinoso", slug: "pinoso", match: /(^|\W)(pinoso|pinos)(\W|$)/ },
-  { name: "Monóvar", slug: "monovar", match: /monovar/ },
-  { name: "La Romana", slug: "la-romana", match: /la romana/ },
-  { name: "Hondón de las Nieves", slug: "hondon-de-las-nieves", match: /hondon|fondo de les neus/ },
-  { name: "Aspe", slug: "aspe", match: /(^|\W)aspe(\W|$)/ },
-  { name: "Novelda", slug: "novelda", match: /novelda/ },
-  { name: "Monforte del Cid", slug: "monforte-del-cid", match: /monforte/ },
-  { name: "Biar", slug: "biar", match: /(^|\W)biar(\W|$)/ },
-  { name: "Villena", slug: "villena", match: /villena/ },
-  { name: "Sax", slug: "sax", match: /(^|\W)sax(\W|$)/ },
-  { name: "Jumilla", slug: "jumilla", match: /jumilla/ },
-  { name: "Castalla", slug: "castalla", match: /castalla|foia de castalla/ },
-  { name: "Banyeres de Mariola", slug: "banyeres-de-mariola", match: /banyeres|baneres de mariola|ban(y|n)eres/ },
-  { name: "Busot", slug: "busot", match: /busot/ },
-] as const;
+type AdvisorArea = {
+  name: string;
+  slug: string;
+  terms: string[];
+};
+
+const AREAS: AdvisorArea[] = ecoLifeAreas.map((area) => ({
+  name: area.name,
+  slug: area.slug,
+  terms: Array.from(new Set([area.name, ...area.searchTerms])),
+}));
+
+function areaTermInText(text: string, term: string) {
+  const haystack = ` ${normalize(text).replace(/[^a-z0-9]+/g, " ").trim()} `;
+  const needle = ` ${normalize(term).replace(/[^a-z0-9]+/g, " ").trim()} `;
+  return needle.trim().length >= 3 && haystack.includes(needle);
+}
+
+function matchAreas(text: string) {
+  return AREAS
+    .map((area) => {
+      const matchedTerms = area.terms.filter((term) => areaTermInText(text, term));
+      return {
+        ...area,
+        score: matchedTerms.reduce((best, term) => Math.max(best, normalize(term).length), 0),
+      };
+    })
+    .filter((area) => area.score > 0)
+    .sort((a, b) => b.score - a.score);
+}
 
 const QUICK = [
   { label: "Hvilket område passer meg?", text: "Jeg vil finne et innlandsområde som passer hverdagen min." },
@@ -50,12 +64,10 @@ function normalize(value: string) {
 function parseProfile(text: string, previous: Profile): Profile {
   const lower = normalize(text);
   const next: Profile = { ...previous, priorities: [...previous.priorities] };
-  for (const area of AREAS) {
-    if (area.match.test(lower)) {
-      next.area = area.name;
-      next.areaSlug = area.slug;
-      break;
-    }
+  const [matchedArea] = matchAreas(text);
+  if (matchedArea) {
+    next.area = matchedArea.name;
+    next.areaSlug = matchedArea.slug;
   }
   if (/tomt|parsell|parcela|plot|bygge/.test(lower)) next.propertyType = "Tomt og bygging";
   else if (/finca|landsted|gard|gård/.test(lower)) next.propertyType = "Finca / landsted";
@@ -90,7 +102,7 @@ function parseProfile(text: string, previous: Profile): Profile {
 function answer(text: string, profile: Profile, turns: number) {
   const lower = normalize(text);
   // Keep comparisons grounded in the same editorial area profiles the buyer can read.
-  const compared = AREAS.filter((area) => area.match.test(lower));
+  const compared = matchAreas(text);
   if (compared.length >= 2 && /sammenlign|forskjell|eller|versus|vs\.?|hvilk/.test(lower)) {
     const [first, second] = compared;
     const firstGuide = ecoLifeAreas.find((area) => area.slug === first.slug);
@@ -99,8 +111,19 @@ function answer(text: string, profile: Profile, turns: number) {
       return `Du sammenligner ${first.name} og ${second.name}. ${first.name}: ${firstGuide.summary} ${second.name}: ${secondGuide.summary} Les gjerne begge områdeguidene. Hva betyr mest for deg – lokalmiljø, turmuligheter, reisevei eller plass til dyrking?`;
     }
   }
+  const directArea = compared[0];
+  if (
+    compared.length === 1 &&
+    directArea &&
+    /fortell|hvordan|passer|omrade|område|bo|livet|hverdagen|hva er/.test(lower)
+  ) {
+    const guide = ecoLifeAreas.find((area) => area.slug === directArea.slug);
+    if (guide) {
+      return `${guide.name}: ${guide.summary} Passer særlig for: ${guide.bestFor.join(", ")}. Du kan åpne områdeguiden direkte i rådgiveren og sammenligne med andre steder før du velger tomt eller bolig.`;
+    }
+  }
   if (/hondon de los frailes|hondon-dalene|hondondalene/.test(lower)) {
-    return "Hondón-dalene omfatter blant annet Hondón de las Nieves og Hondón de los Frailes. Det er forskjellige landsbymiljøer; den konkrete adressen avgjør service, reisevei og hvilke tomter som kan brukes. Du kan starte med guiden vår til Hondón de las Nieves, så sammenligner vi konkrete steder videre.";
+    return "Hondón-dalene omfatter blant annet Hondón de las Nieves og Hondón de los Frailes. Det er forskjellige landsbymiljøer; den konkrete adressen avgjør service, reisevei og hvilke tomter som kan brukes. Start gjerne med oversiktsguiden vår til Hondón-dalene, og gå derfra videre til Hondón de las Nieves eller konkrete eiendommer.";
   }
   if (/skatt|kost|avgift|pris|finansier|budsjett/.test(lower)) {
     return "Skill tomtepris, selve huset, grunnarbeid, vann/strøm/avløp og kjøps- og byggekostnader. Skatt og avgifter avhenger av type handel og region; en fast prosent blir misvisende. Har du et samlet budsjett for tomt og ferdig bolig?";
@@ -167,6 +190,11 @@ export function PinosoChatbot() {
   const [sending, setSending] = useState(false);
   const [saved, setSaved] = useState(false);
   const [needsWhatsApp, setNeedsWhatsApp] = useState(false);
+  const [pageContext, setPageContext] = useState("pinosoecolife.com");
+
+  useEffect(() => {
+    setPageContext(`${document.title} · ${window.location.href}`);
+  }, []);
 
   const conversationSummary = useMemo(() => summary(profile, messages), [profile, messages]);
   const whatsappUrl = useMemo(() =>
@@ -175,8 +203,8 @@ export function PinosoChatbot() {
        lead.name ? "Navn: " + lead.name : "",
        lead.phone ? "Telefon: " + lead.phone : "",
        conversationSummary,
-       "Side: pinosoecolife.com"].filter(Boolean).join("\n\n")
-    ), [lead.name, lead.phone, conversationSummary]);
+       "Side: " + pageContext].filter(Boolean).join("\n\n")
+    ), [lead.name, lead.phone, conversationSummary, pageContext]);
 
   function appendUser(text: string) {
     const next = parseProfile(text, profile);
