@@ -1,0 +1,57 @@
+.addButton {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid #6e8269;
+  border-radius: 999px;
+  background: #eff3e8;
+  color: #233f2f;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+.addButton[aria-pressed="true"] { background: #244731; color: white; border-color: #244731; }
+.addButton:disabled { opacity: .45; cursor: not-allowed; }
+.addButton:focus-visible, .refButton:focus-visible, .compareLink:focus-visible, .removeLink:focus-visible { outline: 3px solid #d3a754; outline-offset: 3px; }
+.tray {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 980;
+  color: white;
+  background: #163326;
+  border-top: 1px solid #819d7d;
+  box-shadow: 0 -8px 30px rgba(0,0,0,.17);
+}
+.trayInner {
+  width: min(1340px, calc(100% - 28px));
+  margin: auto;
+  padding: 12px 0 max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.trayInfo { display: grid; gap: 2px; min-width: 170px; }
+.trayInfo strong { font-size: .91rem; }
+.trayInfo span { font-size: .73rem; color: #dbe5d7; }
+.refs { display: flex; flex: 1 1 180px; gap: 7px; flex-wrap: wrap; }
+.refButton { padding: 7px 9px; border-radius: 18px; border: 1px solid #8caa91; background: #284a36; color: white; cursor: pointer; font: inherit; font-size: .72rem; overflow-wrap: anywhere; }
+.refButton span { font-size: 1.1em; margin-left: 6px; }
+.compareLink,.disabledLink { padding: 11px 16px; border-radius: 22px; font-size: .84rem; font-weight: 750; white-space: nowrap; }
+.compareLink { background: #f3ebdb; color: #193628; }
+.disabledLink { background: #365542; color: #e6eee5; }
+.removeLink { display: inline-flex; align-items: center; padding: 9px 0; color: #335b43; font-size: .78rem; font-weight: 700; text-decoration: underline; }
+@media(max-width:680px) {
+  .trayInner { gap: 9px; padding: 9px 0 max(9px,env(safe-area-inset-bottom)); }
+  .trayInfo { flex: 1 1 100%; }
+  .trayInfo span { display: none; }
+  .refs { flex: 1 1 100%; }
+  .refButton { padding: 5px 8px; }
+  .compareLink,.disabledLink { width: 100%; text-align: center; padding: 8px; }
+}
