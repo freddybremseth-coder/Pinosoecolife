@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { connection } from "next/server";
 import Link from "next/link";
 import { ArrowRight, Check, Grape, Leaf, MapPinned, Sprout, SunMedium } from "lucide-react";
 import { BuyerMatchQuiz } from "@/components/BuyerMatchQuiz";
@@ -10,10 +11,16 @@ import { getProperties, type Property } from "@/lib/realtyflow";
 import styles from "./home.module.css";
 
 function featuredProperties(items: Property[], count: number) {
-  return items.slice(0, count);
+  const shuffled = [...items];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled.slice(0, count);
 }
 
 export default async function Home() {
+  await connection(); // Fresh six-property selection for each new homepage request.
   const properties = featuredProperties(await getProperties(0), 6);
 
   const journey = [
