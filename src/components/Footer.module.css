@@ -57,12 +57,12 @@
 }
 
 .wordmark strong {
-  font-size: 1.02rem;
+  font-size: 1.3rem;
   letter-spacing: -0.02em;
 }
 
 .wordmark span {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.74);
   font-size: 0.7rem;
   font-weight: 620;
   letter-spacing: 0.09em;

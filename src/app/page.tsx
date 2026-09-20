@@ -7,21 +7,13 @@ import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SiteHeader } from "@/components/SiteHeader";
-import { getProperties, type Property } from "@/lib/realtyflow";
+import { getProperties } from "@/lib/realtyflow";
+import { selectEcoLifeFeaturedHomes } from "@/lib/featured-homes";
 import styles from "./home.module.css";
 
-function featuredProperties(items: Property[], count: number) {
-  const shuffled = [...items];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled.slice(0, count);
-}
-
 export default async function Home() {
-  await connection(); // Fresh six-property selection for each new homepage request.
-  const properties = featuredProperties(await getProperties(0), 6);
+  await connection(); // Keep the 12-home featured selection fresh as inventory changes.
+  const properties = selectEcoLifeFeaturedHomes(await getProperties(0), 12);
 
   const journey = [
     {
@@ -150,18 +142,25 @@ export default async function Home() {
       <section className={styles.propertyStage}>
         <div className={styles.stageInner}>
           <div className={styles.stageHeading}>
-            <h2>Boligen kommer etter området.</h2>
+            <h2>Villaer og fincaer med rom for livet.</h2>
             <p>
-              Her er seks aktuelle boliger og modeller fra innlandet. Utvalget varierer, slik at du får se flere av
-              mulighetene over tid. Når noe er interessant, bekrefter vi pris, tilgjengelighet og hva som gjelder for den
-              konkrete boligen eller tomten.
+              Utforsk opptil 12 villaer, fincaer og boliger med romslige uteområder i innlandet.
+              Leiligheter er ikke med i dette utvalget. Vi viser bare boliger med egne bilder og unngår å gjenta
+              samme boligfoto. Pris og tilgjengelighet bekreftes alltid for den konkrete boligen.
             </p>
           </div>
-          <div className="property-grid">
-            {properties.map((property, index) => (
-              <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 3} />
-            ))}
-          </div>
+          {properties.length > 0 ? (
+            <div className="property-grid">
+              {properties.map((property, index) => (
+                <PropertyCard key={property.id || property.ref || index} property={property} priority={index < 3} />
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyHomes}>
+              <p>Vi oppdaterer utvalget av villaer og fincaer med egne boligbilder. Ta kontakt for aktuelle muligheter i innlandet.</p>
+              <Link className="text-button" href="/#kontakt">Fortell oss hva du ser etter <ArrowRight size={18} /></Link>
+            </div>
+          )}
           <div className={styles.stageActions}>
             <Link className="text-button" href="/eiendommer">
               Se alle boliger <ArrowRight size={18} />
