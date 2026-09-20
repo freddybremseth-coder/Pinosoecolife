@@ -85,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         "@id": `${BASE}/#organization`,
         name: "Pinoso Eco Life",
         url: BASE,
-        logo: `${BASE}/assets/logo.png`,
+        logo: `${BASE}/assets/ecolife-mark.svg`,
         description:
           "Eiendomsrådgivning med fokus på Pinoso og innlandet i Alicante og Murcia: områdevalg, tomter, fincaer, villaer og moderne nybygg.",
         areaServed: [...ecoLifeAreas.map((area) => area.name), "Alicante", "Murcia", "Spain"],
