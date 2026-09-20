@@ -15,6 +15,9 @@ const standardAreas = [
   "Villena",
   "Sax",
   "Jumilla",
+  "Castalla",
+  "Banyeres de Mariola",
+  "Busot",
   "Åpen for forslag",
 ];
 
