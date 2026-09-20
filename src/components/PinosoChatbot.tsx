@@ -30,6 +30,9 @@ const AREAS = [
   { name: "Villena", slug: "villena", match: /villena/ },
   { name: "Sax", slug: "sax", match: /(^|\W)sax(\W|$)/ },
   { name: "Jumilla", slug: "jumilla", match: /jumilla/ },
+  { name: "Castalla", slug: "castalla", match: /castalla|foia de castalla/ },
+  { name: "Banyeres de Mariola", slug: "banyeres-de-mariola", match: /banyeres|baneres de mariola|ban(y|n)eres/ },
+  { name: "Busot", slug: "busot", match: /busot/ },
 ] as const;
 
 const QUICK = [
@@ -98,7 +101,7 @@ function answer(text: string, profile: Profile, turns: number) {
     return "Pinoso, Monóvar og Jumilla er interessante å utforske for vinlandskap og dyrking. Egne druer kan være et hobbyprosjekt, men vann, arealbruk og eventuelle regler for vinproduksjon må avklares. Hva betyr mest: nærheten til en by eller mest mulig plass og ro?";
   }
   if (/sykkel|fjell|tur|natur/.test(lower)) {
-    return "Biar, Villena og Sax kan være aktuelle hvis turer, sykling og fjellandskap er sentralt. Se også på høyde, årstider og avstand til daglige tjenester. Vil du bo nær en landsby eller på en mer tilbaketrukket tomt?";
+    return "Biar, Castalla, Banyeres de Mariola, Villena og Sax er steder å sammenligne hvis turer, sykling og fjellandskap er sentralt. Høyde, klima og tilgang til daglige tjenester varierer. Busot er et mer kystnært alternativ. Vil du bo nær en landsby eller på en mer tilbaketrukket tomt?";
   }
   if (/flyplass|alicante|elche|reisevei|service|logistikk/.test(lower)) {
     return "Aspe, Novelda og Monforte del Cid er naturlige å sammenligne hvis hverdagsservice og forbindelse mot Alicante og Elche er viktig. Reisetid varierer med konkret adresse og trafikk. Hvor ofte vil du bruke flyplassen eller større bytilbud?";
@@ -108,6 +111,12 @@ function answer(text: string, profile: Profile, turns: number) {
   }
   if (/invest|utleie|leieinntekt/.test(lower)) {
     return "Vurder først hvor mye boligen skal brukes privat. Muligheter for utleie og eventuelle tillatelser må kontrolleres konkret for eiendommen og kommunen; jeg vil ikke love inntekter uten dokumentasjon. Er dette først og fremst en bolig for deg selv?";
+  }
+  if (/busot/.test(lower)) {
+    return "Busot er et kystnært overgangsområde med landsby og fjell. Det er ikke det samme som å bo langt inne i vinlandet ved Pinoso eller Jumilla. Vil du ha nærheten til sjøen, eller er stor rustikk tomt og dyrking viktigst?";
+  }
+  if (/castalla|banyeres|mariola/.test(lower)) {
+    return "Castalla og Banyeres de Mariola gir to ulike typer fjellinnland: Castalla i en dal med byservice, Banyeres høyt ved Serra de Mariola med tydeligere årstider. Hva er viktigst for deg: kortere reisevei, turterreng eller selve landsbylivet?";
   }
   if (profile.area) {
     return "Fint, " + profile.area + " er et konkret sted å utforske. Se hverdagsservice, klima, omgivelser og tilgjengelige tomter/boliger før du velger modell. Hva vil du helst bruke uteområdet til, og hvor viktig er reiseveien?";

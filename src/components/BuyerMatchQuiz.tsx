@@ -17,6 +17,9 @@ const areaOptions = [
   { name: "Villena", slug: "villena" },
   { name: "Sax", slug: "sax" },
   { name: "Jumilla", slug: "jumilla" },
+  { name: "Castalla", slug: "castalla" },
+  { name: "Banyeres de Mariola", slug: "banyeres-de-mariola" },
+  { name: "Busot", slug: "busot" },
 ];
 
 const profileAdvice: Record<string, Advice> = {
@@ -37,7 +40,7 @@ const profileAdvice: Record<string, Advice> = {
   },
   fjell: {
     title: "Se nærmere på fjell- og Vinalopó-innlandet",
-    text: "Biar, Villena og Sax passer inn i en sammenligning når natur, lokale bymiljøer, tydeligere årstider og aktivt hverdagsliv betyr mye.",
+    text: "Biar, Castalla, Banyeres de Mariola, Villena og Sax passer inn i en sammenligning når natur, lokale bymiljøer, tydeligere årstider og aktivt hverdagsliv betyr mye.",
     href: "/livet-i-innlandet#fjell",
   },
   unsure: {

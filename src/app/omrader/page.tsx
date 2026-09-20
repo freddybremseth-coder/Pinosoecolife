@@ -9,7 +9,7 @@ import styles from "./areas.module.css";
 export const metadata = {
   title: "Innlandsområder",
   description:
-    "Utforsk Pinoso, Monóvar, La Romana, Hondón, Aspe, Novelda, Monforte del Cid, Biar, Villena, Sax og Jumilla før du velger tomt eller bolig.",
+    "Utforsk 14 områder i Alicante og Murcia – fra Pinoso og Jumilla til Castalla, Banyeres de Mariola og kystnære Busot – før du velger tomt eller bolig.",
   alternates: {
     canonical: "/omrader",
   },
@@ -67,6 +67,30 @@ export default async function AreasPage() {
             </Link>
           </aside>
         </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="stedsguider">
+        <div className={styles.groupHeader}>
+          <div>
+            <p className={styles.sectionEyebrow}>Les om stedene</p>
+            <h2 className={styles.sectionTitle} id="stedsguider">Finn stedet som passer hverdagen din</h2>
+            <p className={styles.sectionCopy}>
+              Velg en guide for å se hva som kjennetegner området, hvordan hverdagen kan se ut,
+              og hva du bør undersøke før du velger tomt eller bolig.
+            </p>
+          </div>
+        </div>
+        <nav className={styles.groupGrid} aria-label="Alle innlandsområder">
+          {ecoLifeAreas.map((area) => (
+            <Link className={styles.groupCard} href={`/livet-i-innlandet/${area.slug}`} key={area.slug}>
+              <div>
+                <strong>{area.name}</strong>
+                <p>{area.summary}</p>
+              </div>
+              <span>Les om {area.name} <ArrowRight size={16} /></span>
+            </Link>
+          ))}
+        </nav>
       </section>
 
       <section className={`${styles.section} ${styles.dataIntro}`}>
