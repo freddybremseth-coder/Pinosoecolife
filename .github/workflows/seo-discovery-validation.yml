@@ -1,0 +1,33 @@
+name: Pinoso SEO discovery validation
+on:
+  pull_request:
+    paths:
+      - 'src/lib/seo-discovery.ts'
+      - 'src/components/SearchDiscoveryTracker.tsx'
+      - 'src/app/api/discovery-event/route.ts'
+      - 'tests/seo-discovery.test.mjs'
+      - '.github/workflows/seo-discovery-validation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/lib/seo-discovery.ts'
+      - 'src/components/SearchDiscoveryTracker.tsx'
+      - 'src/app/api/discovery-event/route.ts'
+      - 'tests/seo-discovery.test.mjs'
+      - '.github/workflows/seo-discovery-validation.yml'
+jobs:
+  privacy-and-persistence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Verify privacy and durable central arrival measurement
+        run: node --experimental-strip-types --test tests/seo-discovery.test.mjs
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Verify Next.js integration types
+        run: npx tsc --noEmit
