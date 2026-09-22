@@ -25,6 +25,8 @@ export type Property = {
   plot_included_in_price?: boolean | null;
   land_included_in_price?: boolean | null;
   plot_price_eur?: number | null;
+  /** Source-proven example plot price in the advertised RedSP price basis; NOT an assigned plot. */
+  example_plot_price_eur?: number | null;
   land_price_eur?: number | null;
   terrace_size?: number;
   primary_image?: string;
