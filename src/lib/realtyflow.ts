@@ -18,6 +18,8 @@ export type Property = {
   built_area?: number;
   area?: number;
   plot_size?: number;
+  source?: string;
+  source_description?: string;
   // Explicitly verified price-inclusion facts, when publicly available from
   // RealtyFlow. Null/undefined means unknown; never infer from plot_size.
   plot_included_in_price?: boolean | null;
