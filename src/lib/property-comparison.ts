@@ -33,12 +33,9 @@ export function getPricingFacts(property: Property): PricingFacts {
   const rawArea = Number(getPropertyArea(property));
   const area = Number.isFinite(rawArea) && rawArea > 0 ? rawArea : null;
 
-  const totalHouseAndPlot =
-    price !== null && plotInPrice === "included"
-      ? price
-      : price !== null && plotInPrice === "excluded" && plotPrice !== null
-        ? price + plotPrice
-        : null;
+  // An illustrative plot price might already be reflected in the developer's
+  // model price. Never add it to that price without a sourced breakdown.
+  const totalHouseAndPlot = price !== null && plotInPrice === "included" ? price : null;
 
   return {
     plotInPrice,
