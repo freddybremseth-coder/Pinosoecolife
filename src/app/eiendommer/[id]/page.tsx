@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ArrowLeft, Bath, BedDouble, Download, FileText, Home, MessageCircle, Ruler, Tag } from "lucide-react";
 import { CompareButton } from "@/components/CompareProperties";
+import { PropertyPhotoBrowser, type BrowseHome } from "@/components/PropertyPhotoBrowser";
 import { ContactForm } from "@/components/ContactForm";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { Footer } from "@/components/Footer";
@@ -92,6 +93,31 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
   const description = getPropertyDescription(property);
   const pricing = getPricingFacts(property);
   const location = property.location || property.town || "Spania";
+  const allHomes = await getProperties(0);
+  const seenRefs = new Set<string>();
+  const browseHomes: BrowseHome[] = allHomes.flatMap((home) => {
+    const ref = getPropertyRef(home);
+    const image = getPropertyImages(home)[0];
+    if (!ref || !image || seenRefs.has(ref)) return [];
+    seenRefs.add(ref);
+    return [{
+      ref,
+      title: getPropertyTitle(home),
+      image,
+      price: formatPrice(home.price),
+      location: home.location || home.town || "Innlandet",
+    }];
+  });
+  if (!seenRefs.has(getPropertyRef(property))) {
+    browseHomes.unshift({
+      ref: getPropertyRef(property),
+      title: getPropertyTitle(property),
+      image: mainImage,
+      price: formatPrice(property.price),
+      location,
+    });
+  }
+  const currentImages = images.length ? images.slice(0, 12) : [mainImage];
   const detailFacts = [
     { icon: <Tag />, label: `Ref ${getPropertyRef(property)}` },
     { icon: <Home />, label: getPropertyType(property) },
@@ -151,6 +177,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
       />
 
       <section className={styles.hero} style={{ backgroundImage: `url(${mainImage})` }}>
+        <PropertyPhotoBrowser homes={browseHomes} currentRef={getPropertyRef(property)}
+          currentImages={currentImages} variant="hero" />
         <div className={styles.heroInner}>
           <Link className={styles.back} href="/eiendommer">
             <ArrowLeft size={17} /> Alle boliger
@@ -297,21 +325,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
           {images.length > 1 && (
             <section className={styles.gallery} id="bilder">
               <h2>Bilder</h2>
-              <p className={styles.galleryIntro}>Trykk på et bilde for å åpne originalen i full størrelse.</p>
-              <div className={styles.galleryGrid}>
-                {images.slice(1, 10).map((image, index) => (
-                  <a href={image} target="_blank" rel="noreferrer" key={image} aria-label={`Åpne bilde ${index + 2} i full størrelse`}>
-                    <img
-                      className={styles.galleryImage}
-                      src={image}
-                      alt={`${getPropertyTitle(property)} – bilde ${index + 2}`}
-                      loading="lazy"
-                      decoding="async"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                    />
-                  </a>
-                ))}
-              </div>
+              <p className={styles.galleryIntro}>Trykk på et bilde for å se det stort. Bruk «Neste bilde» eller «Neste bolig» for å bla videre uten å gå tilbake til boliglisten.</p>
+              <PropertyPhotoBrowser homes={browseHomes} currentRef={getPropertyRef(property)}
+                currentImages={currentImages} variant="gallery" />
             </section>
           )}
 
