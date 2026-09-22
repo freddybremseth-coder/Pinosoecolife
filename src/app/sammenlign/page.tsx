@@ -50,14 +50,19 @@ const comparisonRows: Row[] = [
     label: "Tomt inkludert i oppgitt pris?",
     show: (p) => {
       const status = getPricingFacts(p).plotInPrice;
-      return status === "included" ? "Ja, dokumentert" : status === "excluded" ? "Nei, kommer i tillegg" : "Ikke bekreftet";
+      return status === "included"
+        ? "Oppgitt inkludert; kontroller tomt og vilkår"
+        : status === "illustrative" ? "Eksempeltomt i prisgrunnlaget – ingen bestemt tomt bekreftet"
+        : status === "excluded" ? "Ikke dokumentert inkludert – beregnes separat" : "Ikke bekreftet";
     },
   },
-  { label: "Tomtepris ved separat kjøp", show: (p) => {
+  { label: "Tomtepris eller oppgitt eksempeltomt", show: (p) => {
     const info = getPricingFacts(p);
-    return info.plotInPrice === "excluded" && info.plotPrice !== null
-      ? formatPrice(info.plotPrice)
-      : info.plotInPrice === "included" ? "Inkludert" : "Ikke oppgitt";
+    return info.plotInPrice === "illustrative" && info.plotPrice !== null
+      ? `Eksempel i prisgrunnlaget: ${formatPrice(info.plotPrice)}`
+      : info.plotInPrice === "excluded" && info.plotPrice !== null
+        ? formatPrice(info.plotPrice)
+        : info.plotInPrice === "included" ? "Oppgitt inkludert" : "Ikke oppgitt";
   }},
   { label: "Bolig + tomt, før kjøpsomkostninger", show: (p) => {
     const info = getPricingFacts(p);
