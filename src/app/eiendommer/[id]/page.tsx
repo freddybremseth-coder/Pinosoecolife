@@ -118,6 +118,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
     });
   }
   const currentImages = images.length ? images.slice(0, 12) : [mainImage];
+  const currentBrowseIndex = browseHomes.findIndex((home) => home.ref === getPropertyRef(property));
+  const previousHome = browseHomes[(currentBrowseIndex - 1 + browseHomes.length) % browseHomes.length];
+  const nextHome = browseHomes[(currentBrowseIndex + 1) % browseHomes.length];
   const detailFacts = [
     { icon: <Tag />, label: `Ref ${getPropertyRef(property)}` },
     { icon: <Home />, label: getPropertyType(property) },
@@ -215,6 +218,16 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
               <a className={styles.heroAction} href="#kontakt"><FileText size={17} /> Be om plantegning</a>
             ) : null}
           </div>
+          {browseHomes.length > 1 && (
+            <nav className={styles.heroActions} aria-label="Bla mellom boliger">
+              <Link className={styles.heroAction} href={"/eiendommer/" + encodeURIComponent(previousHome.ref)}>
+                ← Forrige bolig
+              </Link>
+              <Link className={styles.heroAction} href={"/eiendommer/" + encodeURIComponent(nextHome.ref)}>
+                Neste bolig →
+              </Link>
+            </nav>
+          )}
         </div>
       </section>
 
