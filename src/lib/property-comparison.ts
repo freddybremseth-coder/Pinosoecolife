@@ -4,7 +4,7 @@ import {
   type Property,
 } from "@/lib/realtyflow";
 
-export type PlotInPrice = "included" | "excluded" | "unknown";
+export type PlotInPrice = "included" | "excluded" | "illustrative" | "unknown";
 
 type PricingFacts = {
   plotInPrice: PlotInPrice;
@@ -26,8 +26,16 @@ export function getPricingFacts(property: Property): PricingFacts {
     : "";
   const explicitlyIncluded = /(?:tomt(?:en)?|parcela|plot|land)\s*(?:.{0,55}?)\s*(?:inkludert i (?:bolig)?prisen|included in (?:the )?price|incluida? en (?:el )?precio)|(?:prisen|the price|el precio)\s+(?:inkluderer|includes|incluye)\s+(?:.{0,25}?)\s*(?:tomt|plot|parcela)/i.test(source);
   const explicitlyExcluded = /(?:tomt|parcela|plot|land).{0,45}(?:ikke inkludert|not included|no incluida?|kommer i tillegg|extra cost|separat pris)/i.test(source);
-  const plotInPrice: PlotInPrice = explicitlyIncluded && !explicitlyExcluded ? "included" : "excluded";
-  const rawPlotPrice = Number(property.plot_price_eur ?? property.land_price_eur);
+  const rawExamplePrice = Number(property.example_plot_price_eur);
+  const hasDocumentedExample = property.source?.toLowerCase() === "redsp" &&
+    property.example_plot_price_eur != null &&
+    Number.isFinite(rawExamplePrice) && rawExamplePrice >= 1000;
+  const plotInPrice: PlotInPrice = hasDocumentedExample
+    ? "illustrative"
+    : explicitlyIncluded && !explicitlyExcluded ? "included" : "excluded";
+  const rawPlotPrice = hasDocumentedExample
+    ? rawExamplePrice
+    : Number(property.plot_price_eur ?? property.land_price_eur);
   const plotPrice = Number.isFinite(rawPlotPrice) && rawPlotPrice > 0 ? rawPlotPrice : null;
   const rawPrice = Number(property.price);
   const price = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice : null;
@@ -49,9 +57,15 @@ export function getPricingFacts(property: Property): PricingFacts {
 }
 
 export function getPlotInPriceLabel(property: Property): string {
-  const status = getPricingFacts(property).plotInPrice;
-  if (status === "included") return "Tomt inkludert i oppgitt pris";
-  if (status === "excluded") return "Tomt beregnes separat – ikke dokumentert inkludert i boligprisen";
+  const pricing = getPricingFacts(property);
+  if (pricing.plotInPrice === "illustrative" && pricing.plotPrice !== null) {
+    const examplePrice = new Intl.NumberFormat("nb-NO", {
+      style: "currency", currency: "EUR", maximumFractionDigits: 0,
+    }).format(pricing.plotPrice);
+    return `Oppgitt pris er beregnet med en eksempeltomt til ${examplePrice}; konkret tomt og endelig totalpris må bekreftes`;
+  }
+  if (pricing.plotInPrice === "included") return "Tomt oppgis inkludert i annonsen – konkret tomt og vilkår må bekreftes";
+  if (pricing.plotInPrice === "excluded") return "Tomt beregnes separat – ikke dokumentert inkludert i boligprisen";
   return "Tomt beregnes separat til inkludering er uttrykkelig bekreftet i RedSP-beskrivelsen";
 }
 
