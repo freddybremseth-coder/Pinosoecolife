@@ -21,8 +21,9 @@ export function getPricingFacts(property: Property): PricingFacts {
   // override the buyer-safe default that land is priced separately.
   // A plot size, an illustrative plot price, or a generic marketing claim is
   // not proof that a specific plot is part of the advertised house price.
-  const source = property.source_description ||
-    (property.source?.toLowerCase() === "redsp" ? property.description || "" : "");
+  const source = property.source?.toLowerCase() === "redsp"
+    ? property.source_description || property.description || ""
+    : "";
   const explicitlyIncluded = /(?:tomt(?:en)?|parcela|plot|land)\s*(?:.{0,55}?)\s*(?:inkludert i (?:bolig)?prisen|included in (?:the )?price|incluida? en (?:el )?precio)|(?:prisen|the price|el precio)\s+(?:inkluderer|includes|incluye)\s+(?:.{0,25}?)\s*(?:tomt|plot|parcela)/i.test(source);
   const explicitlyExcluded = /(?:tomt|parcela|plot|land).{0,45}(?:ikke inkludert|not included|no incluida?|kommer i tillegg|extra cost|separat pris)/i.test(source);
   const plotInPrice: PlotInPrice = explicitlyIncluded && !explicitlyExcluded ? "included" : "excluded";
