@@ -17,14 +17,16 @@ type PricingFacts = {
 // These are strictly documented structured pricing fields. Plot size and
 // marketing prose alone must never be treated as proof of inclusion.
 export function getPricingFacts(property: Property): PricingFacts {
-  const included =
-    typeof property.plot_included_in_price === "boolean"
-      ? property.plot_included_in_price
-      : typeof property.land_included_in_price === "boolean"
-        ? property.land_included_in_price
-        : null;
-  const plotInPrice: PlotInPrice =
-    included === true ? "included" : included === false ? "excluded" : "unknown";
+  // Only an explicit inclusion statement in the original RedSP listing can
+  // override the buyer-safe default that land is priced separately.
+  // A plot size, an illustrative plot price, or a generic marketing claim is
+  // not proof that a specific plot is part of the advertised house price.
+  const source = property.source?.toLowerCase() === "redsp"
+    ? property.source_description || property.description || ""
+    : "";
+  const explicitlyIncluded = /(?:tomt(?:en)?|parcela|plot|land)\s*(?:.{0,55}?)\s*(?:inkludert i (?:bolig)?prisen|included in (?:the )?price|incluida? en (?:el )?precio)|(?:prisen|the price|el precio)\s+(?:inkluderer|includes|incluye)\s+(?:.{0,25}?)\s*(?:tomt|plot|parcela)/i.test(source);
+  const explicitlyExcluded = /(?:tomt|parcela|plot|land).{0,45}(?:ikke inkludert|not included|no incluida?|kommer i tillegg|extra cost|separat pris)/i.test(source);
+  const plotInPrice: PlotInPrice = explicitlyIncluded && !explicitlyExcluded ? "included" : "excluded";
   const rawPlotPrice = Number(property.plot_price_eur ?? property.land_price_eur);
   const plotPrice = Number.isFinite(rawPlotPrice) && rawPlotPrice > 0 ? rawPlotPrice : null;
   const rawPrice = Number(property.price);
@@ -32,12 +34,9 @@ export function getPricingFacts(property: Property): PricingFacts {
   const rawArea = Number(getPropertyArea(property));
   const area = Number.isFinite(rawArea) && rawArea > 0 ? rawArea : null;
 
-  const totalHouseAndPlot =
-    price !== null && plotInPrice === "included"
-      ? price
-      : price !== null && plotInPrice === "excluded" && plotPrice !== null
-        ? price + plotPrice
-        : null;
+  // An illustrative plot price might already be reflected in the developer's
+  // model price. Never add it to that price without a sourced breakdown.
+  const totalHouseAndPlot = price !== null && plotInPrice === "included" ? price : null;
 
   return {
     plotInPrice,
@@ -52,8 +51,8 @@ export function getPricingFacts(property: Property): PricingFacts {
 export function getPlotInPriceLabel(property: Property): string {
   const status = getPricingFacts(property).plotInPrice;
   if (status === "included") return "Tomt inkludert i oppgitt pris";
-  if (status === "excluded") return "Tomt kommer i tillegg";
-  return "Tomt inkludert? Ikke bekreftet";
+  if (status === "excluded") return "Tomt beregnes separat – ikke dokumentert inkludert i boligprisen";
+  return "Tomt beregnes separat til inkludering er uttrykkelig bekreftet i RedSP-beskrivelsen";
 }
 
 export function formatSquareMetres(value?: number | null): string {

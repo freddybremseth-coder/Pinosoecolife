@@ -33,13 +33,12 @@ export function selectEcoLifeFeaturedHomes(properties: Property[], count = 12): 
     );
   });
 
-  // Prefer homes with a documented larger plot without suppressing genuine
-  // villas/fincas whose plot measurements have not yet been imported.
-  const score = (property: Property) => {
-    const plot = Number(property.plot_size || 0);
-    return plot >= 10000 ? 3 : plot >= 1000 ? 2 : plot >= 500 ? 1 : 0;
-  };
-  eligible.sort((a, b) => score(b) - score(a));
+  // Shuffle independently for each dynamically rendered homepage request.
+  // Keep the no-duplicate-ref/photo policy below so the mix is still useful.
+  for (let i = eligible.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [eligible[i], eligible[j]] = [eligible[j], eligible[i]];
+  }
 
   const selected: Property[] = [];
   const usedRefs = new Set<string>();
