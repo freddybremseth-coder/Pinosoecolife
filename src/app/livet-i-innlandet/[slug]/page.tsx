@@ -10,6 +10,8 @@ import { getAlternativeAreaSlugs, getAreaArticleSlugs } from "@/lib/ecolife-cont
 import { ecoLifeAreas, getEcoLifeArea } from "@/lib/ecolife-areas";
 import { fetchPublishedPosts } from "@/lib/website-content";
 import styles from "../../ecolife-editorial.module.css";
+import factStyles from "../../ecolife-area-facts.module.css";
+import { AREA_ROUTE_DESTINATIONS, ECO_LIFE_AREA_FACTS, areaDrivingDirections, areaMapEmbed, straightLineKm } from "@/lib/ecolife-area-facts";
 
 type Params = { slug: string };
 
@@ -65,6 +67,10 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
   if (!area) notFound();
 
   const primarySearch = encodeURIComponent(area.searchTerms[0] || area.name);
+  const areaFacts = ECO_LIFE_AREA_FACTS[area.slug];
+  const populationSource = area.region === "Murcia"
+    ? "https://econet.carm.es/web/crem/inicio/-/crem/sicrem/PM2100/sec2_c1.html"
+    : "https://datos.diputacionalicante.es/censo/";
   const leadContext = lifestyleContext[area.zone];
   const publishedPosts = await fetchPublishedPosts("magasin");
   const relevantArticleSlugs = getAreaArticleSlugs(area.slug, 4);
@@ -150,6 +156,54 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
           ))}
         </aside>
       </section>
+
+      {areaFacts && (
+        <section className={factStyles.buyerSection} aria-labelledby="area-local-facts">
+          <div className={factStyles.buyerIntro}>
+            <p className={factStyles.eyebrow}>Før du bestemmer deg</p>
+            <h2 id="area-local-facts" className={factStyles.heading}>Bli kjent med {area.name} – også utenfor boligannonsen</h2>
+            {areaFacts.practical.map((paragraph) => <p className={factStyles.copy} key={paragraph}>{paragraph}</p>)}
+            <p className={factStyles.copy}>Besøk stedet på en vanlig ukedag. Test daglige ærender, lokale tjenester, turmuligheter og hvor mye bilkjøring du faktisk vil ha i hverdagen.</p>
+          </div>
+          <div className={factStyles.layout}>
+            <div className={factStyles.mapColumn}>
+              <iframe
+                className={factStyles.mapFrame}
+                title={`Kart over ${area.name} og nærområdet`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src={areaMapEmbed(areaFacts)}
+              />
+              <p className={factStyles.mapCaption}>Kart: OpenStreetMap. Markøren viser et omtrentlig sentrumspunkt i {area.name}, ikke en bestemt tomt eller bolig.</p>
+            </div>
+            <aside className={factStyles.factsColumn} aria-label={`Innbyggertall og avstander fra ${area.name}`}>
+              <div className={factStyles.population}>
+                <span className={factStyles.populationLabel}>Innbyggere · 1. januar 2025</span>
+                {areaFacts.population !== null ? (
+                  <strong className={factStyles.populationNumber}>{areaFacts.population.toLocaleString("nb-NO")}</strong>
+                ) : areaFacts.populationBreakdown ? (
+                  <strong className={factStyles.populationNumber}>To kommuner</strong>
+                ) : null}
+                {areaFacts.populationBreakdown?.map((part) => (
+                  <span className={factStyles.smallNote} key={part.name}>{part.name}: {part.population.toLocaleString("nb-NO")} innbyggere</span>
+                ))}
+                <span className={factStyles.smallNote}>Offisielt folketall for kommunen, ikke bare sentrum eller boligområdet.</span>
+                <a className={factStyles.source} href={populationSource} target="_blank" rel="noopener noreferrer">Se offentlig statistikk ↗</a>
+              </div>
+              <h3 className={factStyles.distanceHeading}>Hvor ligger stedet?</h3>
+              <p className={factStyles.distanceIntro}>Omtrentlige avstander i luftlinje fra sentrum, <strong>ikke kjøreavstander eller reisetider</strong>. Åpne kjøreruten for å vurdere reisen fra området.</p>
+              <ul className={factStyles.distanceList}>
+                {AREA_ROUTE_DESTINATIONS.map((destination) => (
+                  <li className={factStyles.distanceItem} key={destination.label}>
+                    <span>{destination.label}: ca. {straightLineKm(areaFacts, destination)} km</span>
+                    <a href={areaDrivingDirections(areaFacts, destination)} target="_blank" rel="noopener noreferrer" aria-label={`Beregn kjørerute fra ${area.name} til ${destination.label}`}>Se kjørerute ↗</a>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </section>
+      )}
 
       <section className={styles.contentSection}>
         <div className={styles.sectionHeader}>

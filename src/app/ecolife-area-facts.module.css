@@ -1,0 +1,22 @@
+.buyerSection{max-width:1240px;margin:0 auto;padding:clamp(44px,6vw,94px) clamp(20px,5vw,72px)}
+.buyerIntro{max-width:840px;margin-bottom:30px}
+.eyebrow{color:#69775f;font-size:.75rem;text-transform:uppercase;letter-spacing:.16em;font-weight:700;margin:0 0 14px}
+.heading{font-family:var(--font-editorial,Georgia,serif);font-weight:500;font-size:clamp(2rem,4.2vw,3.55rem);line-height:1.12;letter-spacing:-.035em;margin:0 0 20px;color:#22372b}
+.copy{font-size:clamp(1rem,1.2vw,1.16rem);line-height:1.8;color:#48574a;margin:0 0 17px;max-width:76ch}
+.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:clamp(22px,4vw,58px);align-items:start}
+.mapColumn,.factsColumn{min-width:0}
+.mapFrame{border:0;display:block;width:100%;height:clamp(290px,34vw,430px);border-radius:19px;background:#e2e8df;box-shadow:0 5px 25px rgba(16,35,26,.06)}
+.mapCaption{margin:12px 0 0;color:#687568;font-size:.87rem;line-height:1.6}
+.population{background:#f3f3ed;border:1px solid #e4e9df;border-radius:19px;padding:24px;margin:0 0 25px}
+.populationLabel{display:block;color:#637360;font-size:.83rem;margin:0 0 8px}
+.populationNumber{display:block;font-family:var(--font-editorial,Georgia,serif);font-size:clamp(1.7rem,3.2vw,2.8rem);font-weight:500;line-height:1.16;color:#283c30}
+.smallNote{display:block;font-size:.83rem;color:#69766a;line-height:1.55;margin-top:8px}
+.source{display:inline-block;color:#3c664b;text-underline-offset:3px;font-size:.84rem;margin-top:9px}
+.distanceHeading{font-family:var(--font-editorial,Georgia,serif);font-weight:500;color:#283c30;font-size:1.6rem;margin:0 0 8px}
+.distanceIntro{font-size:.89rem;color:#687568;line-height:1.6;margin:0 0 12px}
+.distanceList{list-style:none;margin:0;padding:0}
+.distanceItem{border-bottom:1px solid #e3e9df;display:flex;justify-content:space-between;gap:14px;align-items:center;padding:13px 0}
+.distanceItem span{color:#3e4d42;line-height:1.45}
+.distanceItem a{font-weight:650;color:#38644a;white-space:nowrap;text-underline-offset:3px}
+@media(max-width:800px){.layout{grid-template-columns:minmax(0,1fr)}.buyerSection{padding:48px 22px}.mapFrame{height:330px}}
+@media(max-width:420px){.distanceItem{align-items:flex-start;flex-direction:column;gap:2px}}
