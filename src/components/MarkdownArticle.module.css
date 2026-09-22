@@ -94,3 +94,59 @@
     margin-top: 1.85em;
   }
 }
+
+
+/* Related article links: compact actions rather than raw Markdown or a long URL row. */
+.actionLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2.5rem 0 0;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(56, 78, 60, 0.16);
+}
+
+.prose .actionLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(56, 78, 60, 0.23);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  font-weight: 650;
+  line-height: 1.35;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.prose .actionLink:hover {
+  background: #e8eee5;
+  border-color: var(--olive);
+}
+
+.prose .actionLink:focus-visible {
+  outline: 3px solid var(--olive);
+  outline-offset: 3px;
+}
+
+.actionLink span {
+  flex-shrink: 0;
+}
+
+@media (max-width: 520px) {
+  .actionLinks {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .prose .actionLink {
+    width: 100%;
+  }
+}
