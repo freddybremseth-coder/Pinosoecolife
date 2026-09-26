@@ -121,6 +121,10 @@ export type LeadPayload = {
   property_title?: string;
   request_type?: string;
   page_url?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
 };
 
 const REALTYFLOW_BASE = process.env.REALTYFLOW_BASE_URL || "https://realtyflow.chatgenius.pro";
@@ -525,6 +529,10 @@ export async function sendLead(payload: LeadPayload) {
       phone: payload.phone || null,
       page_url: payload.page_url || null,
       source: payload.source || "pinosoecolife-next",
+      utm_source: payload.utm_source || null,
+      utm_medium: payload.utm_medium || null,
+      utm_campaign: payload.utm_campaign || null,
+      utm_content: payload.utm_content || null,
       notes,
       pipeline_status: "NEW",
       pipeline_value: pipelineValue,

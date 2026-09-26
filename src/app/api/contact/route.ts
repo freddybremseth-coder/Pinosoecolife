@@ -35,6 +35,10 @@ export async function POST(request: Request) {
       property_title: body.property_title ? String(body.property_title) : undefined,
       request_type: body.request_type ? String(body.request_type) : undefined,
       page_url: body.page_url ? String(body.page_url) : undefined,
+      utm_source: body.utm_source ? String(body.utm_source).slice(0, 80) : undefined,
+      utm_medium: body.utm_medium ? String(body.utm_medium).slice(0, 80) : undefined,
+      utm_campaign: body.utm_campaign ? String(body.utm_campaign).slice(0, 120) : undefined,
+      utm_content: body.utm_content ? String(body.utm_content).slice(0, 160) : undefined,
     });
 
     return NextResponse.json({ ok: true });
