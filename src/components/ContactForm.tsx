@@ -49,6 +49,7 @@ export function ContactForm({
     setStatus("sending");
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
+    const params = new URLSearchParams(window.location.search);
 
     const res = await fetch("/api/contact", {
       method: "POST",
@@ -60,6 +61,10 @@ export function ContactForm({
         property_title: propertyTitle,
         request_type: requestType,
         page_url: window.location.href,
+        utm_source: params.get("utm_source"),
+        utm_medium: params.get("utm_medium"),
+        utm_campaign: params.get("utm_campaign"),
+        utm_content: params.get("utm_content"),
       }),
     });
 
