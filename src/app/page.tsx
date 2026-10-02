@@ -15,6 +15,56 @@ export default async function Home() {
   await connection(); // Keep the 12-home featured selection fresh as inventory changes.
   const properties = selectEcoLifeFeaturedHomes(await getProperties(0), 12);
 
+  const intentPaths = [
+    {
+      label: "Jeg vil forstå områdene først",
+      text: "Sammenlign Pinoso, Biar, Hondón, Aspe, Villena, Jumilla og andre steder ut fra hverdagen du ønsker.",
+      href: "/livet-i-innlandet",
+      action: "Sammenlign områdene",
+    },
+    {
+      label: "Jeg vil finne en bolig",
+      text: "Se villaer og fincaer, men bruk område, uteplass, logistikk og dokumentasjon som filter – ikke bare pris og bilder.",
+      href: "/eiendommer",
+      action: "Se aktuelle boliger",
+    },
+    {
+      label: "Jeg vil kjøpe tomt og bygge",
+      text: "Start med en egnet tomt og et realistisk totalbudsjett før du låser deg til en bestemt villamodell.",
+      href: "/tomter",
+      action: "Se tomter og byggevei",
+    },
+  ];
+
+  const pageJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.pinosoecolife.com/#home",
+        url: "https://www.pinosoecolife.com/",
+        name: "Pinoso Eco Life – bolig, tomt og nybygg i Alicante-innlandet",
+        description: "Norsk rådgivning for deg som vil sammenligne områder, boliger, tomter og nybygg i Pinoso og Alicante- og Murcia-innlandet.",
+        inLanguage: "nb-NO",
+        isPartOf: { "@id": "https://www.pinosoecolife.com/#website" },
+        about: { "@id": "https://www.pinosoecolife.com/#organization" },
+        author: { "@id": "https://www.freddybremseth.com/#person" },
+        dateModified: "2026-10-02",
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://www.pinosoecolife.com/#start-here",
+        name: "Tre måter å starte boligjakten i Alicante-innlandet",
+        itemListElement: intentPaths.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.label,
+          url: `https://www.pinosoecolife.com${item.href}`,
+        })),
+      },
+    ],
+  };
+
   const journey = [
     {
       number: "01",
@@ -41,6 +91,7 @@ export default async function Home() {
   return (
     <main>
       <SiteHeader />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }} />
 
       <section className={styles.hero} id="top">
         <Image
@@ -77,6 +128,24 @@ export default async function Home() {
               </button>
             </form>
           </div>
+        </div>
+      </section>
+
+      <section className={styles.intentSection} aria-labelledby="intent-title">
+        <div className={styles.intentHeading}>
+          <p className={styles.kicker}>Finn riktig inngang</p>
+          <h2 id="intent-title">Hva vil du starte med?</h2>
+          <p>Du trenger ikke begynne med en boligannonse. Velg den delen av beslutningen som er mest relevant nå.</p>
+        </div>
+        <div className={styles.intentGrid}>
+          {intentPaths.map((item, index) => (
+            <Link className={styles.intentCard} href={item.href} key={item.href}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{item.label}</h3>
+              <p>{item.text}</p>
+              <strong>{item.action} <ArrowRight size={16} /></strong>
+            </Link>
+          ))}
         </div>
       </section>
 
