@@ -183,3 +183,32 @@
     transition: none;
   }
 }
+
+.network{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem 1rem;
+  align-items:center;
+  margin-top:1rem;
+  padding-top:1rem;
+  border-top:1px solid rgba(255,255,255,.09);
+  font-size:.72rem;
+  line-height:1.5;
+}
+.network span{
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--eco-gold,#b69a61);
+}
+.network a{
+  color:inherit;
+  opacity:.62;
+  text-decoration:none;
+}
+.network a:hover,
+.network a:focus-visible{
+  opacity:1;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}

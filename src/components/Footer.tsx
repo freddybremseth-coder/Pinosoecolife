@@ -54,6 +54,17 @@ export function Footer() {
           <span>© {new Date().getFullYear()} Pinoso Eco Life</span>
           <span>Område først · riktig tomt · bolig tilpasset stedet</span>
         </div>
+
+        <nav className={styles.network} aria-label="Freddy Bremseth prosjektnettverk">
+          <span>Freddy Bremseth network</span>
+          <a href="https://www.freddybremseth.com/">FreddyBremseth.com</a>
+          <a href="https://www.zenecohomes.com/">Zen Eco Homes</a>
+          <a href="https://www.donaanna.com/">Doña Anna</a>
+          <a href="https://www.chatgenius.pro/">ChatGenius</a>
+          <a href="https://books.freddybremseth.com/">Books</a>
+          <a href="https://art.freddybremseth.com/">Art</a>
+          <a href="https://remaster.freddybremseth.com/">Re-Master Freddy</a>
+        </nav>
       </div>
     </footer>
   );
