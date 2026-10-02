@@ -103,11 +103,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         ],
         founder: {
           "@type": "Person",
-          "@id": `${BASE}/om-freddy#person`,
+          "@id": "https://www.freddybremseth.com/#person",
           name: "Freddy Bremseth",
-          url: `${BASE}/om-freddy`,
+          url: "https://www.freddybremseth.com/",
+          subjectOf: {
+            "@type": "ProfilePage",
+            url: `${BASE}/om-freddy`,
+          },
         },
-        sameAs: ["https://www.freddybremseth.com"],
       },
     ],
   };
