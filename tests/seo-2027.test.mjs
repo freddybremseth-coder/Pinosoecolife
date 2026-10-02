@@ -93,3 +93,19 @@ test("sitewide 2027 system, sitemap and project network stay connected", () => {
     "https://remaster.freddybremseth.com/"
   ]) assert.ok(footer.includes(url), "missing project-network link " + url);
 });
+
+
+test("coastal Murcia inventory stays outside the Pinoso inland journey", () => {
+  const source = read("src/lib/realtyflow.ts");
+  for (const term of [
+    "san pedro del pinatar",
+    "lo pagan",
+    "san javier",
+    "santiago de la ribera",
+    "los alcazares",
+    "mar menor",
+    "pilar de la horadada",
+    "torre de la horadada"
+  ]) assert.ok(source.includes('"' + term + '"'), "missing coastal exclusion " + term);
+  assert.match(source, /return inlandMatch && \(!coastalMatch \|\| explicitInland\);/);
+});
