@@ -6,15 +6,65 @@ import { processSteps } from "@/lib/content";
 import styles from "./process.module.css";
 
 export const metadata = {
-  title: "Kjøpsprosessen",
-  description: "Fra livsstil og områdevalg til egnet tomt, bolig, dokumentkontroll og overtakelse i innlandet i Spania.",
+  title: { absolute: "Kjøpsprosessen | Bolig i Pinoso og Alicante-innlandet" },
+  description: "Se kjøpsprosessen fra behov og områdevalg til tomt eller bolig, dokumentkontroll, reservasjon, kontrakt og overtakelse i innlandet i Spania.",
   alternates: { canonical: "/kjopsprosessen" },
+  openGraph: {
+    title: "Kjøpsprosessen | Pinoso Eco Life",
+    description: "Fra områdevalg til kontroll, reservasjon, kontrakt og overtakelse – med tydelige beslutningspunkter underveis.",
+    url: "https://www.pinosoecolife.com/kjopsprosessen",
+    siteName: "Pinoso Eco Life",
+    locale: "nb_NO",
+    type: "website",
+  },
 };
 
 export default function BuyingProcessPage() {
+  const pageUrl = "https://www.pinosoecolife.com/kjopsprosessen";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: "Kjøpsprosessen for bolig i Pinoso og Alicante-innlandet",
+        description: "Fra behov og områdevalg til tomt eller bolig, dokumentkontroll, reservasjon, kontrakt og overtakelse.",
+        inLanguage: "nb-NO",
+        isPartOf: { "@id": "https://www.pinosoecolife.com/#website" },
+        about: { "@id": "https://www.pinosoecolife.com/#organization" },
+        author: { "@id": "https://www.freddybremseth.com/#person" },
+        dateModified: "2026-10-02",
+      },
+      {
+        "@type": "ItemList",
+        name: "Steg i kjøpsprosessen",
+        itemListElement: processSteps.map((step, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: step,
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Forside", item: "https://www.pinosoecolife.com/" },
+          { "@type": "ListItem", position: 2, name: "Kjøpsprosessen", item: pageUrl },
+        ],
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.freddybremseth.com/#person",
+        name: "Freddy Bremseth",
+        url: "https://www.freddybremseth.com/",
+      },
+    ],
+  };
+
   return (
     <main>
       <SiteHeader />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <section className={styles.hero}>
         <div className={styles.heroInner}>
@@ -30,7 +80,7 @@ export default function BuyingProcessPage() {
       <section className={styles.section}>
         <div className={styles.intro}>
           <div>
-            <p className={styles.sectionEyebrow}>En rolig, strukturert reise</p>
+            <p className={styles.sectionEyebrow}>Kort svar · En rolig, strukturert reise</p>
             <h2 className={styles.sectionTitle}>Riktig rekkefølge reduserer unødvendige kompromisser</h2>
             <p className={styles.sectionCopy}>
               Vi forsøker ikke å presse et bestemt prosjekt inn i et tilfeldig område. Først avklarer vi hverdagen og
@@ -93,6 +143,9 @@ export default function BuyingProcessPage() {
         </div>
       </section>
 
+      <p style={{ width: "min(1160px, calc(100% - 48px))", margin: "0 auto 48px", color: "var(--muted)", fontSize: ".8rem" }}>
+        Oppdatert 2. oktober 2026 · Generell beslutningsstøtte; juridiske og tekniske forhold kontrolleres for den konkrete eiendommen.
+      </p>
       <Footer />
     </main>
   );

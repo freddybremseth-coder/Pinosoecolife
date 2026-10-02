@@ -1,0 +1,41 @@
+name: Pinoso 2027 SEO AEO GEO validation
+
+on:
+  pull_request:
+    paths:
+      - 'src/app/**/*.tsx'
+      - 'src/app/**/*.css'
+      - 'src/components/**/*.tsx'
+      - 'src/lib/seoLandingPages.ts'
+      - 'src/app/sitemap.ts'
+      - 'src/app/robots.ts'
+      - 'tests/seo-2027.test.mjs'
+      - '.github/workflows/seo-2027-validation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/app/**/*.tsx'
+      - 'src/app/**/*.css'
+      - 'src/components/**/*.tsx'
+      - 'src/lib/seoLandingPages.ts'
+      - 'src/app/sitemap.ts'
+      - 'src/app/robots.ts'
+      - 'tests/seo-2027.test.mjs'
+      - '.github/workflows/seo-2027-validation.yml'
+
+jobs:
+  seo-structure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Validate 2027 SEO AEO GEO and customer journey
+        run: node --test tests/seo-2027.test.mjs
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Verify Next.js integration types
+        run: npx tsc --noEmit

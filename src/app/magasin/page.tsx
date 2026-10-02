@@ -10,6 +10,14 @@ export const metadata = {
   description:
     "Historier, ideer og praktiske guider om livet i innlandet: store tomter, ro, kjøkkenhage, privatliv, områder og trygg gjennomføring.",
   alternates: { canonical: "/magasin" },
+  openGraph: {
+    title: "Eco Life-magasin | Livet i innlandet",
+    description: "Guider og historier om bolig, tomt, hverdagsliv og tryggere valg i Alicante- og Murcia-innlandet.",
+    url: "https://www.pinosoecolife.com/magasin",
+    siteName: "Pinoso Eco Life",
+    locale: "nb_NO",
+    type: "website",
+  },
 };
 
 function formatDate(value?: string | null) {
@@ -20,10 +28,35 @@ function formatDate(value?: string | null) {
 export default async function MagazinePage() {
   const articles = await fetchPublishedPosts("magasin");
   const [featured, ...rest] = articles;
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://www.pinosoecolife.com/magasin#collection",
+        url: "https://www.pinosoecolife.com/magasin",
+        name: "Eco Life-magasin",
+        description: "Guider og historier om bolig, tomt, hverdagsliv og tryggere valg i Alicante- og Murcia-innlandet.",
+        isPartOf: { "@id": "https://www.pinosoecolife.com/#website" },
+        publisher: { "@id": "https://www.pinosoecolife.com/#organization" },
+      },
+      {
+        "@type": "ItemList",
+        name: "Publiserte artikler i Eco Life-magasinet",
+        itemListElement: articles.slice(0, 30).map((article, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: article.title,
+          url: `https://www.pinosoecolife.com/magasin/${article.slug}`,
+        })),
+      },
+    ],
+  };
 
   return (
     <main>
       <SiteHeader />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
 
       <section className={styles.magazineHero}>
         <div className={styles.magazineIntro}>
@@ -85,6 +118,21 @@ export default async function MagazinePage() {
         </section>
       )}
 
+      <section className={styles.actionBand}>
+        <div>
+          <p className={styles.heroEyebrow}>Fra inspirasjon til beslutning</p>
+          <h2>Bruk magasinet til å finne riktig område og neste steg.</h2>
+          <p>Les deg inn på hverdagen først. Deretter kan du sammenligne områder, aktuelle tomter og boliger med et tydeligere bilde av hva som faktisk passer.</p>
+        </div>
+        <div className={styles.actionLinks}>
+          <Link href="/livet-i-innlandet">Sammenlign områdene <ArrowRight size={17} /></Link>
+          <Link href="/bolig-i-pinoso">Guide til bolig i Pinoso <ArrowRight size={17} /></Link>
+          <Link href="/tomt-i-pinoso">Guide til tomt i Pinoso <ArrowRight size={17} /></Link>
+          <Link href="/#kontakt">Fortell oss hva du ser etter <ArrowRight size={17} /></Link>
+        </div>
+      </section>
+
+      <div className={styles.updatedNote}>Oppdatert 2. oktober 2026 · Pinoso Eco Life-magasin</div>
       <Footer />
     </main>
   );

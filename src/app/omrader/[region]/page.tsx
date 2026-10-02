@@ -93,10 +93,47 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
   const [profiles, properties] = await Promise.all([getAreaProfiles(), getProperties(0)]);
   const regionProfiles = profiles.filter((profile) => areaMatchesRegion(profile, region));
   const regionProperties = properties.filter((property) => propertyMatchesRegion(property, region));
+  const pageUrl = `https://www.pinosoecolife.com/omrader/${region}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: copy.title,
+        description: copy.intro,
+        inLanguage: "nb-NO",
+        isPartOf: { "@id": "https://www.pinosoecolife.com/#website" },
+        about: { "@id": "https://www.pinosoecolife.com/#organization" },
+        author: { "@id": "https://www.freddybremseth.com/#person" },
+        dateModified: "2026-10-02",
+      },
+      {
+        "@type": "ItemList",
+        name: `Steder å utforske i ${selected.label}`,
+        itemListElement: guideLinks.map((guide, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: guide.name,
+          url: `https://www.pinosoecolife.com/livet-i-innlandet/${guide.slug}`,
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Forside", item: "https://www.pinosoecolife.com/" },
+          { "@type": "ListItem", position: 2, name: "Områder", item: "https://www.pinosoecolife.com/omrader" },
+          { "@type": "ListItem", position: 3, name: selected.label, item: pageUrl },
+        ],
+      },
+    ],
+  };
 
   return (
     <main>
       <SiteHeader />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <section className={styles.hero}>
         <div className={styles.heroInner}>

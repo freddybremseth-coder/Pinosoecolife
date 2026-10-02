@@ -22,6 +22,8 @@ export function SeoLandingView({ page }: { page: SeoLandingPage }) {
         inLanguage: "nb-NO",
         isPartOf: { "@id": `${BASE}/#website` },
         about: page.about,
+        author: { "@id": "https://www.freddybremseth.com/#person" },
+        dateModified: "2026-10-02",
       },
       {
         "@type": "Service",
@@ -32,6 +34,21 @@ export function SeoLandingView({ page }: { page: SeoLandingPage }) {
         url: selfUrl,
         provider: { "@id": `${BASE}/#organization` },
         areaServed: ["Pinoso", "Alicante", "Murcia", "Spain"],
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.freddybremseth.com/#person",
+        name: "Freddy Bremseth",
+        url: "https://www.freddybremseth.com/",
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${selfUrl}#faq`,
+        mainEntity: page.faq.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: { "@type": "Answer", text: item.answer },
+        })),
       },
       {
         "@type": "BreadcrumbList",
@@ -71,6 +88,16 @@ export function SeoLandingView({ page }: { page: SeoLandingPage }) {
               </Link>
             )}
           </div>
+        </div>
+      </section>
+
+      <section className={styles.answerBand} aria-labelledby="kort-svar">
+        <p className={styles.sectionEyebrow}>Kort svar</p>
+        <h2 id="kort-svar">{page.title}: hva bør du vite først?</h2>
+        <p>{page.description}</p>
+        <div className={styles.answerActions}>
+          <Link href={page.primaryCta.href}>{page.primaryCta.label} <ArrowRight size={16} /></Link>
+          <Link href="/om-freddy">Om Freddy Bremseth <ArrowRight size={16} /></Link>
         </div>
       </section>
 
@@ -132,6 +159,7 @@ export function SeoLandingView({ page }: { page: SeoLandingPage }) {
         </div>
       </section>
 
+      <div className={styles.updatedNote}>Oppdatert 2. oktober 2026 · Pinoso Eco Life · rådgivning og beslutningsstøtte</div>
       <Footer />
     </main>
   );

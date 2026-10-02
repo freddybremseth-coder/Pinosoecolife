@@ -95,6 +95,8 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
         inLanguage: "nb-NO",
         isPartOf: { "@id": `${BASE}/#website` },
         about: { "@id": `${pageUrl}#place` },
+        author: { "@id": "https://www.freddybremseth.com/#person" },
+        dateModified: "2026-10-02",
       },
       {
         "@type": "Place",

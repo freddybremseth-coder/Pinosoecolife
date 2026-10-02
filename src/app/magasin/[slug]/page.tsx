@@ -110,10 +110,16 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
         inLanguage: "nb-NO",
         keywords: post.tags || [],
         author: explicitlyFreddyAuthored
-          ? { "@id": `${BASE}/om-freddy#person` }
+          ? { "@id": "https://www.freddybremseth.com/#person" }
           : { "@type": "Organization", "@id": `${BASE}/#organization`, name: "Pinoso Eco Life" },
         publisher: { "@id": `${BASE}/#organization` },
         mainEntityOfPage: { "@id": `${articleUrl}#webpage` },
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.freddybremseth.com/#person",
+        name: "Freddy Bremseth",
+        url: "https://www.freddybremseth.com/",
       },
       {
         "@type": "WebPage",
