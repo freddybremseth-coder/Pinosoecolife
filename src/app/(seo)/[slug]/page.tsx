@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!page) return { title: "Side ikke funnet", robots: { index: false, follow: false } };
 
   return {
-    title: page.seoTitle,
+    title: { absolute: page.seoTitle },
     description: page.seoDescription,
     alternates: { canonical: `/${page.slug}` },
     openGraph: {
