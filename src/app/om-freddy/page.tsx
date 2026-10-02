@@ -32,31 +32,38 @@ export const metadata: Metadata = {
 
 const personJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": `${BASE}/om-freddy#person`,
-  name: "Freddy Bremseth",
-  jobTitle: "Eiendomsrådgiver",
-  url: `${BASE}/om-freddy`,
-  image: "https://www.zenecohomes.com/assets/freddy-bremseth.jpg",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Benidorm",
-    addressRegion: "Alicante",
-    addressCountry: "ES",
-  },
-  knowsLanguage: ["no", "en", "es"],
-  knowsAbout: [
-    "Bolig i Pinoso",
-    "Tomt i Pinoso",
-    "Nybygg i Alicante-innlandet",
-    "Finca og landlig eiendom",
-    "Boligkjøp i Spania",
-    "Områdevalg i Alicante og Murcia",
-  ],
-  worksFor: { "@id": `${BASE}/#organization` },
-  sameAs: [
-    "https://www.freddybremseth.com",
-    "https://www.zenecohomes.com/om-freddy",
+  "@graph": [
+    {
+      "@type": "ProfilePage",
+      "@id": `${BASE}/om-freddy#profile`,
+      url: `${BASE}/om-freddy`,
+      name: "Freddy Bremseth – Pinoso Eco Life",
+      mainEntity: { "@id": "https://www.freddybremseth.com/#person" },
+      dateModified: "2026-10-02",
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.freddybremseth.com/#person",
+      name: "Freddy Bremseth",
+      jobTitle: "Eiendomsrådgiver",
+      url: "https://www.freddybremseth.com/",
+      image: "https://www.zenecohomes.com/assets/freddy-bremseth.jpg",
+      knowsLanguage: ["no", "en", "es"],
+      knowsAbout: [
+        "Bolig i Pinoso",
+        "Tomt i Pinoso",
+        "Nybygg i Alicante-innlandet",
+        "Finca og landlig eiendom",
+        "Boligkjøp i Spania",
+        "Områdevalg i Alicante og Murcia",
+      ],
+      worksFor: { "@id": `${BASE}/#organization` },
+      subjectOf: [
+        { "@type": "ProfilePage", "@id": `${BASE}/om-freddy#profile`, url: `${BASE}/om-freddy` },
+        { "@type": "ProfilePage", url: "https://www.zenecohomes.com/om-freddy" },
+      ],
+      sameAs: ["https://no.linkedin.com/in/freddybremseth"],
+    },
   ],
 };
 
@@ -176,6 +183,7 @@ export default function AboutFreddyPage() {
         </div>
       </section>
 
+      <div className={styles.updatedNote}>Oppdatert 2. oktober 2026 · <a href="https://www.freddybremseth.com/">FreddyBremseth.com</a> er hovedprofilen.</div>
       <Footer />
     </main>
   );
