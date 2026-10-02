@@ -9,7 +9,7 @@ import styles from "../ecolife-editorial.module.css";
 const BASE = "https://www.pinosoecolife.com";
 
 export const metadata: Metadata = {
-  title: "Om Freddy Bremseth | Norsk rådgiver for Pinoso og Alicante-innlandet",
+  title: { absolute: "Freddy Bremseth | Pinoso Eco Life og Alicante-innlandet" },
   description:
     "Møt Freddy Bremseth, norsk eiendomsrådgiver bosatt i Alicante-provinsen med erfaring fra boligkjøp, utleie, tomter og livet både på Costa Blanca og i innlandet.",
   alternates: { canonical: "/om-freddy" },
