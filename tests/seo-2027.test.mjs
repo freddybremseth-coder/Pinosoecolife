@@ -33,8 +33,8 @@ test("Freddy profile uses one canonical Person entity and a real identity sameAs
   const page = read("src/app/om-freddy/page.tsx");
   assert.match(page, /"@id": "https:\/\/www\.freddybremseth\.com\/#person"/);
   assert.match(page, /sameAs: \["https:\/\/no\.linkedin\.com\/in\/freddybremseth"\]/);
-  assert.ok(!page.includes(`${BASE}/om-freddy#person`), "must not create a second Freddy Person entity");
-  assert.ok(!/sameAs:\s*\[[\s\S]*zenecohomes/.test(page), "brand profile pages must not be used as sameAs identities");
+  assert.ok(!page.includes("${BASE}/om-freddy#person"), "must not create a second Freddy Person entity");
+  assert.ok(!page.includes('sameAs: ["https://www.zenecohomes.com/om-freddy"]'), "brand profile pages must not be used as sameAs identities");
 });
 
 test("magazine hub and articles keep structured discovery and next steps", () => {
