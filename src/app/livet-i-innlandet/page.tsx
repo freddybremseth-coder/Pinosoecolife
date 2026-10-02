@@ -22,9 +22,46 @@ const icons = {
 };
 
 export default function InlandLifePage() {
+  const pageUrl = "https://www.pinosoecolife.com/livet-i-innlandet";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${pageUrl}#collection`,
+        url: pageUrl,
+        name: "Livet i innlandet – Pinoso Eco Life",
+        description: "Sammenlign Pinoso, Hondón, Aspe, La Romana, Biar, Villena, Jumilla og andre innlandsområder i Alicante og Murcia.",
+        inLanguage: "nb-NO",
+        isPartOf: { "@id": "https://www.pinosoecolife.com/#website" },
+        publisher: { "@id": "https://www.pinosoecolife.com/#organization" },
+        author: { "@id": "https://www.freddybremseth.com/#person" },
+        dateModified: "2026-10-02",
+      },
+      {
+        "@type": "ItemList",
+        name: "Eco Life-områder i Alicante og Murcia",
+        itemListElement: ecoLifeAreas.map((area, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: area.name,
+          url: `https://www.pinosoecolife.com/livet-i-innlandet/${area.slug}`,
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Forside", item: "https://www.pinosoecolife.com/" },
+          { "@type": "ListItem", position: 2, name: "Livet i innlandet", item: pageUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <main>
       <SiteHeader />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <section className={styles.editorialHero}>
         <Image
@@ -127,6 +164,7 @@ export default function InlandLifePage() {
         </div>
       </section>
 
+      <div className={styles.updatedNote}>Oppdatert 2. oktober 2026 · områdeguidene vurderes som beslutningsstøtte før bolig- og tomtesøk.</div>
       <Footer />
     </main>
   );
