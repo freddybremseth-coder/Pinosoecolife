@@ -6,7 +6,7 @@ import { processSteps } from "@/lib/content";
 import styles from "./process.module.css";
 
 export const metadata = {
-  title: "Kjøpsprosessen for bolig i Pinoso og Alicante-innlandet",
+  title: { absolute: "Kjøpsprosessen | Bolig i Pinoso og Alicante-innlandet" },
   description: "Se kjøpsprosessen fra behov og områdevalg til tomt eller bolig, dokumentkontroll, reservasjon, kontrakt og overtakelse i innlandet i Spania.",
   alternates: { canonical: "/kjopsprosessen" },
   openGraph: {
