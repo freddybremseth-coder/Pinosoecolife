@@ -160,6 +160,9 @@ export default function InlandLifePage() {
         <div className={styles.actionLinks}>
           <Link href="/tomter">Se aktuelle tomter <ArrowRight size={17} /></Link>
           <Link href="/magasin">Les Eco Life-magasinet <ArrowRight size={17} /></Link>
+          <a href="https://www.costablancatours.pro/turer/jumilla-vin/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=inland-life-experience" target="_blank" rel="noopener noreferrer">
+            Opplev vinlandet og innlandet <ArrowRight size={17} />
+          </a>
           <Link href="/#kontakt"><MapPin size={16} /> Fortell oss hvordan du vil leve</Link>
         </div>
       </section>
