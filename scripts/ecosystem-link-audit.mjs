@@ -5,6 +5,8 @@ const checks = [
   ["src/components/Footer.tsx", "care.zenecohomes.com"],
   ["src/components/Footer.tsx", "costablancatours.pro"],
   ["src/app/livet-i-innlandet/page.tsx", "costablancatours.pro"],
+  ["src/app/kjopsprosessen/page.tsx", "care.zenecohomes.com"],
+  ["src/app/kjopsprosessen/page.tsx", "costablancatours.pro"],
 ];
 
 let failed = false;
