@@ -274,19 +274,19 @@ export default async function Home() {
           </p>
         </div>
         <div className={styles.intentGrid}>
-          <a className={styles.intentCard} href="https://www.costablancatours.pro/" target="_blank" rel="noopener noreferrer">
+          <a className={styles.intentCard} href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=inland-lifestyle-journey" target="_blank" rel="noopener noreferrer">
             <span>01</span>
             <h3>Se mer enn eiendommen</h3>
             <p>Opplev området rundt Pinoso, Biar, Villena og Alicante-provinsen og få et bedre bilde av hverdagen.</p>
             <strong>Se opplevelser <ArrowRight size={16} /></strong>
           </a>
-          <a className={styles.intentCard} href="https://www.costablancatours.pro/" target="_blank" rel="noopener noreferrer">
+          <a className={styles.intentCard} href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=inland-lifestyle-journey" target="_blank" rel="noopener noreferrer">
             <span>02</span>
             <h3>Mat, vin og lokale steder</h3>
             <p>Kombiner visningsturen med kultur, gastronomi og steder som gjør innlandet interessant også etter boligkjøpet.</p>
             <strong>Utforsk Costa Blanca Tours <ArrowRight size={16} /></strong>
           </a>
-          <a className={styles.intentCard} href="https://www.costablancatours.pro/" target="_blank" rel="noopener noreferrer">
+          <a className={styles.intentCard} href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=inland-lifestyle-journey" target="_blank" rel="noopener noreferrer">
             <span>03</span>
             <h3>Kom tilbake og oppdag mer</h3>
             <p>For eksisterende boligeiere blir turene en naturlig del av oppholdene, ikke bare noe man gjør første gang.</p>
