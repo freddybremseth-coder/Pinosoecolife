@@ -128,6 +128,25 @@ export default function BuyingProcessPage() {
         </div>
       </section>
 
+      <section className={styles.section}>
+        <div className={styles.callout}>
+          <h2>Etter overtakelsen begynner hverdagen</h2>
+          <p>
+            Når boligen eller prosjektet er på plass, handler neste fase om å bli kjent med området og bruke tiden i Spania godt.
+            For kystrelatert keyholding og boligtilsyn kan du se Zen Eco Homes Care, og for lokale opplevelser kan du bruke Costa Blanca Tours.
+          </p>
+          <p>
+            <a href="https://care.zenecohomes.com/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=after-purchase-care" target="_blank" rel="noopener noreferrer">
+              Zen Eco Homes Care
+            </a>
+            {" · "}
+            <a href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=after-purchase-inland" target="_blank" rel="noopener noreferrer">
+              Costa Blanca Tours
+            </a>
+          </p>
+        </div>
+      </section>
+
       <section className={styles.contact}>
         <div className={styles.contactInner}>
           <div>
