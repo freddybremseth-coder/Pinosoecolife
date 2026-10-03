@@ -58,7 +58,9 @@ export function Footer() {
         <nav className={styles.network} aria-label="Freddy Bremseth prosjektnettverk">
           <span>Freddy Bremseth network</span>
           <a href="https://www.freddybremseth.com/">FreddyBremseth.com</a>
-          <a href="https://www.zenecohomes.com/">Zen Eco Homes</a>
+          <a href="https://www.zenecohomes.com/">Zen Eco Homes · boliger på Costa Blanca</a>
+          <a href="https://care.zenecohomes.com/">Zen Eco Homes Care · keyholding og boligtilsyn</a>
+          <a href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=footer-network">Costa Blanca Tours · opplevelser og dagsturer</a>
           <a href="https://www.donaanna.com/">Doña Anna</a>
           <a href="https://www.chatgenius.pro/">ChatGenius</a>
           <a href="https://books.freddybremseth.com/">Books</a>
