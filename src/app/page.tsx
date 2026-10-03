@@ -264,6 +264,37 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className={styles.intentSection} aria-labelledby="opplev-innlandet-title">
+        <div className={styles.intentHeading}>
+          <p className={styles.kicker}>Opplev området</p>
+          <h2 id="opplev-innlandet-title">Forstå livet i innlandet før du kjøper</h2>
+          <p>
+            En bolig eller tomt gir mer mening når du også kjenner landsbyene, maten, vinområdene, naturen og avstandene.
+            Costa Blanca Tours blir opplevelseslaget rundt boligjakten – både før beslutningen og etter at du har flyttet inn.
+          </p>
+        </div>
+        <div className={styles.intentGrid}>
+          <a className={styles.intentCard} href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=inland-lifestyle-journey" target="_blank" rel="noopener noreferrer">
+            <span>01</span>
+            <h3>Se mer enn eiendommen</h3>
+            <p>Opplev området rundt Pinoso, Biar, Villena og Alicante-provinsen og få et bedre bilde av hverdagen.</p>
+            <strong>Se opplevelser <ArrowRight size={16} /></strong>
+          </a>
+          <a className={styles.intentCard} href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=inland-lifestyle-journey" target="_blank" rel="noopener noreferrer">
+            <span>02</span>
+            <h3>Mat, vin og lokale steder</h3>
+            <p>Kombiner visningsturen med kultur, gastronomi og steder som gjør innlandet interessant også etter boligkjøpet.</p>
+            <strong>Utforsk Costa Blanca Tours <ArrowRight size={16} /></strong>
+          </a>
+          <a className={styles.intentCard} href="https://www.costablancatours.pro/?utm_source=pinosoecolife&utm_medium=referral&utm_campaign=inland-lifestyle-journey" target="_blank" rel="noopener noreferrer">
+            <span>03</span>
+            <h3>Kom tilbake og oppdag mer</h3>
+            <p>For eksisterende boligeiere blir turene en naturlig del av oppholdene, ikke bare noe man gjør første gang.</p>
+            <strong>Finn neste tur <ArrowRight size={16} /></strong>
+          </a>
+        </div>
+      </section>
+
       <BuyerMatchQuiz />
 
       <section className={styles.story}>
