@@ -46,7 +46,7 @@ export function Footer() {
             <Link href="/kjopsprosessen">Kjøpsprosessen</Link>
             <Link href="/om-freddy">Om Freddy Bremseth</Link>
             <Link href="/min-side">Min side</Link>
-            <Link href="/#kontakt">Kontakt oss</Link>
+            <Link href="/#boligmatch">Boligmatch</Link>
           </nav>
         </div>
 
