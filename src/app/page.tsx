@@ -3,7 +3,6 @@ import { connection } from "next/server";
 import Link from "next/link";
 import { ArrowRight, Check, Grape, Leaf, MapPinned, Sprout, SunMedium } from "lucide-react";
 import { BuyerMatchQuiz } from "@/components/BuyerMatchQuiz";
-import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
 import { PropertyCard } from "@/components/PropertyCard";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -293,18 +292,6 @@ export default async function Home() {
             Les om rommet rundt huset <ArrowRight size={17} />
           </Link>
         </div>
-      </section>
-
-      <section className="contact-section" id="kontakt">
-        <div>
-          <p className="eyebrow">Klar for en prat?</p>
-          <h2>Fortell oss hvordan du ønsker å leve</h2>
-          <p>
-            Ikke bare antall soverom. Fortell om plass, privatliv, hage, aktivitet, familie, logistikk og hva du ser for
-            deg å bruke tomten til.
-          </p>
-        </div>
-        <ContactForm source="pinosoecolife-home" />
       </section>
 
       <Footer />
