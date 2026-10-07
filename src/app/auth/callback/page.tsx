@@ -5,6 +5,14 @@ import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata = {
   title: "Logger inn | Pinoso Eco Life",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
 };
 
 export default function AuthCallbackPage() {
