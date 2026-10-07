@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const baseUrl = "https://www.pinosoecolife.com";
-const privatePaths = ["/auth/", "/min-side", "/api/portal/"];
+const blockedPaths = ["/api/portal/"];
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,12 +9,14 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: privatePaths,
+        // Public portal/auth pages stay crawlable so search engines can read
+        // their explicit noindex directives. Private API resources stay blocked.
+        disallow: blockedPaths,
       },
       {
         userAgent: "OAI-SearchBot",
         allow: "/",
-        disallow: privatePaths,
+        disallow: blockedPaths,
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
