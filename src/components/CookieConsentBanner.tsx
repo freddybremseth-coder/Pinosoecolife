@@ -37,7 +37,7 @@ export function CookieConsentBanner() {
     setOpen(false);
     setDetails(false);
   }
-  if (!open) return null;
+  if (!open) return <button type="button" onClick={() => window.dispatchEvent(new Event("pinoso:open-cookie-settings"))} aria-label="Endre informasjonskapsler" title="Endre informasjonskapsler" style={{ position: "fixed", bottom: 12, left: 12, zIndex: 9990, padding: "8px 11px", border: "1px solid #aacbbd", borderRadius: 999, background: "#fff", color: "#286e52", fontSize: 12, boxShadow: "0 2px 9px #0002" }}>Kapselvalg</button>;
   return <div style={{ position: "fixed", inset: 0, background: "rgba(15,23,42,.52)", zIndex: 99999, display: "flex", alignItems: "end", justifyContent: "center", padding: 16 }}>
     <section role="dialog" aria-modal="true" aria-label="Valg av informasjonskapsler" style={{ width: "min(100%,720px)", background: "#fff", color: "#172c26", padding: 24, borderRadius: 18, boxShadow: "0 14px 50px #0004", fontFamily: "inherit" }}>
       <h2 style={{ fontSize: 23, fontWeight: 700, marginBottom: 10 }}>Vi respekterer personvernet ditt</h2>
