@@ -3,6 +3,7 @@ import { Manrope, Newsreader } from "next/font/google";
 import Script from "next/script";
 import { CompareProvider } from "@/components/CompareProperties";
 import { PinosoChatbot } from "@/components/PinosoChatbot";
+import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import { SearchDiscoveryTracker } from "@/components/SearchDiscoveryTracker";
 import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import "./globals.css";
@@ -131,6 +132,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <PinosoChatbot />
         <SearchDiscoveryTracker />
+        <CookieConsentBanner />
       </body>
     </html>
   );
