@@ -2,9 +2,12 @@
 
 import { useEffect } from "react";
 import { safeDiscoverySource, safePublicDiscoveryPath } from "@/lib/seo-discovery";
+import { analyticsAllowed, CONSENT_CHANGED } from "@/components/CookieConsentBanner";
 
 export function SearchDiscoveryTracker() {
   useEffect(() => {
+    const sendIfAllowed = () => {
+    if (!analyticsAllowed()) return;
     const source = safeDiscoverySource(document.referrer);
     const path = safePublicDiscoveryPath(window.location.pathname);
     if (!source || !path) return;
@@ -27,6 +30,10 @@ export function SearchDiscoveryTracker() {
       if (response.status !== 204) return;
       try { window.sessionStorage.setItem(storageKey, "1"); } catch {}
     }).catch(() => undefined);
+    };
+    sendIfAllowed();
+    window.addEventListener(CONSENT_CHANGED, sendIfAllowed);
+    return () => window.removeEventListener(CONSENT_CHANGED, sendIfAllowed);
   }, []);
 
   return null;
