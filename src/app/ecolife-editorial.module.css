@@ -217,6 +217,10 @@
 }
 
 .areaPhoto {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   min-height: 440px;
   background-position: center;
   background-size: cover;
@@ -669,6 +673,7 @@
   }
 
   .areaPhoto {
+    height: 360px;
     min-height: 360px;
   }
 
@@ -740,6 +745,7 @@
   }
 
   .areaPhoto {
+    height: 280px;
     min-height: 280px;
   }
 
