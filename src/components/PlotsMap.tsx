@@ -146,6 +146,8 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
   const catastroLayerRef = useRef<any>(null);
   const [catastroEnabled, setCatastroEnabled] = useState(true);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [plotSearch, setPlotSearch] = useState("");
+  const [showAllPlots, setShowAllPlots] = useState(false);
   const [nearbyStatus, setNearbyStatus] = useState("");
   const [nearbyPosition, setNearbyPosition] = useState<{ lat: number; lng: number } | null>(null);
   const typedPlots = useMemo(() => plots as PlotWithCatastro[], [plots]);
@@ -162,6 +164,14 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
       return distance(a) - distance(b);
     });
   }, [validPlotsForVisit, nearbyPosition]);
+  const normalizedSearch = plotSearch.trim().toLocaleLowerCase("nb-NO");
+  const filteredPlannerPlots = orderedPlots.filter((plot) =>
+    !normalizedSearch || [plotRef(plot), plot.municipality, plot.location, plot.notes]
+      .filter(Boolean).join(" ").toLocaleLowerCase("nb-NO").includes(normalizedSearch),
+  );
+  const visiblePlannerPlots = showAllPlots || normalizedSearch
+    ? filteredPlannerPlots
+    : filteredPlannerPlots.slice(0, 12);
   const selectedPlots = orderedPlots.filter((plot) => selectedKeys.includes(plotKey(plot)));
   // Greedy nearest-neighbour order is an approximate straight-line suggestion.
   // Google Maps calculates the actual driving route after opening the link.
@@ -327,8 +337,23 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
           {routeUrl && <a href={routeUrl} target="_blank" rel="noopener noreferrer">Åpne rute ({selectedPlots.length})</a>}
         </div>
         {nearbyStatus && <p role="status">{nearbyStatus}</p>}
+        <div className="plot-visit-search">
+          <label htmlFor="plot-visit-query">Finn tomt eller område</label>
+          <input id="plot-visit-query" type="search" value={plotSearch} onChange={(event) => setPlotSearch(event.target.value)} placeholder="Tomtenummer, Pinoso, Aspe ..." />
+          <span>{filteredPlannerPlots.length} av {validPlotsForVisit.length} tomter</span>
+        </div>
+        {routePlots.length > 0 && (
+          <div className="plot-route-summary" aria-label="Foreslått besøksrekkefølge">
+            <strong>Din visningsrute:</strong>
+            {routePlots.map((plot, index) => (
+              <button type="button" key={plotKey(plot)} onClick={() => togglePlot(plotKey(plot))} title="Fjern fra ruten">
+                {index + 1}. {plotRef(plot)} <span aria-hidden="true">×</span>
+              </button>
+            ))}
+          </div>
+        )}
         <div className="plot-visit-options">
-          {orderedPlots.map((plot) => (
+          {visiblePlannerPlots.map((plot) => (
             <label key={plotKey(plot)}>
               <input type="checkbox" checked={selectedKeys.includes(plotKey(plot))} disabled={selectedKeys.length >= 4 && !selectedKeys.includes(plotKey(plot))} onChange={() => togglePlot(plotKey(plot))} />
               <span>{plotRef(plot)} · {plot.municipality || plot.location || "Spania"}</span>
@@ -336,6 +361,13 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
             </label>
           ))}
         </div>
+        {!normalizedSearch && filteredPlannerPlots.length > 12 && (
+          <button type="button" className="plot-show-all" onClick={() => setShowAllPlots((value) => !value)}>
+            {showAllPlots ? "Vis færre tomter" : `Vis alle ${filteredPlannerPlots.length} tomter`}
+          </button>
+        )}
+        {normalizedSearch && filteredPlannerPlots.length === 0 && <p>Ingen tomter samsvarer med søket.</p>}
+        <p className="plot-location-note">Kartmarkøren kan vise en omtrentlig posisjon, ikke nødvendigvis innkjørselen. Kontroller adkomst før du kjører. Street View er bare tilgjengelig der Google har bilder.</p>
       </div>
       <div ref={mapNode} className="leaflet-plot-map" />
       <style jsx global>{`
@@ -347,6 +379,16 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
         .plot-visit-planner { position: relative; z-index: 2; padding: 16px; background: #fff; color: #182238; border-radius: 8px 8px 0 0; }
         .plot-visit-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 10px; }
         .plot-all-map-link { margin-left: auto; font-size: .82rem; color: #087f5b; font-weight: 800; }
+        .catastro-map-surface .map-label { top: auto; bottom: 18px; left: 18px; }
+        .plot-visit-search { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; }
+        .plot-visit-search label { font-weight: 800; font-size: .82rem; }
+        .plot-visit-search input { flex: 1 1 170px; min-width: 0; min-height: 42px; border: 1px solid #bac8d3; border-radius: 6px; padding: 8px 12px; color: #182238; background: white; }
+        .plot-visit-search span { font-size: .78rem; color: #526075; }
+        .plot-route-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0; }
+        .plot-route-summary strong { font-size: .82rem; }
+        .plot-route-summary button { border: 1px solid #087f5b; background: #e8f7f0; color: #135a45; border-radius: 5px; padding: 7px 9px; font-weight: 700; cursor: pointer; }
+        .plot-show-all { margin-top: 9px; border: 0; background: transparent; color: #087f5b; text-decoration: underline; font-weight: 800; cursor: pointer; }
+        .plot-visit-planner .plot-location-note { margin: 10px 0 0; color: #526075; font-size: .75rem; line-height: 1.5; }
         .plot-visit-heading span { font-size: .83rem; color: #526075; }
         .plot-visit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
         .plot-visit-actions button, .plot-visit-actions a { border: 1px solid #cbd5e1; background: #f8fafc; color: #173a32; border-radius: 6px; padding: 8px 11px; font-size: .85rem; font-weight: 700; text-decoration: none; cursor: pointer; }
