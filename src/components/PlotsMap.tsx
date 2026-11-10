@@ -317,6 +317,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
   }, [typedPlots]);
 
   useEffect(() => {
+    const map = mapRef.current;
     plotMarkersRef.current.forEach((marker, key) => {
       const selected = selectedKeys.includes(key);
       marker.setStyle({
