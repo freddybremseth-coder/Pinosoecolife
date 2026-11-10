@@ -163,8 +163,31 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
     });
   }, [validPlotsForVisit, nearbyPosition]);
   const selectedPlots = orderedPlots.filter((plot) => selectedKeys.includes(plotKey(plot)));
-  const routeUrl = selectedPlots.length
-    ? `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(coordinates(selectedPlots[selectedPlots.length - 1]))}${selectedPlots.length > 1 ? `&waypoints=${encodeURIComponent(selectedPlots.slice(0, -1).map(coordinates).join("|"))}` : ""}`
+  // Greedy nearest-neighbour order is an approximate straight-line suggestion.
+  // Google Maps calculates the actual driving route after opening the link.
+  const routePlots = useMemo(() => {
+    const remaining = validPlotsForVisit.filter((plot) => selectedKeys.includes(plotKey(plot)));
+    if (remaining.length < 2) return remaining;
+    const distance = (a: { lat: number; lng: number }, b: PlotWithCatastro) => {
+      const latDiff = (Number(b.lat) - a.lat) * Math.PI / 180;
+      const lngDiff = (Number(b.lng) - a.lng) * Math.PI / 180;
+      return latDiff * latDiff + lngDiff * lngDiff * Math.cos(a.lat * Math.PI / 180) ** 2;
+    };
+    const ordered: PlotWithCatastro[] = [];
+    let point = nearbyPosition || { lat: Number(remaining[0].lat), lng: Number(remaining[0].lng) };
+    while (remaining.length) {
+      let best = 0;
+      for (let i = 1; i < remaining.length; i++) {
+        if (distance(point, remaining[i]) < distance(point, remaining[best])) best = i;
+      }
+      const next = remaining.splice(best, 1)[0];
+      ordered.push(next);
+      point = { lat: Number(next.lat), lng: Number(next.lng) };
+    }
+    return ordered;
+  }, [selectedKeys, validPlotsForVisit, nearbyPosition]);
+  const routeUrl = routePlots.length
+    ? `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(coordinates(routePlots[routePlots.length - 1]))}${routePlots.length > 1 ? `&waypoints=${encodeURIComponent(routePlots.slice(0, -1).map(coordinates).join("|"))}` : ""}`
     : "";
   function togglePlot(key: string) {
     setSelectedKeys((current) => current.includes(key) ? current.filter((item) => item !== key) : current.length < 4 ? [...current, key] : current);
@@ -295,7 +318,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
       <div className="plot-visit-planner" aria-label="Planlegg tomtevisning">
         <div className="plot-visit-heading">
           <strong>Planlegg tomtevisning</strong>
-          <span>Velg inntil 4 tomter og åpne kjøreruten i Google Maps.</span>
+          <span>Velg inntil 4 tomter. Stopprekkefølgen foreslås etter luftlinje; Google Maps beregner kjøreruten.</span>
         </div>
         <div className="plot-visit-actions">
           <button type="button" onClick={findNearbyPlots}>Tomter nær meg</button>
