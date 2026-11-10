@@ -339,6 +339,11 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
       </div>
       <div ref={mapNode} className="leaflet-plot-map" />
       <style jsx global>{`
+        .map-surface.catastro-map-surface { height: auto; min-height: 0; overflow: visible; }
+        .catastro-map-surface .leaflet-plot-map { height: 610px; min-height: 610px; }
+        @media (max-width: 720px) {
+          .catastro-map-surface .leaflet-plot-map { height: 360px; min-height: 360px; }
+        }
         .plot-visit-planner { position: relative; z-index: 2; padding: 16px; background: #fff; color: #182238; border-radius: 8px 8px 0 0; }
         .plot-visit-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 10px; }
         .plot-all-map-link { margin-left: auto; font-size: .82rem; color: #087f5b; font-weight: 800; }
