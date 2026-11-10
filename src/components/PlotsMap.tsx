@@ -142,10 +142,12 @@ function popupHtml(plot: PlotWithCatastro) {
 export function PlotsMap({ plots }: { plots: LandPlot[] }) {
   const mapNode = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
+  const plotMarkersRef = useRef<Map<string, any>>(new Map());
   const osmLayerRef = useRef<any>(null);
   const catastroLayerRef = useRef<any>(null);
   const [catastroEnabled, setCatastroEnabled] = useState(true);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  
   const [plotSearch, setPlotSearch] = useState("");
   const [showAllPlots, setShowAllPlots] = useState(false);
   const [nearbyStatus, setNearbyStatus] = useState("");
@@ -199,6 +201,14 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
   const routeUrl = routePlots.length
     ? `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(coordinates(routePlots[routePlots.length - 1]))}${routePlots.length > 1 ? `&waypoints=${encodeURIComponent(routePlots.slice(0, -1).map(coordinates).join("|"))}` : ""}`
     : "";
+  function focusPlot(plot: PlotWithCatastro) {
+    const map = mapRef.current;
+    const marker = plotMarkersRef.current.get(plotKey(plot));
+    if (!map || !marker) return;
+    map.setView([Number(plot.lat), Number(plot.lng)], Math.max(map.getZoom(), 14));
+    marker.openPopup();
+  }
+
   function togglePlot(key: string) {
     setSelectedKeys((current) => current.includes(key) ? current.filter((item) => item !== key) : current.length < 4 ? [...current, key] : current);
   }
@@ -255,6 +265,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
       osmLayerRef.current = osmLayer;
       catastroLayerRef.current = catastroLayer;
 
+      plotMarkersRef.current.clear();
       const bounds: Array<[number, number]> = [];
       validPlots.forEach((plot) => {
         const lat = Number(plot.lat);
@@ -268,6 +279,8 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
           fillColor: "#10b981",
           fillOpacity: 0.95,
         }).addTo(map);
+        plotMarkersRef.current.set(plotKey(plot), marker);
+        marker.on("click", () => togglePlot(plotKey(plot)));
 
         const catastroRef = getCatastroRef(plot);
         const polygon = getPolygon(plot);
@@ -298,9 +311,34 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
+        plotMarkersRef.current.clear();
       }
     };
-  }, [typedPlots, catastroEnabled]);
+  }, [typedPlots]);
+
+  useEffect(() => {
+    plotMarkersRef.current.forEach((marker, key) => {
+      const selected = selectedKeys.includes(key);
+      marker.setStyle({
+        color: selected ? "#1d4ed8" : "#ffffff",
+        weight: selected ? 4 : 3,
+        fillColor: selected ? "#2563eb" : "#10b981",
+        fillOpacity: 0.95,
+      });
+      marker.setRadius(selected ? 13 : 8);
+      if (selected) marker.bringToFront();
+    });
+    if (selectedKeys.length && map) {
+      const selectedLocations = validPlotsForVisit
+        .filter((plot) => selectedKeys.includes(plotKey(plot)))
+        .map((plot) => [Number(plot.lat), Number(plot.lng)] as [number, number]);
+      if (selectedLocations.length === 1) {
+        map.setView(selectedLocations[0], Math.max(map.getZoom(), 13));
+      } else if (selectedLocations.length > 1) {
+        map.fitBounds(selectedLocations, { padding: [45, 45], maxZoom: 13 });
+      }
+    }
+  }, [selectedKeys, validPlotsForVisit]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -347,7 +385,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
             <strong>Din visningsrute:</strong>
             {routePlots.map((plot, index) => (
               <button type="button" key={plotKey(plot)} onClick={() => togglePlot(plotKey(plot))} title="Fjern fra ruten">
-                {index + 1}. {plotRef(plot)} <span aria-hidden="true">×</span>
+                {index + 1}. {plotRef(plot)} · {formatEuro(plot.price)} · {Number(plot.area || 0).toLocaleString("nb-NO")} m² <span aria-hidden="true">×</span>
               </button>
             ))}
           </div>
@@ -356,8 +394,9 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
           {visiblePlannerPlots.map((plot) => (
             <label key={plotKey(plot)}>
               <input type="checkbox" checked={selectedKeys.includes(plotKey(plot))} disabled={selectedKeys.length >= 4 && !selectedKeys.includes(plotKey(plot))} onChange={() => togglePlot(plotKey(plot))} />
-              <span>{plotRef(plot)} · {plot.municipality || plot.location || "Spania"}</span>
-              <a href={directionsUrl(plot)} target="_blank" rel="noopener noreferrer" aria-label={`Veibeskrivelse til ${plotRef(plot)}`}>Kjør</a>
+              <span>{plotRef(plot)} · {plot.municipality || plot.location || "Spania"} · {formatEuro(plot.price)} · {Number(plot.area || 0).toLocaleString("nb-NO")} m²</span>
+              <button type="button" className="plot-focus-button" onClick={(event) => { event.preventDefault(); event.stopPropagation(); focusPlot(plot); }} aria-label={`Vis ${plotRef(plot)} på kartet`}>Kart</button>
+              <a href={directionsUrl(plot)} target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()} aria-label={`Veibeskrivelse til ${plotRef(plot)}`}>Kjør</a>
             </label>
           ))}
         </div>
@@ -398,6 +437,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
         .plot-visit-options { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
         .plot-visit-options label { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; max-width: 270px; border: 1px solid #dbe3e8; border-radius: 6px; padding: 7px 9px; font-size: .79rem; cursor: pointer; }
         .plot-visit-options label span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .plot-visit-options .plot-focus-button { border: 0; background: #e8f2ff; color: #1d4ed8; border-radius: 4px; padding: 5px 8px; font-weight: 800; cursor: pointer; }
         .plot-visit-options label a { color: #087f5b; font-weight: 800; }
         .catastro-map-surface .leaflet-popup-content a {
           color: #047857;
