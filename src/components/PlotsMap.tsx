@@ -318,6 +318,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
       <div className="plot-visit-planner" aria-label="Planlegg tomtevisning">
         <div className="plot-visit-heading">
           <strong>Planlegg tomtevisning</strong>
+          <a href="https://www.zenecohomes.com/omrader/innlandet/tomter" target="_blank" rel="noopener noreferrer" className="plot-all-map-link">Felles tomtekart</a>
           <span>Velg inntil 4 tomter. Stopprekkefølgen foreslås etter luftlinje; Google Maps beregner kjøreruten.</span>
         </div>
         <div className="plot-visit-actions">
@@ -340,6 +341,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
       <style jsx global>{`
         .plot-visit-planner { position: relative; z-index: 2; padding: 16px; background: #fff; color: #182238; border-radius: 8px 8px 0 0; }
         .plot-visit-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+        .plot-all-map-link { margin-left: auto; font-size: .82rem; color: #087f5b; font-weight: 800; }
         .plot-visit-heading span { font-size: .83rem; color: #526075; }
         .plot-visit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
         .plot-visit-actions button, .plot-visit-actions a { border: 1px solid #cbd5e1; background: #f8fafc; color: #173a32; border-radius: 6px; padding: 8px 11px; font-size: .85rem; font-weight: 700; text-decoration: none; cursor: pointer; }
