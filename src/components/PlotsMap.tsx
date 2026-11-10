@@ -198,16 +198,18 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
     }
     return ordered;
   }, [selectedKeys, validPlotsForVisit, nearbyPosition]);
-  const routeUrl = routePlots.length
-    ? `https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=${encodeURIComponent(coordinates(routePlots[routePlots.length - 1]))}${routePlots.length > 1 ? `&waypoints=${encodeURIComponent(routePlots.slice(0, -1).map(coordinates).join("|"))}` : ""}`
-    : "";
+  const routeUrl = routePlots.length === 1
+    ? directionsUrl(routePlots[0])
+    : routePlots.length > 1
+      ? `https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=${encodeURIComponent(coordinates(routePlots[0]))}&destination=${encodeURIComponent(coordinates(routePlots[routePlots.length - 1]))}${routePlots.length > 2 ? `&waypoints=${encodeURIComponent(routePlots.slice(1, -1).map(coordinates).join("|"))}` : ""}`
+      : "";
   // Google Maps URLs support up to three waypoints in mobile browsers.
   // Split longer tours into contiguous legs, repeating the previous endpoint as the next origin.
   function mobileLegUrl(stops: PlotWithCatastro[], origin?: PlotWithCatastro) {
     if (!stops.length) return "";
-    const originPart = origin ? `&origin=${encodeURIComponent(coordinates(origin))}` : "";
-    const waypoints = stops.slice(0, -1);
-    return `https://www.google.com/maps/dir/?api=1&travelmode=driving${originPart}&destination=${encodeURIComponent(coordinates(stops[stops.length - 1]))}${waypoints.length ? `&waypoints=${encodeURIComponent(waypoints.map(coordinates).join("|"))}` : ""}`;
+    const routeOrigin = origin || stops[0];
+    const waypoints = origin ? stops.slice(0, -1) : stops.slice(1, -1);
+    return `https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=${encodeURIComponent(coordinates(routeOrigin))}&destination=${encodeURIComponent(coordinates(stops[stops.length - 1]))}${waypoints.length ? `&waypoints=${encodeURIComponent(waypoints.map(coordinates).join("|"))}` : ""}`;
   }
   const firstLegUrl = routePlots.length > 4 ? mobileLegUrl(routePlots.slice(0, 4)) : "";
   const secondLegUrl = routePlots.length > 4 ? mobileLegUrl(routePlots.slice(4), routePlots[3]) : "";
@@ -383,9 +385,9 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
         <div className="plot-visit-actions">
           <button type="button" onClick={findNearbyPlots}>Tomter nær meg</button>
           <button type="button" onClick={() => setSelectedKeys([])} disabled={!selectedKeys.length}>Nullstill</button>
-          {routeUrl && routePlots.length <= 4 && <a href={routeUrl} target="_blank" rel="noopener noreferrer">Åpne rute ({selectedPlots.length})</a>}
-          {firstLegUrl && <a href={firstLegUrl} target="_blank" rel="noopener noreferrer">Etappe 1 (tomt 1–4)</a>}
-          {secondLegUrl && <a href={secondLegUrl} target="_blank" rel="noopener noreferrer">Etappe 2 (tomt 5–{routePlots.length})</a>}
+          {routeUrl && routePlots.length <= 4 && <a href={routeUrl} target="_blank" rel="noopener noreferrer">Start rute fra valgt tomt ({selectedPlots.length})</a>}
+          {firstLegUrl && <a href={firstLegUrl} target="_blank" rel="noopener noreferrer">Start etappe 1 (tomt 1–4)</a>}
+          {secondLegUrl && <a href={secondLegUrl} target="_blank" rel="noopener noreferrer">Start etappe 2 (tomt 5–{routePlots.length})</a>}
         </div>
         {nearbyStatus && <p role="status">{nearbyStatus}</p>}
         {routePlots.length > 4 && <p role="status">For å beholde alle stopp på mobil åpnes turen i to etapper. Start etappe 2 etter siste stopp i etappe 1.</p>}
@@ -410,7 +412,7 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
               <input type="checkbox" checked={selectedKeys.includes(plotKey(plot))} disabled={selectedKeys.length >= 8 && !selectedKeys.includes(plotKey(plot))} onChange={() => togglePlot(plotKey(plot))} />
               <span>{plotRef(plot)} · {plot.municipality || plot.location || "Spania"} · {formatEuro(plot.price)} · {Number(plot.area || 0).toLocaleString("nb-NO")} m²</span>
               <button type="button" className="plot-focus-button" onClick={(event) => { event.preventDefault(); event.stopPropagation(); focusPlot(plot); }} aria-label={`Vis ${plotRef(plot)} på kartet`}>Kart</button>
-              <a href={directionsUrl(plot)} target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()} aria-label={`Veibeskrivelse til ${plotRef(plot)}`}>Kjør</a>
+              
             </label>
           ))}
         </div>
