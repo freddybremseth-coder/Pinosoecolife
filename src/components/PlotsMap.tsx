@@ -335,7 +335,8 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
         .catastro-map-tools {
           position: absolute;
           right: 18px;
-          top: 18px;
+          top: auto;
+          bottom: 18px;
           z-index: 3;
           display: flex;
           align-items: center;
@@ -371,7 +372,8 @@ export function PlotsMap({ plots }: { plots: LandPlot[] }) {
           .catastro-map-tools {
             left: 18px;
             right: 18px;
-            top: 58px;
+            top: auto;
+            bottom: 18px;
             justify-content: space-between;
           }
         }
