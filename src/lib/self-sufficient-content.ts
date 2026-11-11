@@ -137,4 +137,150 @@ export const selfSufficientTopics = [
     ],
     links: [{ label: "Código Técnico de la Edificación – energikrav DB-HE", href: "https://www.codigotecnico.org/DocumentosCTE/AhorroEnergia.html" }],
   },
+  {
+    "slug": "regenerativt-jordbruk",
+    "title": "Regenerativt jordbruk",
+    "lead": "En grundig, praktisk guide til levende jord, jorddekke, vannhusholdning og biologisk mangfold på fincaer i Alicante-innlandet.",
+    "question": "Hvordan bygger du opp fruktbar jord i et klima med tørke, kraftige regnskyll og mulig vinterfrost?",
+    "sections": [
+      {
+        "title": "Hva betyr regenerativt jordbruk?",
+        "text": "Regenerativt jordbruk er en samlebetegnelse for driftsmåter som søker å forbedre jordas funksjon over tid: struktur, infiltrasjon, organisk materiale, biologisk aktivitet og motstandskraft. Det er ikke én universell oppskrift eller automatisk en sertifisering. Start med å beskrive hva som faktisk skal bli bedre på din eiendom, og mål utviklingen. FAOs prinsipper for bevaringsjordbruk – mindre jordforstyrrelse, jorddekke og plantediversitet – er et nyttig utgangspunkt, men må tilpasses lokale vekster og vannforhold."
+      },
+      {
+        "title": "Begynn med vann og erosjon, ikke med frøposen",
+        "text": "I Pinoso, Aspe, Biar og omkringliggende områder varierer jorddybde, kalkinnhold, helling, nedbør og frostfare betydelig mellom eiendommer. Observer hvor regnvannet renner og hvor det blir stående, og om kraftige byger tar med seg jord. På tørre marker må alle tiltak vurderes mot tilgjengelig og lovlig vann. Et permanent grønt plantedekke er ikke alltid riktig gjennom hele sommeren."
+      },
+      {
+        "title": "Tre mål for de første årene",
+        "text": "Prioriter 1) mindre bar, eroderende jord, 2) bedre jordstruktur og vanninntrenging og 3) en drift som er økonomisk og praktisk mulig. Et tiltak er ikke vellykket bare fordi det ser grønt ut: følg også med på trehelse, avling, fukt, tidsbruk og kostnader."
+      }
+    ],
+    "deepDive": [
+      {
+        "title": "1. Kartlegg eiendommen før du endrer driften",
+        "text": "Lag et enkelt kart over helling, jorddybde, utsatte vannveier, eksisterende trær, naturlig vegetasjon og adkomst. Noter forskjeller mellom solside, skyggeside og frostlommer. Dokumenter tidligere jordbearbeiding, gjødsling og eventuell sprøyting hvis historikken finnes. Ta bilder fra de samme punktene hver sesong. Ikke terrasser, grav om naturlige vannløp eller etabler dammer uten nødvendig faglig og rettslig avklaring."
+      },
+      {
+        "title": "2. Ta jordprøver som gir en reell nullmåling",
+        "text": "Be et kvalifisert laboratorium eller agronom legge en prøvetakingsplan med sammenlignbare dybder og delområder. Relevante parametere kan være tekstur, pH, kalk, ledningsevne/saltholdighet, organisk materiale, fosfor, kalium og andre næringsstoffer ved behov. Suppler laboratoriet med spadeprøve: jordaggregater, komprimering, røtter og meitemark der de forekommer. En enkelt prøve viser status – ikke en dokumentert forbedring. Bruk samme metode og årstid ved oppfølging."
+      },
+      {
+        "title": "3. Beskytt jorda mot sol, vind og slagregn",
+        "text": "Bevar egnet planterest og organisk materiale på jordoverflaten der det er hensiktsmessig. I kjøkkenhagen kan ren halm eller annet egnet jorddekke dempe direkte fordamping og sprut fra regn. Rundt trær må materiale ikke legges tett mot stammen; hold rotkragen fri og vurder brannfare og skadedyr. Bruk bare materiale uten kjent sykdoms- eller forurensningsrisiko. Naken jord i en bratt olivenlund kan være særlig utsatt ved intense regnskyll."
+      },
+      {
+        "title": "4. Levende dekkvekster – særlig forsiktig i tørre olivenlunder",
+        "text": "Et vinter- eller vårdekke mellom trærne kan beskytte jord og gi røtter og biologisk aktivitet i den fuktige perioden. Valg av naturlig vegetasjon eller sådd blanding avhenger av jord, klima, tilgjengelig utstyr og mål. I regnfattige år kan dekkvekster konkurrere med oliven, mandel eller vinranker om vann og næring. Planlegg derfor tidspunkt for slått eller avslutning av veksten med lokal agronom, ofte før sommertørken; la egnet plantemateriale ligge som dekke. Unngå en universell kalenderdato."
+      },
+      {
+        "title": "5. Minimer unødvendig jordbearbeiding",
+        "text": "Hyppig pløying og harving kan bryte jordstruktur og etterlate jordoverflaten sårbar. Vurder grunnere, sjeldnere eller mer målrettede inngrep når de er agronomisk forsvarlige. Direkte omlegging til null jordbearbeiding er likevel ikke riktig for enhver kompakt eller dårlig drenert jord. Mekaniske inngrep mot komprimering eller erosjon må begrunnes konkret, og tung kjøring bør unngås på våt jord."
+      },
+      {
+        "title": "6. Øk mangfoldet uten å øke vannstresset",
+        "text": "Variér vekster i kjøkkenhagen, bruk vekstskifte og vurder lokale blomstrende kantsoner og eksisterende busker som leveområder for nyttedyr. Velg arter som passer jord, frost og forventet vannforsyning; undersøk invasive arter og lokale plantehelserisikoer. Artsrikdom handler også om å bevare verdifull natur på resten av tomten, ikke om å plante mest mulig. Flere arter kan medføre mer vedlikehold, så start i håndterbar skala."
+      },
+      {
+        "title": "7. Kompost, gjødsel og næringsstoffer",
+        "text": "Moden, dokumentert trygg kompost kan tilføre organisk materiale, men er ikke gratis næring eller en erstatning for jordprøver. Vurder kompostens kvalitet, saltholdighet, hygienisering, kilde og mengde med agronom, særlig på kalkholdig jord og ved bruk av husdyrgjødsel. Fersk husdyrgjødsel nær spiselige vekster kan gi hygienisk risiko. Unngå overgjødsling og utvasking; målsettingen er balansert næringsforsyning og god jordfunksjon."
+      },
+      {
+        "title": "8. Vannforvaltning i et område med knapp ressurs",
+        "text": "Kontroller rettslig tilgang, faktisk leveringskapasitet og vannkvalitet før nye vannkrevende dyrkingsflater planlegges. Dryppvanning, riktig plassering av planter, jorddekke og kontroll av lekkasjer kan inngå i en vannplan. Bruk jordfuktmåling eller praktiske feltobservasjoner for å styre vanning. Regnlagring og terrenginngrep må vurderes opp mot lokal tillatelse, dimensjonering, erosjon og sikkerhet. God infiltrasjon er positivt, men kan ikke garantere vann gjennom en lang tørke."
+      },
+      {
+        "title": "9. Erosjon på skråning og i naturlige vannveier",
+        "text": "Se etter små renner, sediment nederst i bakken, eksponerte røtter og jord som samler seg på vei eller terrasse. Plantedekke i passende perioder og vegetasjonsstriper på tvers av naturlig vanntransport kan bidra til å bremse overflateavrenning. På bratte eller allerede skadde felt trengs faglig prosjektering; feilplasserte voller, grøfter eller barrierer kan flytte problemet til nabo eller infrastruktur. CSIC har en egen beslutningsguide for jorddekke i olivenlunder."
+      },
+      {
+        "title": "10. Hva med oliven, mandel, vin og kjøkkenhage?",
+        "text": "Olivenlund: vurder naturlig vintervegetasjon mellom radene, slått før kritisk vannkonkurranse og varsomme tiltak mot jorderosjon. Mandel: observer ekstra nøye trestress, jorddybde og vannbehov, spesielt på tørrmark. Vin: tilpass dekke og jordarbeid til radavstand, vannstress, helling og høstemaskiner. Kjøkkenhage: prøv vekstskifte, kompost etter behov, dråpevanning og organisk jorddekke i små testbed. Tiltakene er eksempler, ikke faste oppskrifter for alle eiendommer."
+      },
+      {
+        "title": "11. Smådyr og beiting – bare der driften tåler det",
+        "text": "Kontrollert beiting kan i noen systemer inngå i skjøtselen, men dyr er ikke en forutsetning for regenerativ drift. Feil beitetrykk kan fjerne jorddekke, skade trær og forverre erosjon. Beregn fôr, vann, inngjerding, skygge, daglig tilsyn, veterinærberedskap og registreringskrav før dyr vurderes. En liten eiendom med perioder uten fast bosetting kan være bedre tjent uten dyr."
+      },
+      {
+        "title": "12. En trygg 90-dagers start",
+        "text": "Dag 1–30: tegn kart, fotografer faste punkter, sjekk vann- og bruksrettigheter og bestill relevante jordprøver. Dag 31–60: velg én liten demonstrasjonssone, avtal mål og noter utgifter, timer og observasjoner. Dag 61–90: innfør ett eller to reversible tiltak tilpasset sesongen, for eksempel jorddekke i kjøkkenhage eller plan for vintervegetasjon i trerekker. Ikke sammenlign avling etter bare noen uker; vær, trærnes vekst og jordrespons krever lengre tid."
+      },
+      {
+        "title": "13. År 1–3: lær, mål og juster",
+        "text": "År 1: samle bilder, nedbør, vannforbruk, jordobservasjoner, arbeidsinnsats, kostnader og avling der dette finnes. År 2: sammenlign likt med likt og gjenta jordprøver ved egnet intervall. År 3: utvid bare praksiser som viser god balanse mellom jordhelse, trehelse og økonomi. Dokumenter også problemer: tørkestress, ugress, gnagere, økt brannrisiko eller mer arbeid. Karbonbinding, avlingsøkning og økonomisk gevinst kan ikke loves ut fra at metoden kalles regenerativ."
+      },
+      {
+        "title": "14. Slik vurderer du et tilbud om regenerativ omlegging",
+        "text": "Be rådgiveren forklare hvilke konkrete tiltak som foreslås for din jord, hvilke risikoer som er vurdert, hva forsøket vil koste, hvordan vannstress overvåkes og hvilke indikatorer som skal måles. Etterspør referanser fra sammenlignbare tørre områder og skriftlig oppfølging. Skil mellom dokumentert sertifisering, markedsføring og faktiske driftsresultater. Sjekk gjeldende regler før du bruker betegnelser som økologisk eller selger klima-/karbonpåstander."
+      }
+    ],
+    "checklist": [
+      "Kart over terreng, vannveier, erosjonsflekker og eksisterende vegetasjon",
+      "Jordprøver med prøvepunkter, dato, dybde og dokumentert analyse",
+      "Dokumentasjon på vannkilde, rettigheter, kvalitet og kapasitet",
+      "Valg av én liten forsøksflate og én sammenlignbar referanseflate",
+      "Plan for jorddekke som tar høyde for brannfare og sommertørke",
+      "Beslutning om dekkvekster og tidspunkt for slått i samråd med agronom",
+      "Plan for kompostkvalitet, hygiene og balansert næringsforsyning",
+      "Årlig logg for kostnader, arbeidstid, vannforbruk, avling og trehelse",
+      "Foto fra faste steder, samme sesong og vurdering av erosjon",
+      "Lokal fagvurdering før terrenginngrep, dyrehold eller større omlegging"
+    ],
+    "faqs": [
+      {
+        "question": "Er regenerativt jordbruk det samme som økologisk jordbruk?",
+        "answer": "Nei. Regenerativt beskriver et sett med mål og praksiser for jord og økosystem. Økologisk produksjon er knyttet til egne regelverk og kontrollordninger. Det ene innebærer ikke automatisk det andre."
+      },
+      {
+        "question": "Fungerer levende jorddekke uten vanning i Alicante?",
+        "answer": "Det kan fungere som sesongbasert dekke i regnperioden, men artene, biomassen og når veksten avsluttes må tilpasses tørke og hovedkulturens vannbehov. Permanent grønt dekke er ikke alltid riktig på tørrmark."
+      },
+      {
+        "question": "Hvor lang tid tar det å forbedre jorda?",
+        "answer": "Det varierer med utgangspunkt, jordsmonn, klima og tiltak. Noen overflateendringer kan observeres tidlig, mens sikre trender for organisk materiale, jordstruktur og produktivitet krever sammenlignbare målinger over flere sesonger."
+      },
+      {
+        "question": "Kan jeg gjøre dette på en 10 000 m² finca uten å bli bonde?",
+        "answer": "Du kan ofte begynne med hage, jorddekke og skjøtsel av eksisterende vegetasjon i liten skala, men tomtens bruksstatus, eventuelle beskyttelser, vannrettigheter og større tiltak må undersøkes særskilt. Tomtestørrelsen gir ingen automatisk rett til å bygge eller drive alle typer landbruk."
+      },
+      {
+        "question": "Gir regenerativ dyrking høyere avling og mer karbon i jorda?",
+        "answer": "Ikke nødvendigvis. Resultatene avhenger av klima, jord, vekster, vann og driftsmåte, og bør måles lokalt. Unngå løfter om avling, karbonbinding eller klimagevinst uten egnet dokumentasjon."
+      },
+      {
+        "question": "Må jeg kjøpe dyr, maskiner eller dyre jordprodukter?",
+        "answer": "Nei. Start med kartlegging, mindre jordforstyrrelse, riktig jorddekke og små forsøk. Nye maskiner, dyr eller kommersielle jordprodukter må begrunnes mot behov, effekt og løpende kostnader."
+      },
+      {
+        "question": "Hvordan vet jeg at tiltakene virker?",
+        "answer": "Sammenlign bilder, tegn på erosjon, infiltrasjon og jordstruktur, jordprøver fra faste punkter, vannforbruk, trehelse, avling, tidsbruk og kostnader over flere sesonger. En god referanseflate gjør vurderingen mer troverdig."
+      },
+      {
+        "question": "Kan Doña Anna være et eksempel?",
+        "answer": "Olivenproduksjon er en relevant kultur å diskutere, men en konkret gård skal ikke omtales som regenerativ eller sertifisert uten at driftspraksis og eventuelle påstander er dokumentert."
+      }
+    ],
+    "links": [
+      {
+        "label": "FAO – prinsippene for bevaringsjordbruk",
+        "href": "https://www.fao.org/conservation-agriculture/overview/conservation-agriculture-principles/en/"
+      },
+      {
+        "label": "IAS-CSIC – beslutningsguide om plantedekke i olivenlunder",
+        "href": "https://www.ias.csic.es/investigadores-del-ias-csic-coordinan-la-edicion-de-una-guia-de-apoyo-a-la-toma-de-decisiones-para-implantacion-de-cubiertas-vegetales-en-olivar/"
+      },
+      {
+        "label": "IAS-CSIC – muligheter og vannkonkurranse i middelhavskulturer",
+        "href": "https://www.ias.csic.es/cubiertas-vegetales-en-cultivos-lenosos-mediterraneos-una-estrategia-clave-para-la-conservacion-del-suelo-y-la-sostenibilidad-agraria/"
+      },
+      {
+        "label": "EU CAP Network – dekkevekster i middelhavsfruktproduksjon",
+        "href": "https://eu-cap-network.ec.europa.eu/good-practice/ruralfruit-agroeco_en"
+      },
+      {
+        "label": "IAS-CSIC – forskning om erosjon og vegetasjonsbarrierer",
+        "href": "https://www.ias.csic.es/un-estudio-del-ias-csic-demuestra-que-las-barreras-vegetales-reducen-la-erosion-en-climas-aridos-con-una-alta-eficiencia/"
+      }
+    ]
+  },
 ] as const;
