@@ -1,0 +1,28 @@
+.planner { display:grid; grid-template-columns:minmax(0,1fr) minmax(310px,.82fr); gap:30px; align-items:start; }
+.inputs { display:grid; gap:22px; }
+.field { border:1px solid var(--line); border-radius:14px; background:#fffdf8; padding:26px; min-width:0; }
+.field h2,.field legend { font:500 1.7rem/1.18 var(--font-display),Georgia,serif; color:var(--ink); margin:0 0 21px; }
+.field legend { padding:0; }
+.field label:not(.check) { display:block; font-weight:700; margin:16px 0 8px; color:var(--ink); }
+.field select,.field input[type=number] { width:100%; min-height:46px; border:1px solid #aeb9a4; border-radius:8px; background:white; color:var(--ink); font:inherit; padding:10px 12px; }
+.check { display:flex; align-items:flex-start; gap:11px; color:var(--ink); line-height:1.5; margin:14px 0; cursor:pointer; }
+.check input { width:19px; height:19px; flex:0 0 auto; margin-top:2px; accent-color:#345a38; }
+.hint { color:var(--muted); font-size:.9rem; line-height:1.6; margin:12px 0 0; }
+.result { position:sticky; top:104px; border-radius:17px; background:#243e2d; color:white; padding:clamp(24px,3vw,36px); }
+.eyebrow { color:#caddad; text-transform:uppercase; letter-spacing:.12em; font-size:.74rem; font-weight:750; }
+.result h2 { font:500 2.4rem/1.1 var(--font-display),Georgia,serif; margin:10px 0 27px; }
+.result h3 { font:500 1.4rem/1.2 var(--font-display),Georgia,serif; margin:24px 0 12px; }
+.result dl { margin:0; }
+.result dl div { border-top:1px solid rgba(255,255,255,.18); padding:12px 0; }
+.result dt { color:#caddad; font-size:.79rem; margin-bottom:5px; }
+.result dd { margin:0; line-height:1.5; }
+.result ul { padding-left:20px; line-height:1.6; }
+.result li { margin:8px 0; }
+.warning { border-left:3px solid #caddad; padding:11px 14px; background:rgba(255,255,255,.08); line-height:1.6; font-size:.9rem; }
+.primary,.secondary { display:flex; width:100%; align-items:center; justify-content:center; gap:10px; min-height:48px; border-radius:8px; text-align:center; text-decoration:none; font-family:inherit; font-weight:700; font-size:.92rem; line-height:1.3; padding:12px; }
+.primary { color:#243e2d; background:#dce9be; margin-top:22px; }
+.secondary { margin-top:10px; color:white; border:1px solid rgba(255,255,255,.55); background:transparent; cursor:pointer; }
+.contact { display:block; color:white; text-align:center; text-decoration:underline; margin-top:22px; }
+.privacy { color:rgba(255,255,255,.72); line-height:1.6; font-size:.78rem; margin-top:22px; }
+@media(max-width:900px) { .planner { grid-template-columns:1fr; } .result { position:static; } }
+@media(max-width:600px) { .field { padding:20px; } }

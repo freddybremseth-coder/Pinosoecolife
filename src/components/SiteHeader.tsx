@@ -8,6 +8,7 @@ import styles from "./SiteHeader.module.css";
 
 const navLinks = [
   { href: "/livet-i-innlandet", label: "Livet i innlandet" },
+  { href: "/selvforsynt-liv", label: "Selvforsynt liv" },
   { href: "/omrader", label: "Områder" },
   { href: "/eiendommer", label: "Boliger" },
   { href: "/tomter", label: "Tomter" },

@@ -3,6 +3,7 @@ import { ecoLifeAreas } from "@/lib/ecolife-areas";
 import { fallbackProperties, getProperties, getPropertyRef, regions } from "@/lib/realtyflow";
 import { seoLandingPages } from "@/lib/seoLandingPages";
 import { fetchPublishedPosts } from "@/lib/website-content";
+import { selfSufficientTopics } from "@/lib/self-sufficient-content";
 
 const baseUrl = "https://www.pinosoecolife.com";
 
@@ -10,6 +11,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
     "/livet-i-innlandet",
+    "/selvforsynt-liv",
+    "/selvforsynt-liv/planlegger",
+    ...selfSufficientTopics.map((topic) => `/selvforsynt-liv/${topic.slug}`),
     "/eiendommer",
     "/tomter",
     "/omrader",

@@ -1,0 +1,13 @@
+.details { margin-top:24px; border:1px solid #d8dfcf; border-radius:12px; background:#f2f5ec; overflow:hidden; }
+.details summary { padding:16px 18px; color:#27442d; font-weight:750; cursor:pointer; }
+.details summary:focus-visible { outline:3px solid #6d845d; outline-offset:-3px; }
+.body { padding:0 18px 18px; }
+.intro { color:#4c5f50; font-size:.9rem; line-height:1.65; margin:0 0 18px; }
+.row { display:grid; grid-template-columns:minmax(92px,.28fr) 1fr; border-top:1px solid #d8dfcf; padding:12px 0; gap:12px; }
+.label { color:#263d2b; font-weight:700; }
+.badge { display:inline-block; border-radius:30px; padding:4px 9px; font-size:.73rem; font-weight:750; }
+.reported { background:#dbe9cd; color:#28472c; }
+.unknown { background:#ece8d8; color:#625837; }
+.review { background:#eee1d4; color:#764a2b; }
+.row p { color:#526257; margin:6px 0 0; line-height:1.5; font-size:.85rem; }
+@media(max-width:540px) { .row { grid-template-columns:1fr; gap:5px; } }
