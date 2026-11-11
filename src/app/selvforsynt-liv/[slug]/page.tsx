@@ -68,6 +68,28 @@ export default async function SelfSufficientGuide({ params }: Props) {
             </section>
           ))}
           {slug === "dyrk-egen-mat" && <GrowingCalendar />}
+          {slug === "dyrk-egen-mat" && (
+            <aside className={styles.farmStory}>
+              <p className={styles.eyebrow}>Fra innlandet · Biar</p>
+              <h2>Et ekte eksempel: olivenlunden bak Doña Anna</h2>
+              <p>
+                Freddy og Anna Bremseth har også en oliveneiendom i Biar i Alicante-innlandet.
+                Under navnet Doña Anna forteller de om oliventrærne, arbeidet på gården og
+                olivenoljen fra egen produksjon. Innhøstingen av 2025-avlingen begynte i
+                desember 2025 og fortsatte inn i januar 2026.
+              </p>
+              <p>
+                Det er et nært eksempel på noe vi også legger vekt på her: Å dyrke på landet
+                handler om å følge sesongene, lære stedet å kjenne og planlegge arbeidet rundt
+                det man faktisk har tid og ressurser til. Pinoso Eco Life hjelper deg med å
+                forstå tomter og hverdagen i innlandet; Doña Anna handler om olivenlunden,
+                produksjonen og det som kommer fra trærne.
+              </p>
+              <a href="https://www.donaanna.com/" target="_blank" rel="noopener noreferrer">
+                Bli kjent med Doña Anna og olivenlunden i Biar <ArrowRight size={17} />
+              </a>
+            </aside>
+          )}
           <section className={styles.checklist}>
             <h2>Dette bør du undersøke</h2>
             <ul>{topic.checklist.map((item) => <li key={item}>{item}</li>)}</ul>

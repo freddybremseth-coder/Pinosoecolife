@@ -18,7 +18,7 @@
 .band { display: grid; grid-template-columns: 1.2fr .8fr; gap: 48px; background: #f1f1e6; border-radius: 20px; padding: 50px; margin-top: 90px; margin-bottom: 90px; }
 .actions, .guideActions { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
 .actions a, .guideActions a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 17px 20px; border-radius: 9px; color: #fff; background: var(--olive-strong); text-decoration: none; font-weight: 700; }
-.guideHero { background: #253b2c; color: #fff; padding: 76px 0 74px; }
+.guideHero { background: #253b2c; color: #fff; padding: 138px 0 74px; }
 .guideHero h1 { font-size: clamp(3rem,6vw,5rem); }
 .backLink { display: inline-block; color: #fff; margin-bottom: 46px; }
 .articleBody { width: min(780px,calc(100% - 48px)); margin: 70px auto; }
@@ -35,8 +35,11 @@
 .faq details p { margin-bottom: 4px; }
 .guideActions { flex-direction: row; flex-wrap: wrap; margin-top: 44px; }
 .guideActions a { flex: 1; min-width: 230px; }
+.farmStory { background: #f4f4eb; border: 1px solid #dce2cf; border-radius: 16px; padding: 18px 30px 32px; margin: 50px 0; }
+.farmStory h2 { margin-top: 10px; }
+.farmStory a { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .related { padding-bottom: 100px; }
 .plannerSection { padding-top: 70px; padding-bottom: 100px; }
 .related .grid { margin-top: 30px; }
 @media(max-width: 850px) { .grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .band { grid-template-columns: 1fr; padding: 30px; } }
-@media(max-width: 600px) { .container { width: min(100% - 36px, 1180px); } .hero { padding: 90px 0 80px; } .grid { grid-template-columns: 1fr; } .sectionHead { padding-top: 60px; } .card { min-height: 205px; } .band { margin-top: 55px; margin-bottom: 55px; } .articleBody { margin: 44px auto; } }
+@media(max-width: 600px) { .container { width: min(100% - 36px, 1180px); } .hero { padding: 90px 0 80px; } .guideHero { padding-top: 108px; } .grid { grid-template-columns: 1fr; } .sectionHead { padding-top: 60px; } .card { min-height: 205px; } .band { margin-top: 55px; margin-bottom: 55px; } .articleBody { margin: 44px auto; } .farmStory { padding: 16px 20px 26px; } }
