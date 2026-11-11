@@ -10,6 +10,18 @@ import { getGuideArticleSlugs } from "@/lib/ecolife-content-links";
 import { fetchPublishedPosts } from "@/lib/website-content";
 import styles from "../self-sufficient.module.css";
 
+const guideNextStep: Record<string, { heading: string; description: string; plotLabel: string }> = {
+  "planlegg-tomten": { heading: "Fra tomteplan til virkelig beliggenhet", description: "Se tilgjengelige tomter og vurder terreng, adkomst og muligheter sammen med en lokal fagperson før du planlegger bygg eller uteområder.", plotLabel: "Se tomter for ditt prosjekt" },
+  "eksempel-10000m2": { heading: "Vil du vurdere en tomt på rundt ett hektar?", description: "Bruk arealbudsjettet som utgangspunkt når du sammenligner tomter. Faktisk bygge- og bruksrett må avklares for hver eiendom.", plotLabel: "Se tilgjengelige tomter" },
+  "dyrk-egen-mat": { heading: "Finn plass til kjøkkenhage og frukttrær", description: "Når du vurderer tomter, undersøk sol, jord og dokumentert vanntilgang før du bestemmer hvor dyrkingen skal skje.", plotLabel: "Utforsk tomter med dyrking i tankene" },
+  "regenerativt-jordbruk": { heading: "Fra levende jord til riktig eiendom", description: "En stor tomt kan gi rom for jordforbedring og naturmangfold, men jordtype, erosjon og vanntilgang bør undersøkes på stedet.", plotLabel: "Se tomter og vurder jordforhold" },
+  "aret-pa-fincaen": { heading: "Finn et sted som fungerer hele året", description: "Tenk på adkomst, vedlikehold, vann og lokal hjelp gjennom alle sesonger før du velger finca.", plotLabel: "Se tilgjengelige tomter" },
+  "vann": { heading: "Undersøk vann før du velger tomt", description: "Sammenlign aktuelle tomter, men få alltid vannkilde, kapasitet, kvalitet og lovlige rettigheter dokumentert særskilt.", plotLabel: "Se tomter og spør om vann" },
+  "solenergi": { heading: "Planlegg energi sammen med tomtevalget", description: "Solforhold og skygge er bare starten. Sammenlign tomter og avklar nettilknytning, forbruk og tekniske løsninger.", plotLabel: "Se aktuelle tomter" },
+  "dyr-og-smabruk": { heading: "Har du planer om et lite småbruk?", description: "Finn tomter med plass rundt huset, og undersøk lokale regler, daglig stell, vann og naboforhold før du bestemmer deg.", plotLabel: "Utforsk tomter for landlig liv" },
+  "baerekraftig-bolig": { heading: "Finn tomten før du velger boligløsningen", description: "Et energieffektivt hus må tilpasses terreng, sol, vind og lokale rammer. Start med stedet du ønsker å bo.", plotLabel: "Se tomter for bærekraftig bolig" },
+};
+
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
@@ -211,11 +223,15 @@ export default async function SelfSufficientGuide({ params }: Props) {
               <ul>{topic.links.map((link) => <li key={link.href}><a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a></li>)}</ul>
             </section>
           )}
-          <div className={styles.guideActions}>
-            <Link href="/selvforsynt-liv/planlegger">Lag din Eco Life-plan <ArrowRight size={17} /></Link>
-            <Link href="/tomter">Utforsk tomter <ArrowRight size={17} /></Link>
-            <Link href="/#kontakt">Diskuter ditt Eco Life-prosjekt <ArrowRight size={17} /></Link>
-          </div>
+          <section aria-label="Neste steg fra denne guiden">
+            <h2>{guideNextStep[slug]?.heading || "Fra guide til eget Eco Life-prosjekt"}</h2>
+            <p>{guideNextStep[slug]?.description || "Se aktuelle tomter og diskuter mulighetene for ditt eget prosjekt."}</p>
+            <div className={styles.guideActions}>
+              <Link href="/selvforsynt-liv/planlegger">Lag din Eco Life-plan <ArrowRight size={17} /></Link>
+              <Link href="/tomter">{guideNextStep[slug]?.plotLabel || "Utforsk tomter"} <ArrowRight size={17} /></Link>
+              <Link href="/#kontakt">Diskuter ditt Eco Life-prosjekt <ArrowRight size={17} /></Link>
+            </div>
+          </section>
         </div>
       </article>
       {relatedArticles.length > 0 && (
