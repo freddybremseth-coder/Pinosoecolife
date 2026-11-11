@@ -16,13 +16,13 @@ const articleAreaLinks: Record<string, string[]> = {
 // Curated topical links between inspirational magazine stories and practical
 // self-sufficiency guides. Never link by matching random keywords alone.
 const articleGuideLinks: Record<string, string[]> = {
-  "10000-m2-hva-gjor-du-med-plassen": ["planlegg-tomten", "dyrk-egen-mat", "vann"],
-  "fra-supermarked-til-egen-hage": ["dyrk-egen-mat", "vann"],
-  "ferske-egg-frukttraer-mer-selvberget-liv": ["dyr-og-smabruk", "dyrk-egen-mat"],
+  "10000-m2-hva-gjor-du-med-plassen": ["eksempel-10000m2", "planlegg-tomten", "dyrk-egen-mat"],
+  "fra-supermarked-til-egen-hage": ["dyrk-egen-mat", "regenerativt-jordbruk", "vann"],
+  "ferske-egg-frukttraer-mer-selvberget-liv": ["dyr-og-smabruk", "dyrk-egen-mat", "aret-pa-fincaen"],
   "du-kjoper-rommet-rundt-huset": ["planlegg-tomten", "baerekraftig-bolig"],
-  "fra-blank-tomt-til-eget-landskap": ["planlegg-tomten", "dyrk-egen-mat", "vann"],
+  "fra-blank-tomt-til-eget-landskap": ["planlegg-tomten", "regenerativt-jordbruk", "vann"],
   "egne-druer-og-lage-vin": ["dyrk-egen-mat", "vann"],
-  "10000-m2-i-praksis-for-du-bygger": ["planlegg-tomten", "vann", "solenergi"],
+  "10000-m2-i-praksis-for-du-bygger": ["eksempel-10000m2", "planlegg-tomten", "vann"],
   "privatliv-er-den-nye-luksusen": ["planlegg-tomten"],
   "nar-familien-kommer-pa-besok": ["planlegg-tomten"],
 };
