@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/livet-i-innlandet",
     "/selvforsynt-liv",
+    "/selvforsynt-liv/planlegger",
     ...selfSufficientTopics.map((topic) => `/selvforsynt-liv/${topic.slug}`),
     "/eiendommer",
     "/tomter",

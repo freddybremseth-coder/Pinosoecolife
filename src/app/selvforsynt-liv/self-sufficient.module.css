@@ -36,6 +36,7 @@
 .guideActions { flex-direction: row; flex-wrap: wrap; margin-top: 44px; }
 .guideActions a { flex: 1; min-width: 230px; }
 .related { padding-bottom: 100px; }
+.plannerSection { padding-top: 70px; padding-bottom: 100px; }
 .related .grid { margin-top: 30px; }
 @media(max-width: 850px) { .grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .band { grid-template-columns: 1fr; padding: 30px; } }
 @media(max-width: 600px) { .container { width: min(100% - 36px, 1180px); } .hero { padding: 90px 0 80px; } .grid { grid-template-columns: 1fr; } .sectionHead { padding-top: 60px; } .card { min-height: 205px; } .band { margin-top: 55px; margin-bottom: 55px; } .articleBody { margin: 44px auto; } }

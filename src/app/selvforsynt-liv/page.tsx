@@ -42,11 +42,12 @@ export default function SelfSufficientLifePage() {
       </section>
       <section className={`${styles.container} ${styles.band}`}>
         <div>
-          <p className={styles.eyebrow}>Fra idé til et faktisk sted</p>
-          <h2>Tomten må passe livet du ønsker å skape.</h2>
+          <p className={styles.eyebrow}>Planlegg ditt Eco Life</p>
+          <h2>Finn ut hva som er viktig for deg.</h2>
           <p>Størrelse alene sier ikke om tomten har byggeadgang, tilstrekkelig vann eller mulighet for ønsket bruk. Vi begynner med behovene og undersøker deretter konkrete alternativer.</p>
         </div>
         <div className={styles.actions}>
+          <Link href="/selvforsynt-liv/planlegger">Lag din Eco Life-plan <ArrowRight size={17} /></Link>
           <Link href="/tomter">Se aktuelle tomter <ArrowRight size={17} /></Link>
           <Link href="/magasin">Les historier fra innlandet <ArrowRight size={17} /></Link>
           <Link href="/#kontakt">Fortell oss om planen din <ArrowRight size={17} /></Link>
