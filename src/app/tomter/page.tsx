@@ -492,6 +492,9 @@ export default async function PlotsPage({
         </div>
         <div className={styles.nextLinks}>
           <Link href="/kjopsprosessen">Se hvordan vi kontrollerer veien videre <ArrowRight size={17} /></Link>
+          <Link href="/selvforsynt-liv/planlegg-tomten">Guide: planlegg tomt og uteområder <ArrowRight size={17} /></Link>
+          <Link href="/selvforsynt-liv/vann">Guide: kontroller vann før kjøp <ArrowRight size={17} /></Link>
+          <Link href="/selvforsynt-liv/planlegger">Lag din personlige Eco Life-plan <ArrowRight size={17} /></Link>
           <Link href="/#kontakt">Fortell oss hvilken tomt du vurderer <ArrowRight size={17} /></Link>
         </div>
       </section>
