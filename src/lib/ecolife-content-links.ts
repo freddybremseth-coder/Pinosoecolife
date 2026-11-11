@@ -13,6 +13,31 @@ const articleAreaLinks: Record<string, string[]> = {
   "10000-m2-i-praksis-for-du-bygger": ["pinoso", "aspe", "monforte-del-cid", "hondon-dalene", "hondon-de-las-nieves"],
 };
 
+// Curated topical links between inspirational magazine stories and practical
+// self-sufficiency guides. Never link by matching random keywords alone.
+const articleGuideLinks: Record<string, string[]> = {
+  "10000-m2-hva-gjor-du-med-plassen": ["planlegg-tomten", "dyrk-egen-mat", "vann"],
+  "fra-supermarked-til-egen-hage": ["dyrk-egen-mat", "vann"],
+  "ferske-egg-frukttraer-mer-selvberget-liv": ["dyr-og-smabruk", "dyrk-egen-mat"],
+  "du-kjoper-rommet-rundt-huset": ["planlegg-tomten", "baerekraftig-bolig"],
+  "fra-blank-tomt-til-eget-landskap": ["planlegg-tomten", "dyrk-egen-mat", "vann"],
+  "egne-druer-og-lage-vin": ["dyrk-egen-mat", "vann"],
+  "10000-m2-i-praksis-for-du-bygger": ["planlegg-tomten", "vann", "solenergi"],
+  "privatliv-er-den-nye-luksusen": ["planlegg-tomten"],
+  "nar-familien-kommer-pa-besok": ["planlegg-tomten"],
+};
+
+export function getArticleGuideSlugs(articleSlug: string, limit = 3) {
+  return (articleGuideLinks[articleSlug] || []).slice(0, limit);
+}
+
+export function getGuideArticleSlugs(guideSlug: string, limit = 3) {
+  return Object.entries(articleGuideLinks)
+    .filter(([, guideSlugs]) => guideSlugs.includes(guideSlug))
+    .map(([articleSlug]) => articleSlug)
+    .slice(0, limit);
+}
+
 const alternativeAreaLinks: Record<string, string[]> = {
   pinoso: ["monovar", "jumilla", "la-romana"],
   monovar: ["pinoso", "la-romana", "novelda"],

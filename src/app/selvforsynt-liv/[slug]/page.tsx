@@ -6,6 +6,8 @@ import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { GrowingCalendar } from "@/components/GrowingCalendar";
 import { selfSufficientTopics } from "@/lib/self-sufficient-content";
+import { getGuideArticleSlugs } from "@/lib/ecolife-content-links";
+import { fetchPublishedPosts } from "@/lib/website-content";
 import styles from "../self-sufficient.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -30,6 +32,11 @@ export default async function SelfSufficientGuide({ params }: Props) {
   const topic = selfSufficientTopics.find((entry) => entry.slug === slug);
   if (!topic) notFound();
   const otherTopics = selfSufficientTopics.filter((entry) => entry.slug !== slug).slice(0, 3);
+  const publishedArticles = await fetchPublishedPosts("magasin");
+  const relatedArticles = getGuideArticleSlugs(slug).flatMap((articleSlug) => {
+    const article = publishedArticles.find((entry) => entry.slug === articleSlug);
+    return article ? [article] : [];
+  });
   const articleUrl = `https://www.pinosoecolife.com/selvforsynt-liv/${slug}`;
   const structuredData = {
     "@context": "https://schema.org",
@@ -119,6 +126,20 @@ export default async function SelfSufficientGuide({ params }: Props) {
           </div>
         </div>
       </article>
+      {relatedArticles.length > 0 && (
+        <section className={`${styles.container} ${styles.related}`} aria-label="Relaterte magasinartikler">
+          <h2>Historier fra magasinet om dette temaet</h2>
+          <div className={styles.grid}>
+            {relatedArticles.map((article) => (
+              <Link className={styles.card} key={article.slug} href={`/magasin/${article.slug}`}>
+                <h3>{article.title}</h3>
+                <p>{article.summary}</p>
+                <span className={styles.cardLink}>Les magasinartikkelen <ArrowRight size={17} /></span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
       <section className={`${styles.container} ${styles.related}`}>
         <h2>Utforsk flere sider ved livet på landet</h2>
         <div className={styles.grid}>

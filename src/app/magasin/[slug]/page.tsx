@@ -7,7 +7,8 @@ import { ContactForm } from "@/components/ContactForm";
 import MarkdownArticle from "@/components/MarkdownArticle";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
-import { getArticleAreaSlugs, getRelatedArticleSlugs } from "@/lib/ecolife-content-links";
+import { getArticleAreaSlugs, getArticleGuideSlugs, getRelatedArticleSlugs } from "@/lib/ecolife-content-links";
+import { selfSufficientTopics } from "@/lib/self-sufficient-content";
 import { getEcoLifeArea } from "@/lib/ecolife-areas";
 import { fetchPublishedPost, fetchPublishedPosts } from "@/lib/website-content";
 import styles from "../../ecolife-editorial.module.css";
@@ -89,6 +90,10 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
     const article = allPosts.find((candidate) => candidate.slug === articleSlug);
     return article ? [article] : [];
   });
+  const relevantGuides = getArticleGuideSlugs(post.slug).flatMap((guideSlug) => {
+    const guide = selfSufficientTopics.find((topic) => topic.slug === guideSlug);
+    return guide ? [guide] : [];
+  });
   const heroImage = post.image_url || "/assets/hero-pinoso-dream.jpg";
   const publishedTime = post.published_at || post.created_at;
   const modifiedTime = post.updated_at || publishedTime;
@@ -168,6 +173,28 @@ export default async function MagazineArticlePage({ params }: { params: Promise<
         </div>
         <MarkdownArticle markdown={post.markdown} skipFirstH1 />
       </article>
+
+      {relevantGuides.length > 0 && (
+        <section className={styles.relatedSection} aria-label="Praktiske guider til artikkelen">
+          <div className={styles.sectionHeader}>
+            <p className={styles.sectionEyebrow}>Fra inspirasjon til praktisk plan</p>
+            <h2 className={styles.sectionTitle}>Guider som hjelper deg videre</h2>
+            <p className={styles.sectionLead}>Les mer om de konkrete valgene bak livet på en stor tomt i Alicante-innlandet.</p>
+          </div>
+          <div className={styles.editorialCards}>
+            {relevantGuides.map((guide) => (
+              <article className={styles.editorialCard} key={guide.slug}>
+                <span className={styles.cardEyebrow}>Praktisk Eco Life-guide</span>
+                <h3>{guide.title}</h3>
+                <p>{guide.lead}</p>
+                <Link className={styles.editorialLink} href={`/selvforsynt-liv/${guide.slug}`}>
+                  Les guiden om {guide.title.toLowerCase()} <ArrowRight size={16} />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       {relevantAreas.length > 0 && (
         <section className={styles.relatedSection}>
