@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { submitIndexNow } from "@/lib/indexnow";
+import { inlandEditorialImage, isCoastalImageReference } from "@/lib/inland-image-policy";
 
 function cleanString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -84,6 +85,8 @@ export async function POST(request: NextRequest) {
   const publishedAt = status === "published"
     ? cleanString(payload?.publishedAt) || new Date().toISOString()
     : null;
+  const requestedImageUrl = cleanString(payload?.content?.imageUrl);
+  const coastalImageReplaced = isCoastalImageReference(requestedImageUrl);
 
   const row = {
     source_system: sourceSystem,
@@ -98,7 +101,7 @@ export async function POST(request: NextRequest) {
     slug,
     summary: cleanString(payload?.content?.summary),
     markdown,
-    image_url: cleanString(payload?.content?.imageUrl || ""),
+    image_url: inlandEditorialImage(requestedImageUrl),
     tags: Array.isArray(payload?.content?.tags) ? payload.content.tags.map((tag: unknown) => String(tag).trim()).filter(Boolean) : [],
     status,
     published_at: publishedAt,
@@ -106,6 +109,7 @@ export async function POST(request: NextRequest) {
       ...payload,
       canonicalDestinationPath: destinationPath,
       requestedDestinationPath,
+      imagePolicy: { coastalImageReplaced, requestedImageUrl },
     },
     updated_at: new Date().toISOString(),
   };
@@ -146,6 +150,7 @@ export async function POST(request: NextRequest) {
     external_url: url,
     published_at: data.published_at,
     indexNow,
+    imagePolicy: { coastalImageReplaced, requiresVisualReview: !!requestedImageUrl && !coastalImageReplaced },
   });
 }
 

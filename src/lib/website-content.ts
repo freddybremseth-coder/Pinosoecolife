@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { articles } from "@/lib/content";
 import { ecoLifePhase2Articles } from "@/lib/ecolife-phase2";
 import { ecoLifePhase2bArticles } from "@/lib/ecolife-phase2b";
+import { inlandEditorialImage } from "@/lib/inland-image-policy";
 
 const fallbackArticles = [...articles, ...ecoLifePhase2Articles, ...ecoLifePhase2bArticles];
 const PINOSO_BRAND_ID = "pinosoecolife";
@@ -62,7 +63,7 @@ function toFallbackPost(article: (typeof fallbackArticles)[number]): PublicWebsi
     slug: article.slug,
     summary: article.excerpt,
     markdown: article.markdown || `# ${article.title}\n\n${article.excerpt}`,
-    image_url: article.image || null,
+    image_url: inlandEditorialImage(article.image),
     tags: article.tags || [],
     published_at: article.date,
     created_at: article.date,
@@ -97,7 +98,10 @@ function mergeMagazinePosts(rows: PublicWebsitePost[]) {
     }
   }
 
-  return Array.from(bySlug.values()).sort((a, b) => {
+  return Array.from(bySlug.values()).map((post) => ({
+    ...post,
+    image_url: inlandEditorialImage(post.image_url),
+  })).sort((a, b) => {
     const aDate = Date.parse(a.published_at || a.created_at) || 0;
     const bDate = Date.parse(b.published_at || b.created_at) || 0;
     return bDate - aDate;
@@ -132,7 +136,7 @@ export async function fetchPublishedPosts(destinationId: string): Promise<Public
 
   const rows = (data || []) as unknown as PublicWebsitePost[];
   if (destinationId === "magasin") return mergeMagazinePosts(rows);
-  return rows;
+  return rows.map((post) => ({ ...post, image_url: inlandEditorialImage(post.image_url) }));
 }
 
 export async function fetchPublishedPost(destinationId: string, slug: string): Promise<PublicWebsitePost | null> {
@@ -164,7 +168,10 @@ export async function fetchPublishedPost(destinationId: string, slug: string): P
     return fallback ? toFallbackPost(fallback) : null;
   }
 
-  if (data) return data as unknown as PublicWebsitePost;
+  if (data) {
+    const post = data as unknown as PublicWebsitePost;
+    return { ...post, image_url: inlandEditorialImage(post.image_url) };
+  }
   const fallback = fallbackArticles.find((article) => article.slug === slug);
   return fallback ? toFallbackPost(fallback) : null;
 }
