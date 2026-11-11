@@ -415,4 +415,120 @@ export const selfSufficientTopics = [
       }
     ]
   },
+  {
+    "slug": "eksempel-10000m2",
+    "title": "Slik planlegger du en tomt på 10 000 m²",
+    "lead": "Et illustrert, realistisk eksempel på soner, rekkefølge, budsjettering og vedlikehold på en stor tomt i Alicante-innlandet.",
+    "question": "Hvordan får du et godt liv på 10 000 m² uten at arealet, kostnadene og regelverket tar overhånd?",
+    "sections": [
+      {
+        "title": "Et forslag til arealfordeling – ingen byggegaranti",
+        "text": "Illustrasjonen nedenfor er et tenkt arealbudsjett for nøyaktig 10 000 m², ikke en tegning av en faktisk tomt og ikke et forslag om automatisk byggeadgang. Den viser at mesteparten gjerne kan forbli natur eller eksisterende landbruk. De 300 m² som er satt av til mulig boligfunksjon betyr en planleggingssone, ikke lovlig bebygd areal; endelig plassering, fotavtrykk, avstander og tillatelser må vurderes av kommunen og fagfolk."
+      },
+      {
+        "title": "Planlegg etter det som finnes",
+        "text": "Begynn med terreng, eksisterende oliventrær eller mandeltrær, adkomst, vannveier, jorddybde, beskyttede arealer, frostlommer og mulige brannkrav. Legg ikke kjøkkenhagen på det lengst unna huset bare fordi det ser symmetrisk ut på kart. Ta vare på etablerte trær der de er friske og egnede, og unngå unødvendige inngrep."
+      },
+      {
+        "title": "Skaler drømmen etter tid og vann",
+        "text": "Et lite dyrkingsfelt som kan passes godt er ofte mer nyttig enn et stort anlegg som krever daglig arbeid. Om du bruker eiendommen som feriebolig, planlegg tilsyn, automatisering og mulige perioder med ekstremvær fra første skisse. Nye vannkrevende beplantninger må avvente dokumentert vannkapasitet."
+      }
+    ],
+    "deepDive": [
+      {
+        "title": "1. Et arealbudsjett som går opp til 10 000 m²",
+        "text": "Eksempelfordeling: 4 500 m² naturlig vegetasjon og leveområder; 2 000 m² eksisterende trær; 1 500 m² fremtidig frukt-/olivenareal dersom vann og klima tillater det; 700 m² adkomst og ganglinjer; 500 m² kjøkkenhage og kompostområde; 500 m² erosjonssoner, vegetasjonskanter og buffere; 300 m² mulig bolig-/uteoppholdsfunksjon under forutsetning av nødvendige tillatelser. Tallene er illustrerende og skal ikke oppfattes som anbefalt fordeling for alle tomter."
+      },
+      {
+        "title": "2. Første kontroll: kan tomten brukes slik du håper?",
+        "text": "Be om oppdatert nota simple, katasteropplysninger, kommunal planstatus og skriftlig avklaring av tillatt bruk for den konkrete matrikkelen. Sammenlign grenser og oppmåling. På suelo no urbanizable gjelder særskilte regler; 10 000 m² alene dokumenterer verken byggerett eller tillatelse til boder, uthus, terrenginngrep eller ekstra boliger. Arkitekt og lokalkjent advokat bør gjennomgå dokumentasjonen før reservasjon eller bindende kjøp."
+      },
+      {
+        "title": "3. Andre kontroll: vann, strøm og avløp",
+        "text": "Kontroller rettslig og teknisk tilgjengelighet av drikkevann, vanning, elektrisk kapasitet og lovlig avløpsløsning. Pris ut fra skriftlige tilbud og ønsket bruk. En brønn uten dokumentert tillatelse og kapasitet må behandles som en usikkerhet, ikke som en verdifull garanti. Vann for en liten kjøkkenhage kan være enklere å planlegge enn et stort fruktareal."
+      },
+      {
+        "title": "4. Plasser huset som en del av helheten",
+        "text": "Dersom bolig er lovlig mulig, diskuter orientering, vinterlys, sommerskygge, utsikt, vind, adkomst for utrykning og fremtidig drift med arkitekt. Ta hensyn til flom- og erosjonsrisiko og avstandskrav. Uteplassen bør kunne fungere i varme måneder uten et uforholdsmessig vannbehov. Ikke tegn inn hus, basseng eller andre bygg som godkjente før myndighetene har avklart dem."
+      },
+      {
+        "title": "5. Behold store natursoner",
+        "text": "En stor eiendom trenger ikke å være fullt opparbeidet. Bevar lokal vegetasjon og naturlige vannveier der det er forenlig med brannforebygging og sikker adkomst. Slå eller skjøtt målrettet der det er nødvendig, fremfor å rydde alt. Natursonene kan bidra til biologisk mangfold og redusere arbeid, men vedlikehold av vegetasjon og brannforebygging må inngå i driftsplanen."
+      },
+      {
+        "title": "6. Kjøkkenhagen nær hverdag og vann",
+        "text": "Begynn gjerne med et betydelig mindre felt enn de 500 m² som er avsatt i eksempelet. Legg det nær kjøkken, vann og redskapstilgang. Del i små soner med ulikt vannbehov, vurder jorddekke og skygge og planlegg hvordan området håndteres ved fravær. Tilfør kompost eller gjødsel etter jordprøver og dyrkingsbehov, ikke automatisk."
+      },
+      {
+        "title": "7. Trær, frukt og jordforbedring",
+        "text": "Velg oliven, mandel eller andre trær etter faktisk mikroklima, jord, frostfare og lovlig vann. Eksisterende trær krever vanligvis egen skjøtselsplan. Et nytt fruktareal på 1 500 m² er en mulighet i illustrasjonen – ikke en anbefaling om å plante straks. Undersøk regenerativt jorddekke og erosjon, men avslutt dekkvekst i tide dersom den konkurrerer med trærne om vann."
+      },
+      {
+        "title": "8. Utvikling i fire etapper",
+        "text": "Etappe 0: juridisk, topografisk og teknisk kontroll før kjøp. Etappe 1: lovlig infrastruktur, sikring og vedlikehold av eksisterende arealer. Etappe 2: eventuelt godkjent boligprosjekt og grunnleggende utefunksjoner. Etappe 3: liten kjøkkenhage, noen trær og gradvis skjøtsel av resten. Hver etappe skal kunne stoppes hvis kostnader, tillatelser eller vannforhold endrer seg."
+      },
+      {
+        "title": "9. Slik bygger du et realistisk budsjett",
+        "text": "Bruk separate poster for kjøp og avgifter, advokat og dokumentkontroll, geoteknikk/topografi, arkitekt og søknader, adkomst, strøm, vann og avløp, lovlig bygging, terrengarbeid, gjerder, beplantning, vanningsanlegg og beredskap. For hver post fører du mengde, tilbudspris, avgifter, usikkerhet og hvem som står ansvarlig. Oppgi en egen reserve for uforutsette kostnader – prosent bør fastsettes ut fra faktisk risikobilde, ikke et universelt tall."
+      },
+      {
+        "title": "10. Hva koster det å eie og drive hvert år?",
+        "text": "Lag et driftsbudsjett for strøm, vann, forsikring, eiendomsskatter og kommunale avgifter, service på pumper og avløp, beskjæring, vegetasjonskontroll, adkomst, gjerder og betalt tilsyn. Regn timer for egeninnsats og ekstra behov i fraværsperioder. Del oppgavene i månedlige, sesongvise og årlige, og noter hva som skjer hvis en viktig leverandør ikke er tilgjengelig."
+      },
+      {
+        "title": "11. Tre ambitionsnivåer å sammenligne",
+        "text": "Lavt vedlikehold: bevar eksisterende vegetasjon, trygg adkomst og en liten hage. Balansert Eco Life: vedlikehold av trær, moderat kjøkkenhage og gode vannsystemer. Aktivt småbruk: større dyrking eller dyrehold, og dermed mer arbeid, risiko, registrering og løpende kostnader. Begynn med laveste nivå, og bygg opp først når det fungerer over flere sesonger."
+      },
+      {
+        "title": "12. Fra skisse til reelt visningsverktøy",
+        "text": "Ta med to kart på visning: ett som viser de dokumenterte grensene og rettighetene, og ett med ønsket funksjonsfordeling. Merk hindringer, terreng, eksisterende trær, brønn/vann, strøm og adkomst. Be selger om dokumentasjon, og la fagfolk kontrollere forutsetningene. En god skisse hjelper deg å stille riktige spørsmål – den erstatter aldri en godkjent situasjonsplan."
+      }
+    ],
+    "checklist": [
+      "Nota simple, kataster og faktisk grensekontroll",
+      "Skriftlig kommunal avklaring av planstatus og tillatt bruk",
+      "Dokumentert vannrett, vannkvalitet og leveringskapasitet",
+      "Sjekk av adkomst, flomfare, erosjon, brannforhold og avløp",
+      "Arealbudsjett som summerer til 10 000 m², tilpasset terrenget",
+      "Skriftlige tilbud per investering og egen reservepost",
+      "Årsbudsjett for drift, vedlikehold og tilsyn",
+      "Plan for trinnvis utvikling med klare beslutningspunkter"
+    ],
+    "faqs": [
+      {
+        "question": "Kan jeg bygge en villa på en rustikk tomt på 10 000 m²?",
+        "answer": "Ikke ut fra størrelsen alene. Lokale planer, klassifisering, beskyttelser og lovens vilkår må vurderes for akkurat denne eiendommen før noen kan si om bolig er lovlig mulig."
+      },
+      {
+        "question": "Er de 300 m² i illustrasjonen en byggetillatelse?",
+        "answer": "Nei. Det er bare en hypotetisk planleggingssone. Lovlig bebygd areal, plassering, høyde, avstandskrav og andre forhold bestemmes ved konkret kommunal og teknisk vurdering."
+      },
+      {
+        "question": "Må jeg dyrke hele tomten?",
+        "answer": "Nei. Store natursoner og eksisterende trær kan være både mer overkommelige og mer verdifulle enn omfattende nyplanting, så lenge vegetasjon og brannforebygging vedlikeholdes forsvarlig."
+      },
+      {
+        "question": "Hva bør jeg budsjettere først?",
+        "answer": "Start med dokumentkontroll, planavklaring og teknisk infrastruktur. Be om konkrete tilbud før du legger inn beløp for hus, vann, strøm, avløp og terrengarbeid."
+      },
+      {
+        "question": "Kan jeg endre fordelingen senere?",
+        "answer": "Ja, skissen er fleksibel, men faktiske endringer kan kreve tillatelse og bør tilpasses vann, trær, terreng og lovlige bruksrammer."
+      }
+    ],
+    "links": [
+      {
+        "label": "Valencias gjeldende plan- og areallovgivning (BOE)",
+        "href": "https://www.boe.es/buscar/act.php?id=DOGV-r-2021-90283"
+      },
+      {
+        "label": "Catastro – koordinering av matrikkel og eiendomsregister",
+        "href": "https://www.catastro.hacienda.gob.es/es-ES/faqs_catastro_registro.html"
+      },
+      {
+        "label": "Júcar – kontroll av registrerte vannrettigheter",
+        "href": "https://www.chj.es/es-es/ciudadano/tramitesysolicitudes/Paginas/registrodeaguas.aspx"
+      }
+    ]
+  },
 ] as const;

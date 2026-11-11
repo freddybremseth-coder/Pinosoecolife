@@ -52,3 +52,40 @@
 .related .grid { margin-top: 30px; }
 @media(max-width: 850px) { .grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .band { grid-template-columns: 1fr; padding: 30px; } }
 @media(max-width: 600px) { .container { width: min(100% - 36px, 1180px); } .hero { padding: 90px 0 80px; } .guideHero { padding-top: 108px; } .grid { grid-template-columns: 1fr; } .sectionHead { padding-top: 60px; } .card { min-height: 205px; } .band { margin-top: 55px; margin-bottom: 55px; } .articleBody { margin: 44px auto; } .farmStory { padding: 16px 20px 26px; } }
+
+/* Schematic 10,000 m² example: editorial illustration, not a surveyed site plan. */
+.plotFigure {
+  margin: 2rem 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid rgba(50, 79, 61, .22);
+  border-radius: 22px;
+  background: #f4f5ed;
+  color: #20342a;
+}
+.plotFigure figcaption {
+  display: grid;
+  gap: .4rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.plotFigure figcaption strong { font-size: clamp(1.2rem, 2.2vw, 1.65rem); }
+.plotFigure figcaption span { font-size: .95rem; }
+.plotDiagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid #49644f;
+}
+.plotDisclaimer {
+  margin: 1rem 0 0;
+  font-size: .88rem;
+  line-height: 1.55;
+  color: #344b3a;
+}
+@media (max-width: 620px) {
+  .plotFigure { padding: .9rem; border-radius: 14px; }
+  .plotDiagram { min-width: 0; }
+  .plotFigure figcaption { margin-bottom: .8rem; }
+  .plotDisclaimer { font-size: .83rem; }
+}
