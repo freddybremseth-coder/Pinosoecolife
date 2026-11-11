@@ -60,6 +60,12 @@ export default async function SelfSufficientGuide({ params }: Props) {
               <p>{section.text}</p>
             </section>
           ))}
+          {"deepDive" in topic && topic.deepDive.map((section) => (
+            <section key={section.title}>
+              <h2>{section.title}</h2>
+              <p>{section.text}</p>
+            </section>
+          ))}
           <section className={styles.checklist}>
             <h2>Dette bør du undersøke</h2>
             <ul>{topic.checklist.map((item) => <li key={item}>{item}</li>)}</ul>

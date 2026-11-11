@@ -4,6 +4,12 @@ export const selfSufficientTopics = [
     title: "Solenergi og strøm",
     lead: "Solceller, batterier og trygg strømforsyning på en finca i innlandet.",
     question: "Hvor uavhengig av strømnettet ønsker du egentlig å være?",
+    deepDive: [
+      { title: "Slik starter en realistisk energiplan", text: "Samle helst strømregninger for tolv måneder hvis boligen allerede er i bruk. Ved nybygg bør rådgiver og installatør sette opp et forbruksbudsjett for kjøling, oppvarming, varmtvann, matlaging, belysning og eventuell elbillading. Ta med bassengpumpe og vannpumpe dersom de skal drives fra samme system. Et årsforbruk alene er ikke nok: når på døgnet energien brukes har stor betydning." },
+      { title: "Hvorfor sommer og vinter må beregnes hver for seg", text: "Solproduksjonen varierer med årstid, takvinkel, skygge og vær. Samtidig kan kjølebehovet være størst i de varmeste månedene, mens oppvarming og kortere dager påvirker vinteren. En god dimensjonering bruker månedlige produksjonsestimater og faktiske lastprofiler, ikke bare et gjennomsnitt for soltimer." },
+      { title: "Hva batteriet gjør – og ikke gjør", text: "Et batteri flytter overskuddsenergi fra dag til kveld og natt. Det skaper ikke ekstra energi, og kapasiteten må vurderes opp mot hvilke apparater som skal brukes etter solnedgang. Sjekk også nominell kontra brukbar kapasitet, virkningsgrad, sikkerhet, garanti og forventet utskifting." },
+      { title: "Be om sammenlignbare tilbud", text: "Be om minst to tilbud som beskriver installert effekt, forventet års- og månedsproduksjon, inverter, eventuell batterikapasitet, dokumenterte forutsetninger, registrering og vedlikehold. Få pris med avgifter og nødvendige arbeider spesifisert. Beregnet tilbakebetalingstid bør vise strømpris, egetforbruk og usikkerhet, ikke presenteres som en garanti." },
+    ],
     sections: [
       { title: "Start med forbruket", text: "Kartlegg faktisk døgnforbruk, sommerkjøling, varmtvann, elbil og eventuelle vannpumper før anlegget dimensjoneres. Solrike dager alene sier lite om behovet om natten eller i perioder med dårlig vær." },
       { title: "Nett, hybrid eller off-grid?", text: "En nettilkoblet løsning, et hybridanlegg med batteri og et helt frittstående anlegg har ulike kostnader og krav til reservekapasitet. Off-grid krever særlig nøye planlegging av vinterproduksjon og kritiske laster." },
@@ -14,13 +20,19 @@ export const selfSufficientTopics = [
       { question: "Må jeg ha batteri sammen med solceller?", answer: "Nei. Et nettilkoblet anlegg kan fungere uten batteri. Batteri kan øke eget forbruk av produsert strøm, men lønnsomhet og behov må beregnes for ditt forbruk." },
       { question: "Kan et hus være helt uavhengig av strømnettet?", answer: "Det kan være teknisk mulig, men krever prosjektering for de svakeste produksjonsperiodene, lagring og ofte en reserveplan. Off-grid er ikke automatisk det billigste valget." },
     ],
-    links: [{ label: "Spanias offisielle veiledere om egenproduksjon (IDAE)", href: "https://www.idae.es/tecnologias/energias-renovables/oficina-de-autoconsumo/guias-tecnicas-sobre-autoconsumo" }],
+    links: [{ label: "Spanias offisielle veiledere om egenproduksjon (IDAE)", href: "https://www.idae.es/tecnologias/energias-renovables/oficina-de-autoconsumo/guias-tecnicas-sobre-autoconsumo" }, { label: "IDAE: Fem steg til egenproduksjon", href: "https://www.idae.es/ca/node/10477" }],
   },
   {
     slug: "dyrk-egen-mat",
     title: "Dyrk din egen mat",
     lead: "Kjøkkenhage, frukttrær og jord som tåler varme og tørre perioder.",
     question: "Hva kan du faktisk høste fra en stor tomt i Alicante-innlandet?",
+    deepDive: [
+      { title: "Første sesong: lær stedet å kjenne", text: "Se hvor frosten samler seg på vintermorgenene, hvor ettermiddagssolen er hardest og hvor vinden tørker ut jorden. Ta jordprøver og undersøk dreneringen. En dyrkingsplan for en høyereliggende finca i Pinoso kan ikke kopieres direkte fra en beskyttet hage ved kysten." },
+      { title: "En liten hage som faktisk brukes", text: "Start gjerne med noen få bed nær vann og kjøkken. Del dem inn i vekster som trenger omtrent samme mengde vann. Prioriter tilgang til skygge, gangstier og enkel luke- og høsteadkomst. Dette er ofte viktigere enn å avsette flest mulig kvadratmeter." },
+      { title: "Velg vekster etter sesong", text: "Varmeelskende grønnsaker som tomat og paprika er aktuelle i den varme delen av året med egnet vanning og beskyttelse. Kjøligere perioder kan passe andre bladgrønnsaker og rotvekster, men såtid må justeres etter lokal frostfare. Frukttrær velges etter sortens kuldebehov, vannkrav og jord – ikke bare etter hva som selges på hagesenteret." },
+      { title: "Tenk gjennom fravær og overskudd", text: "Et automatisert vanningssystem kan hjelpe, men det erstatter ikke tilsyn. Dersom du er i Norge store deler av sommeren, bør dyrkingsareal og vekster tilpasses det. Planlegg også hva du gjør når mange frukter modner samtidig: spising, deling, konservering eller innhøsting med hjelp." },
+    ],
     sections: [
       { title: "Begynn i liten skala", text: "En avgrenset kjøkkenhage nær huset gjør det lettere å følge med på jord, skygge og vannforbruk. Utvid etter én hel sesong fremfor å anlegge alt samtidig." },
       { title: "Velg etter mikroklima", text: "Pinoso og høyereliggende innlandsområder kan få både sommervarme og vinterfrost. Tomat, paprika, urter, mandler, oliven og ulike frukttrær må vurderes mot jord, eksponering og vannressurser på den konkrete eiendommen." },
@@ -55,6 +67,12 @@ export const selfSufficientTopics = [
     title: "Planlegg den store tomten",
     lead: "Fra 10 000 m² råtomt til et gjennomtenkt sted å leve.",
     question: "Hvordan får du plass til drømmen uten å overse de viktige begrensningene?",
+    deepDive: [
+      { title: "Del tomten i funksjoner – på papiret først", text: "Tegn en enkel skisse med adkomst, eksisterende trær, helling, naturlige vannveier og områder med mest sol og vind. Marker deretter ønskede soner for bolig, uteopphold, kjøkkenhage, frukttrær og natur. Ikke tegn inn tiltak som om de allerede er godkjent: en funksjonsplan er et diskusjonsgrunnlag." },
+      { title: "Det første spørsmålet er ikke hvor huset skal stå", text: "Før arkitekttegningen må en fagperson avklare klassifisering og gjeldende kommunale rammer. På rustikk grunn kan minstestørrelse, beskyttelser, terrenginngrep, vannforsyning, avløp og andre krav være avgjørende. At naboeiendommen har hus, er ikke dokumentasjon på at en ny bolig kan godkjennes her." },
+      { title: "Eksempel på etappevis utvikling", text: "Fase A: juridisk og teknisk kontroll av tomt og infrastruktur. Fase B: prosjektering, søknader og godkjente hovedarbeider. Fase C: nødvendig adkomst og uteopphold. Fase D: mindre dyrkingsfelt, skygge og trær tilpasset vannkapasiteten. Fase E: videre utvidelser når stedet er prøvd gjennom flere sesonger. Rekkefølgen tilpasses det faktiske prosjektet." },
+      { title: "Regn på driften, ikke bare kjøpet", text: "Større tomt betyr mulige kostnader til vedlikehold av adkomst, gjerder, beskjæring, brannforebygging, vann, energi og hjelp ved fravær. Be om et totalbudsjett som skiller dokumenterte kostnader fra anslag. En stor tomt kan fortsatt gi en enkel hverdag dersom store deler bevares naturlig." },
+    ],
     sections: [
       { title: "Lag et kart over hverdagen", text: "Plasser bolig, adkomst, terrasse, parkering, eventuell kjøkkenhage og naturlige soner etter sol, vind, terreng og tilgjengelig vann. Bevar gjerne store deler av tomten som natur." },
       { title: "Undersøk bygge- og bruksrett", text: "Rustikk tomt er ikke automatisk byggbar. Kommuneplan, klassifisering, minimumsareal, beskyttelser, avstandskrav og tillatelser må vurderes for hver eiendom før noe loves." },
@@ -65,7 +83,7 @@ export const selfSufficientTopics = [
       { question: "Kan jeg bygge på en rustikk tomt på 10 000 m²?", answer: "Ikke ut fra størrelsen alene. Byggerett må undersøkes i gjeldende kommuneplan og kontrolleres for akkurat den eiendommen." },
       { question: "Kan jeg sette opp flere småhus eller uthus?", answer: "Slike tiltak kan være regulert eller forbudt. Undersøk tillatelser og tomtens klassifisering før du legger inn ekstra bygg i planen." },
     ],
-    links: [],
+    links: [{ label: "Gjeldende valenciansk areal- og planlovgivning (BOE)", href: "https://www.boe.es/buscar/act.php?id=DOGV-r-2021-90283" }],
   },
   {
     slug: "dyr-og-smabruk",
