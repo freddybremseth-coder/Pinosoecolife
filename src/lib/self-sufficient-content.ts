@@ -423,7 +423,7 @@ export const selfSufficientTopics = [
     "sections": [
       {
         "title": "Et forslag til arealfordeling – ingen byggegaranti",
-        "text": "Illustrasjonen nedenfor er et tenkt arealbudsjett for nøyaktig 10 000 m², ikke en tegning av en faktisk tomt og ikke et forslag om automatisk byggeadgang. Den viser at mesteparten gjerne kan forbli natur eller eksisterende landbruk. De 300 m² som er satt av til mulig boligfunksjon betyr en planleggingssone, ikke lovlig bebygd areal; endelig plassering, fotavtrykk, avstander og tillatelser må vurderes av kommunen og fagfolk."
+        "text": "Illustrasjonen ovenfor er et tenkt arealbudsjett for nøyaktig 10 000 m², ikke en tegning av en faktisk tomt og ikke et forslag om automatisk byggeadgang. Den viser at mesteparten gjerne kan forbli natur eller eksisterende landbruk. De 300 m² som er satt av til mulig boligfunksjon betyr en planleggingssone, ikke lovlig bebygd areal; endelig plassering, fotavtrykk, avstander og tillatelser må vurderes av kommunen og fagfolk."
       },
       {
         "title": "Planlegg etter det som finnes",
@@ -476,7 +476,7 @@ export const selfSufficientTopics = [
         "text": "Lag et driftsbudsjett for strøm, vann, forsikring, eiendomsskatter og kommunale avgifter, service på pumper og avløp, beskjæring, vegetasjonskontroll, adkomst, gjerder og betalt tilsyn. Regn timer for egeninnsats og ekstra behov i fraværsperioder. Del oppgavene i månedlige, sesongvise og årlige, og noter hva som skjer hvis en viktig leverandør ikke er tilgjengelig."
       },
       {
-        "title": "11. Tre ambitionsnivåer å sammenligne",
+        "title": "11. Tre ambisjonsnivåer å sammenligne",
         "text": "Lavt vedlikehold: bevar eksisterende vegetasjon, trygg adkomst og en liten hage. Balansert Eco Life: vedlikehold av trær, moderat kjøkkenhage og gode vannsystemer. Aktivt småbruk: større dyrking eller dyrehold, og dermed mer arbeid, risiko, registrering og løpende kostnader. Begynn med laveste nivå, og bygg opp først når det fungerer over flere sesonger."
       },
       {

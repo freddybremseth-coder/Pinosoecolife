@@ -55,6 +55,7 @@ export default async function SelfSufficientGuide({ params }: Props) {
     const article = publishedArticles.find((entry) => entry.slug === articleSlug);
     return article ? [article] : [];
   });
+  const guideSections = [...topic.sections, ...("deepDive" in topic ? topic.deepDive : [])];
   const articleUrl = `https://www.pinosoecolife.com/selvforsynt-liv/${slug}`;
   const structuredData = {
     "@context": "https://schema.org",
@@ -96,6 +97,14 @@ export default async function SelfSufficientGuide({ params }: Props) {
                         : slug === "aret-pa-fincaen"
                         ? "Året på landet handler om å planlegge etter lokale forhold, følge med på været og prioritere de oppgavene som ikke kan vente. Bruk månedskapitlene som en fleksibel sjekkliste."
                         : "Et behagelig hus i innlandet må fungere både i sommervarme og på kalde vinterdager. Byggets form og klimaskjerm er like viktig som teknologien."}</p>
+          <nav className={styles.guideToc} aria-label="Innhold i guiden">
+            <details>
+              <summary>Innhold i guiden · {guideSections.length} temaer</summary>
+              <ol>{guideSections.map((section, index) => (
+                <li key={`${index}-${section.title}`}><a href={`#guide-section-${index + 1}`}>{section.title}</a></li>
+              ))}</ol>
+            </details>
+          </nav>
           {slug === "eksempel-10000m2" && (
             <figure className={styles.plotFigure}>
               <figcaption>
@@ -129,17 +138,29 @@ export default async function SelfSufficientGuide({ params }: Props) {
                 </g>
                 <path d="M600 0 V600 M0 450 H600 M600 300 H1000 M800 300 V600 M800 450 H1000 M600 510 H800" stroke="#ffffff" strokeWidth="5" fill="none" opacity="0.85" />
               </svg>
+              <div className={styles.plotLegend} aria-label="Arealfordeling i illustrasjonen">
+                <h3>Arealfordelingen i klartekst</h3>
+                <ul>
+                  <li><span>Natur og vegetasjon</span><strong>4 500 m²</strong></li>
+                  <li><span>Eksisterende trær</span><strong>2 000 m²</strong></li>
+                  <li><span>Nytt fruktareal</span><strong>1 500 m²</strong></li>
+                  <li><span>Adkomst</span><strong>700 m²</strong></li>
+                  <li><span>Kjøkkenhage</span><strong>500 m²</strong></li>
+                  <li><span>Buffersone</span><strong>500 m²</strong></li>
+                  <li><span>Mulig boligsone*</span><strong>300 m²</strong></li>
+                </ul>
+              </div>
               <p className={styles.plotDisclaimer}>* «Boligsone» viser kun avsatt plass i tankeeksperimentet. Den innebærer ingen byggerett eller godkjent bygningsstørrelse.</p>
             </figure>
           )}
-          {topic.sections.map((section) => (
-            <section key={section.title}>
+          {topic.sections.map((section, index) => (
+            <section id={`guide-section-${index + 1}`} key={section.title}>
               <h2>{section.title}</h2>
               <p>{section.text}</p>
             </section>
           ))}
-          {"deepDive" in topic && topic.deepDive.map((section) => (
-            <section key={section.title}>
+          {"deepDive" in topic && topic.deepDive.map((section, index) => (
+            <section id={`guide-section-${topic.sections.length + index + 1}`} key={section.title}>
               <h2>{section.title}</h2>
               <p>{section.text}</p>
             </section>
