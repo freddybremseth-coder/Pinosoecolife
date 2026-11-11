@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { fetchPublishedPosts } from "@/lib/website-content";
+import { selfSufficientTopics } from "@/lib/self-sufficient-content";
 import styles from "../ecolife-editorial.module.css";
 
 export const metadata = {
@@ -118,6 +119,24 @@ export default async function MagazinePage() {
         </section>
       )}
 
+      <section className={styles.relatedSection} aria-label="Praktiske guider om selvforsynt liv">
+        <div className={styles.sectionHeader}>
+          <p className={styles.sectionEyebrow}>Vil du gå fra idé til handling?</p>
+          <h2 className={styles.sectionTitle}>Praktiske guider til livet i innlandet</h2>
+          <p className={styles.sectionLead}>Magasinet gir inspirasjon. Disse guidene hjelper deg med å vurdere hva som faktisk er mulig på egen tomt.</p>
+        </div>
+        <div className={styles.editorialCards}>
+          {selfSufficientTopics.filter((guide) => ["planlegg-tomten", "dyrk-egen-mat", "vann"].includes(guide.slug)).map((guide) => (
+            <article className={styles.editorialCard} key={guide.slug}>
+              <span className={styles.cardEyebrow}>Eco Life-guide</span>
+              <h3>{guide.title}</h3>
+              <p>{guide.lead}</p>
+              <Link className={styles.editorialLink} href={`/selvforsynt-liv/${guide.slug}`}>Les guiden om {guide.title.toLowerCase()} <ArrowRight size={16} /></Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className={styles.actionBand}>
         <div>
           <p className={styles.heroEyebrow}>Fra inspirasjon til beslutning</p>
@@ -132,7 +151,7 @@ export default async function MagazinePage() {
         </div>
       </section>
 
-      <div className={styles.updatedNote}>Oppdatert 2. oktober 2026 · Pinoso Eco Life-magasin</div>
+      <div className={styles.updatedNote}>Pinoso Eco Life-magasin · Guider og historier fra innlandet</div>
       <Footer />
     </main>
   );
