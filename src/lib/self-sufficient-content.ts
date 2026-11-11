@@ -299,4 +299,120 @@ export const selfSufficientTopics = [
       }
     ]
   },
+  {
+    "slug": "aret-pa-fincaen",
+    "title": "Året på fincaen – måned for måned",
+    "lead": "En praktisk årshjul-guide for jord, dyrking, oliventrær, vann, hus og vedlikehold i Alicante-innlandet.",
+    "question": "Hva bør du følge opp gjennom året når du bor på eller eier en finca i innlandet?",
+    "sections": [
+      {
+        "title": "Bruk årshjulet som sjekkliste, ikke som en fast såkalender",
+        "text": "Pinoso, Aspe, Biar, Novelda og Villena har ulike høyder, eksponering og mikroklima. En kald dalbunn og en lun sørvendt tomt kan ha forskjellige dyrkingsvinduer. Følg derfor lokalt vær, jordtemperatur og tilgjengelig vann fremfor å stole blindt på en dato. AEMET presiserer selv at kommunale prognoser kan avvike mellom områder med ulik høyde."
+      },
+      {
+        "title": "Tre spor hver måned",
+        "text": "Følg 1) levende systemer som jord, planter og eventuelle dyr, 2) tekniske systemer som vann, strøm, avløp og bygg, og 3) trygghet og økonomi som brannfare, forsikring, service, tilsyn og budsjett. Legg inn faste påminnelser og noter hva som faktisk blir gjort. Et enkelt regneark eller kalender er nok."
+      },
+      {
+        "title": "Bor du i Norge deler av året?",
+        "text": "Fordel oppgavene mellom det som må gjøres av eier, det som kan automatiseres og det som krever en navngitt lokal kontakt. Automatisering av vanning gir ikke samme sikkerhet som tilsyn. Prioriter vannstans, lekkasje, ekstremvær og dyrevelferd i fraværsplanen."
+      }
+    ],
+    "deepDive": [
+      {
+        "title": "Januar – vedlikehold og frostrisiko",
+        "text": "Gå over takrenner, vannrør og frostutsatte installasjoner etter kaldt vær. Undersøk fuktskader og følg lokale varsler om nattefrost før du setter ut sårbare planter. I olivenlunden kan innhøstingen variere med sort, klima og ønsket modenhet; beskjærings- og vedlikeholdsplan bør tilpasses trehelse, avling og lokal praksis. Dokumenter strøm- og vannforbruk gjennom vinteren."
+      },
+      {
+        "title": "Februar – planlegg før vekstsesongen",
+        "text": "Se etter erosjon etter vinterregn, og vurder jordprøver før gjødsling. Bestem hvilke bed som skal brukes og hvilke trær som trenger faglig vurdering. For mandeltrær kan blomstring og mulig sen frost være viktige forhold; beskyttelse og tiltak må tilpasses sorter og sted. Sjekk dryppslanger, filtre og pumpe før vannbehovet stiger."
+      },
+      {
+        "title": "Mars – start forsiktig, følg frostvarselet",
+        "text": "Temperaturene kan stige, men enkelte innlandseiendommer kan fortsatt oppleve frost. Start med robuste vekster der forholdene passer; vent med frostfølsomme planter til risikoen er vurdert lokalt. Fjern ugress målrettet, vurder jorddekke og reparer skader på vanningssystemet. Følg gjeldende råd om plantesykdommer, og unngå rutinemessig sprøyting uten behov."
+      },
+      {
+        "title": "April – etablering og vannkontroll",
+        "text": "Dette kan være en aktuell måned for å forberede sommerdyrking, men faktisk utplanting styres av jordtemperatur, lokalt mikroklima og vær. Test vanning på små soner, se etter lekkasjer og mål jordfukt. Planlegg skygge og vindbeskyttelse før sommervarmen. I lunder med levende dekkvekster må vannkonkurranse mot trærne vurderes med lokal agronom."
+      },
+      {
+        "title": "Mai – overgangen til tørre perioder",
+        "text": "Følg hyppigere med på vanningsbehov, fruktsetting og tegn på stress i unge trær. Ikke anta at alle kulturer trenger mer vann samtidig; vurder arter, jord og faktisk fukt. Gjør klart skygge, vann til dyr og eventuelle reserveløsninger for strømbrudd. Kontroller forebygging mot brann og følg oppdaterte kommunale og regionale restriksjoner for utearbeid."
+      },
+      {
+        "title": "Juni – beskytt jord og planter",
+        "text": "Når varmen øker blir jorddekke, riktig vanningsstyring og skygge viktigere for enkelte vekster. Se etter uttørking, saltavleiringer og tette dryppere. Tilpass arbeidsoppgaver til kjøligere timer, ha vann tilgjengelig og unngå krevende utearbeid i sterk varme. Planlegg ferieavløsning for hage, dyr og tekniske anlegg før du reiser."
+      },
+      {
+        "title": "Juli – kritisk sommerdrift",
+        "text": "Prioriter trygg vannforsyning til husholdning, dyr og sårbare planter, og kontroller at lagring og pumper fungerer. Utsett unødvendig planting og tunge terrenginngrep. Følg lokale meldinger om skogbrannfare og varme; arbeid med åpen ild kan være begrenset eller forbudt. Ved fravær bør en lokal kontakt ha tydelige rutiner for lekkasje, alarm og strømbrudd."
+      },
+      {
+        "title": "August – observer, ikke overbelast systemet",
+        "text": "Fortsett overvåkning av varme, vannforbruk, skadedyr og trehelse. Mange planter kan ha lav vekst under ekstrem varme; mer gjødsel eller vann er ikke automatisk løsningen. Noter hvilke deler av tomten som fungerer i solen og hvilke som trenger bedre skygge. Bruk erfaringene til å planlegge høsttiltak, men kontroller risikoen for kraftige regnskyll."
+      },
+      {
+        "title": "September – forbered høstens muligheter",
+        "text": "Avhengig av nedbør kan dette være en overgang til en ny dyrkingsperiode, men ikke så dekkvekster eller grønnsaker bare etter kalenderen. Undersøk erosjonsrenner og vedlikehold av takrenner, avløp og naturlige vannveier før mulige styrtregn. Vurder hvor jorddekke og beskyttelse av skråninger er nødvendig. Se på sommerens faktiske vannforbruk og servicekostnader."
+      },
+      {
+        "title": "Oktober – jordarbeid, høstsåing og drenering",
+        "text": "Når temperatur og jordfukt tillater det, kan det være aktuelt å etablere vintervekster, dekke jorda og plante egnede trær etter lokal vurdering. Planlegg løv- og avfallshåndtering uten ulovlig brenning. Kontroller drenering, terskler og adkomstveier etter regn. Forbered oppbevaring av redskaper og frostsikring av utsatte rør."
+      },
+      {
+        "title": "November – vinterklar finca",
+        "text": "Sjekk varmesystem, isolering, ventilasjon, vannrør og batteri eller reservekraft. Beskytt frostfølsomme planter og vurder mulige frostlommer på tomten. I olivenlunder kan høstearbeid begynne på ulike tidspunkter; vær, sort og produksjonsmål styrer tidspunktet. Legg en realistisk vinterplan for beskjæring og jordforbedring med fagperson ved behov."
+      },
+      {
+        "title": "Desember – oppsummering og ny plan",
+        "text": "Samle bilder, jordnotater, vannmålinger, avlinger, vedlikeholdstid og utgifter. Sammenlign med forrige år uten å trekke store konklusjoner fra ett enkelt værår. Vurder hvilke arealer som bør forbli natur, hva som fungerte i kjøkkenhagen og hvilke tekniske investeringer som faktisk trengs. Lag en enkel plan for neste år og kontroller ordning for tilsyn i ferier."
+      }
+    ],
+    "checklist": [
+      "Lokal værkilde og oversikt over frostlommer på tomten",
+      "Årskalender for vann, strøm, filter, tanker og service",
+      "Månedlig avlesning av faktisk vann- og energiforbruk",
+      "Dyrkingsplan tilpasset jord, tilgjengelig vann og mikroklima",
+      "Plan for brannforebygging og kontroll av gjeldende restriksjoner",
+      "Kontaktperson og nøkkeltilgang ved fravær",
+      "Årlig oversikt over vedlikehold, jordtilstand, avling og kostnader",
+      "Foto fra de samme punktene gjennom årstidene"
+    ],
+    "faqs": [
+      {
+        "question": "Når kan jeg plante tomater i Pinoso?",
+        "answer": "Utplanting bør styres av lokal frostfare, jordtemperatur og prognose, ikke bare av en bestemt måned. Pinoso-området har mikroklimatiske forskjeller; spør lokalt gartneri eller agronom ved usikkerhet."
+      },
+      {
+        "question": "Er det alltid frost om vinteren i Alicante-innlandet?",
+        "answer": "Nei, ikke overalt og ikke hver vinter på samme måte. Høyde, terreng og lokale forhold påvirker risikoen. Følg AEMET og registrer egne observasjoner på eiendommen."
+      },
+      {
+        "question": "Når høstes oliven?",
+        "answer": "Tidspunktet varierer med sort, modenhet, vær og produksjonsmål. Høstplanen bør knyttes til den konkrete lunden, ikke en generell kalenderdato."
+      },
+      {
+        "question": "Kan jeg la fincaen stå uten tilsyn hele sommeren?",
+        "answer": "Det anbefales ikke dersom det finnes dyr, vanningsanlegg eller sårbare tekniske installasjoner. En lokal kontakt og en beredskapsplan er viktig selv om noen systemer kan fjernstyres."
+      },
+      {
+        "question": "Hvordan bør jeg bruke værdata til vanning?",
+        "answer": "Se på faktiske forhold på tomten sammen med agrometeorologiske data. SiAR har en Pinoso-stasjon og gir blant annet data som kan brukes til å vurdere vanningsbehov, men ingen værstasjon erstatter vurdering av jord og kultur på eiendommen."
+      }
+    ],
+    "links": [
+      {
+        "label": "AEMET – offisiell værmelding for Pinoso",
+        "href": "https://www.aemet.es/es/eltiempo/prediccion/municipios/pinos-el-pinoso-id03105"
+      },
+      {
+        "label": "MAPA SiAR – agroklimatiske data, inkludert Pinoso-stasjonen",
+        "href": "https://servicio.mapa.gob.es/siarweb/"
+      },
+      {
+        "label": "Generalitat Valenciana – praktisk dyrkingsveiledning for oliven",
+        "href": "https://portalagrari.gva.es/documents/366567370/368758223/Ficha%2Bcultivo%2Bolivo%2BC.%2BValenciana.pdf/9e3f3e40-b4d0-47af-bd4e-709ca74ebf68?t=1688988151984"
+      }
+    ]
+  },
 ] as const;

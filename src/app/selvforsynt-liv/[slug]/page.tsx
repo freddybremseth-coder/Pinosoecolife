@@ -31,10 +31,12 @@ export default async function SelfSufficientGuide({ params }: Props) {
   const { slug } = await params;
   const topic = selfSufficientTopics.find((entry) => entry.slug === slug);
   if (!topic) notFound();
-  const relatedFirst = slug === "regenerativt-jordbruk"
-    ? ["dyrk-egen-mat", "vann", "planlegg-tomten"]
+  const relatedFirst = slug === "aret-pa-fincaen"
+    ? ["dyrk-egen-mat", "vann", "regenerativt-jordbruk"]
+    : slug === "regenerativt-jordbruk"
+      ? ["dyrk-egen-mat", "vann", "aret-pa-fincaen"]
     : slug === "dyrk-egen-mat" || slug === "planlegg-tomten" || slug === "vann"
-      ? ["regenerativt-jordbruk", "dyrk-egen-mat", "vann", "planlegg-tomten"]
+      ? ["regenerativt-jordbruk", "aret-pa-fincaen", "dyrk-egen-mat", "vann", "planlegg-tomten"]
       : ["planlegg-tomten", "vann", "regenerativt-jordbruk"];
   const otherTopics = selfSufficientTopics
     .filter((entry) => entry.slug !== slug)
@@ -87,7 +89,9 @@ export default async function SelfSufficientGuide({ params }: Props) {
                     ? "Et lite dyrehold kan være meningsfylt, men krever daglig ansvar, også på varme sommerdager og når eieren er bortreist."
                     : slug === "solenergi"
                       ? "Et godt energisystem dimensjoneres etter faktisk forbruk, døgnprofil og vinterbehov – ikke bare etter hvor mange soltimer regionen har."
-                      : "Et behagelig hus i innlandet må fungere både i sommervarme og på kalde vinterdager. Byggets form og klimaskjerm er like viktig som teknologien."}</p>
+                      : slug === "aret-pa-fincaen"
+                        ? "Året på landet handler om å planlegge etter lokale forhold, følge med på været og prioritere de oppgavene som ikke kan vente. Bruk månedskapitlene som en fleksibel sjekkliste."
+                        : "Et behagelig hus i innlandet må fungere både i sommervarme og på kalde vinterdager. Byggets form og klimaskjerm er like viktig som teknologien."}</p>
           {topic.sections.map((section) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
