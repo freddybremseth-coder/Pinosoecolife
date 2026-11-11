@@ -50,6 +50,12 @@ export const selfSufficientTopics = [
     title: "Vann og ressursbruk",
     lead: "Vannkilde, lagring, kvalitet og smart vanning er avgjørende på landet.",
     question: "Har tomten dokumentert vann til både bolig og det du vil dyrke?",
+    deepDive: [
+      { title: "Tre spørsmål før du tegner en hage", text: "Hvor kommer vannet fra? Hvor mye kan leveres gjennom året? Hva har du lov til å bruke det til? Skill mellom kommunalt drikkevann, vanningsfellesskap, privat brønn og eventuelle tanker. Be alltid om avtaler, registreringsinformasjon og opplysninger om forsyningens stabilitet." },
+      { title: "En brønn er ikke en garanti", text: "At en selger viser frem en brønn, forteller ikke om rettighetene er registrert, kapasiteten er tilstrekkelig eller vannet egner seg til drikke. Bruk kvalifisert lokal fagperson og kontroller relevant vannmyndighet. For aktuelle områder under Júcar-bassenget har Confederación Hidrográfica del Júcar informasjon om registrering og søknader." },
+      { title: "Slik lager du et vannbudsjett", text: "Regn separat på husholdning, basseng, trær og kjøkkenhage. For dyrking trenger du oversikt over areal, jordtype, vekster og sesong. Bruk lokale vær- og fordampningsdata som grunnlag; forbruk om sommeren kan avvike mye fra et årsgjennomsnitt. Det er bedre å plante en mindre hage du kan vanne forsvarlig enn en stor som er avhengig av usikker forsyning." },
+      { title: "Vannlagring og sikkerhet", text: "Planlegg tanker, pumper, filtrering og eventuell behandling ut fra vannkilde og bruksområde. Undersøk hygienekrav, tillatelser, tilgang for vedlikehold og håndtering av overløp. Regnvann kan være et supplement, men bør ikke omtales som en sikker helårskilde uten dokumenterte beregninger." },
+    ],
     sections: [
       { title: "Undersøk rettighetene først", text: "Spør om dokumentasjon på tilkobling, leveringskapasitet, brønnrettigheter og eventuell tilgang til vanningsvann. At det finnes en brønn eller et rør på tomten er ikke i seg selv dokumentasjon på lovlig eller tilstrekkelig forsyning." },
       { title: "Skill drikkevann fra vanning", text: "Vannkvalitet, filtrering, lagringsbehov og eventuell behandling bør vurderes separat for husholdning og hage. Anlegg og tillatelser må kontrolleres lokalt." },
@@ -60,7 +66,7 @@ export const selfSufficientTopics = [
       { question: "Betyr en brønn på tomten at vannforsyningen er sikret?", answer: "Nei. Lovlig bruk, kapasitet og vannkvalitet må undersøkes. Be om dokumentasjon og faglig vurdering før kjøpet." },
       { question: "Er regnvann nok til en kjøkkenhage?", answer: "Det avhenger av nedbør, lagringskapasitet og avlingene. I tørre perioder bør man ikke basere en dyrkingsplan på ubekreftet regnvannstilgang." },
     ],
-    links: [],
+    links: [{ label: "Confederación Hidrográfica del Júcar – registrering av vannrettigheter", href: "https://www.chj.es/es-es/ciudadano/tramitesysolicitudes/Paginas/registrodeaguas.aspx" }, { label: "SiAR – offentlige agroklimatiske data for vanning", href: "https://servicio.mapa.gob.es/siarweb/home" }],
   },
   {
     slug: "planlegg-tomten",
@@ -90,6 +96,12 @@ export const selfSufficientTopics = [
     title: "Dyr og småbruk",
     lead: "Et lite dyrehold krever mer enn ledig plass.",
     question: "Passer høner eller andre dyr inn i den hverdagen du ønsker?",
+    deepDive: [
+      { title: "Høner for egne egg – begynn med regelverket", text: "En liten hønseflokk er et vanlig ønske, men hobbyformål fjerner ikke nødvendigvis registreringsplikter. Generalitat Valenciana har en egen prosedyre for forhåndsmelding av fjørfehold til eget forbruk, og oppgir at det ikke er noen nedre grense for antall høner i denne meldingen. Kontroller gjeldende lokale og regionale krav før etablering." },
+      { title: "Sommeren er en praktisk test", text: "Dyr trenger daglig ferskt vann, skygge, forsvarlig ventilasjon, beskyttelse mot rovdyr og oppfølging når temperaturen stiger. Plassering av hus og luftegård må fungere både i heteperioder, vind og eventuelle kalde netter. Avklar veterinær og en ansvarlig person som kan overta tilsynet ved reise." },
+      { title: "Fra hobby til virksomhet er et annet steg", text: "Det er forskjell på å holde noen dyr til eget bruk og å selge egg, kjøtt eller andre produkter. Registrering, hygiene, omsetning og skatteregler kan være forskjellige. Ikke bruk en hobbyguide som tillatelse til kommersiell drift." },
+      { title: "Når passer det ikke?", text: "Hvis eiendommen bare brukes enkelte ferieuker, eller hvis det ikke finnes stabilt tilsyn, bør dyrehold vente. Man kan fortsatt få mye Eco Life-følelse gjennom hage, trær, kompostering og natur uten ansvar for levende dyr året rundt." },
+    ],
     sections: [
       { title: "Begynn med ansvar og tid", text: "Dyr trenger daglig tilsyn, vann, skygge, egnet ly og beskyttelse. Feriefravær, sommervarme og veterinærtilgang bør planlegges på forhånd." },
       { title: "Kontroller lokale regler", text: "Registreringskrav, dyrevelferd, nabohensyn, kommunale bestemmelser og eventuell landbruksstatus varierer etter type og omfang av dyrehold. Undersøk dette før kjøp eller etablering." },
@@ -100,13 +112,19 @@ export const selfSufficientTopics = [
       { question: "Kan jeg ha høner på en stor tomt?", answer: "Det kan være mulig, men størrelse alene gir ikke tillatelse. Kommunale og regionale krav, registrering og dyrevelferd må sjekkes." },
       { question: "Passer dyrehold hvis vi bare bor i Spania deler av året?", answer: "Bare dersom ansvarlig og stabilt daglig tilsyn kan ordnes også når dere er borte. Det bør avklares før man skaffer dyr." },
     ],
-    links: [],
+    links: [{ label: "Generalitat Valenciana – fjørfehold til eget forbruk", href: "https://sede.gva.es/es/detall-tramit?id_proc=106502" }],
   },
   {
     slug: "baerekraftig-bolig",
     title: "Bærekraftig bolig og komfort",
     lead: "Et moderne hjem som fungerer godt gjennom varme somre og kjøligere vintre.",
     question: "Hvordan bygger du energieffektivt uten å ofre komforten?",
+    deepDive: [
+      { title: "Reduser behovet før du dimensjonerer teknikken", text: "Start med byggets form, orientering, isolasjon, vinduer, lufttetthet og utvendig solskjerming. God planlegging kan redusere varmebelastningen før du velger kapasitet på varmepumpe og solcelleanlegg. En stor glassflate mot ettermiddagssolen kan være vakker, men bør vurderes mot sommerkomfort." },
+      { title: "Tenk på både varme og kjølige netter", text: "Alicante-innlandet har andre forhold enn strandsonen. Planlegg for sterk sol og høye sommertemperaturer, men også kjøligere perioder om vinteren. Be om beregninger for innemiljø, ikke bare markedsføringsord som «passiv» eller «eco»." },
+      { title: "Huset og infrastrukturen må prosjekteres samlet", text: "Plass til batteri, varmepumpe, vanntanker, avløpsløsning, serviceadkomst og eventuell fremtidig elbillading bør vurderes tidlig. Det er enklere å samordne rør, kabler og driftsrom før prosjektet bygges enn å tilpasse alt i etterkant." },
+      { title: "Be om dokumentasjon, ikke bare energimerke", text: "Spansk teknisk byggeregelverk (CTE) omfatter krav til energisparing i DB-HE. Arkitekt og ansvarlige prosjekterende må dokumentere gjeldende krav for det konkrete bygget. Sammenlign beregnet energibehov, faktisk teknisk løsning, garanti og forventet vedlikehold før du velger utstyr." },
+    ],
     sections: [
       { title: "Design etter klimaet", text: "Byggets orientering, utvendig solskjerming, isolasjon og ventilasjon kan redusere kjøle- og varmebehov før tekniske løsninger velges." },
       { title: "Se huset og tomten sammen", text: "Solceller, vannsystem, avløpsløsning, adkomst og uteareal må prosjekteres som deler av samme helhet. Avklar lokale regler og tekniske forhold tidlig." },
@@ -117,6 +135,6 @@ export const selfSufficientTopics = [
       { question: "Er solceller det viktigste for et energieffektivt hus?", answer: "Nei. God bygningsutforming, isolasjon, skygge og effektiv teknikk reduserer først energibehovet; solceller kan deretter dekke deler av forbruket." },
       { question: "Kan jeg planlegge tekniske løsninger etter at huset er ferdig?", answer: "Noe kan ettermonteres, men plass, føringsveier og samspill mellom strøm, vann og avløp er ofte enklere å løse tidlig i prosjektet." },
     ],
-    links: [],
+    links: [{ label: "Código Técnico de la Edificación – energikrav DB-HE", href: "https://www.codigotecnico.org/DocumentosCTE/AhorroEnergia.html" }],
   },
 ] as const;
