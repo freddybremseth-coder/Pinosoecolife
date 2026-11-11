@@ -33,6 +33,12 @@ export default async function Home() {
       href: "/tomter",
       action: "Se tomter og byggevei",
     },
+    {
+      label: "Jeg vil leve mer selvforsynt",
+      text: "Lær om solenergi, egen mat, vann, regenerativt jordbruk og hvordan en stor tomt kan bli en del av hverdagen.",
+      href: "/selvforsynt-liv",
+      action: "Utforsk ni praktiske guider",
+    },
   ];
 
   const pageJsonLd = {
@@ -53,7 +59,7 @@ export default async function Home() {
       {
         "@type": "ItemList",
         "@id": "https://www.pinosoecolife.com/#start-here",
-        name: "Tre måter å starte boligjakten i Alicante-innlandet",
+        name: "Fire måter å starte reisen mot livet i Alicante-innlandet",
         itemListElement: intentPaths.map((item, index) => ({
           "@type": "ListItem",
           position: index + 1,
