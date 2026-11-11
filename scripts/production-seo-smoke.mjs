@@ -52,7 +52,7 @@ async function checkPage(path) {
     const html = (headers.get("content-type") || "").includes("text/html");
     record(`Page ${path}`, status === 200 && html, `HTTP ${status} ${url}`);
     if (status !== 200 || !html) return;
-    record(`H1 ${path}`, (body.match(/<h1(?:\\s|>)/gi) || []).length === 1, "Expect exactly one H1");
+    record(`H1 ${path}`, (body.match(/<h1(?:\s|>)/gi) || []).length === 1, "Expect exactly one H1");
     if (path.startsWith("/selvforsynt-liv/") && path !== "/selvforsynt-liv/planlegger") {
       const canonical = body.match(/<link[^>]*rel=["']canonical["'][^>]*>/i)?.[0] ||
         body.match(/<link[^>]*href=["'][^"']+["'][^>]*rel=["']canonical["'][^>]*>/i)?.[0] || "";
@@ -90,7 +90,7 @@ async function run() {
   for (const path of editorial) {
     try {
       const { body } = await load(path);
-      const hrefs = [...body.matchAll(/<a\\b[^>]*href=["']([^"']+)["']/gi)].map((x) => x[1]);
+      const hrefs = [...body.matchAll(/<a\b[^>]*href=["']([^"']+)["']/gi)].map((x) => x[1]);
       const candidates = [...new Set(hrefs.map(normalize).filter((x) =>
         x && (x.startsWith("/selvforsynt-liv/") || x.startsWith("/magasin/"))
       ))].slice(0, 35);
