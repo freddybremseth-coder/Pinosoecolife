@@ -7,6 +7,15 @@ import { inlandEditorialImage } from "@/lib/inland-image-policy";
 
 const fallbackArticles = [...articles, ...ecoLifePhase2Articles, ...ecoLifePhase2bArticles];
 const PINOSO_BRAND_ID = "pinosoecolife";
+const FEATURED_INLAND_IMAGE = "/assets/hero-pinoso-dream.jpg";
+
+// This article was published with a coastal image whose URL contains no coastal keywords.
+// Use the approved inland brand image consistently in magazine cards, article hero and OG tags.
+function editorialImageForPost(slug: string, imageUrl: string | null | undefined): string {
+  if (slug === "10000-m2-hva-gjor-du-med-plassen") return FEATURED_INLAND_IMAGE;
+  return inlandEditorialImage(imageUrl);
+}
+
 const MAGAZINE_DESTINATIONS = ["magasin", "artikler", "boligartikler", "guider"];
 
 export type PublicWebsitePost = {
@@ -63,7 +72,7 @@ function toFallbackPost(article: (typeof fallbackArticles)[number]): PublicWebsi
     slug: article.slug,
     summary: article.excerpt,
     markdown: article.markdown || `# ${article.title}\n\n${article.excerpt}`,
-    image_url: inlandEditorialImage(article.image),
+    image_url: editorialImageForPost(article.slug, article.image),
     tags: article.tags || [],
     published_at: article.date,
     created_at: article.date,
@@ -100,7 +109,7 @@ function mergeMagazinePosts(rows: PublicWebsitePost[]) {
 
   return Array.from(bySlug.values()).map((post) => ({
     ...post,
-    image_url: inlandEditorialImage(post.image_url),
+    image_url: editorialImageForPost(post.slug, post.image_url),
   })).sort((a, b) => {
     const aDate = Date.parse(a.published_at || a.created_at) || 0;
     const bDate = Date.parse(b.published_at || b.created_at) || 0;
