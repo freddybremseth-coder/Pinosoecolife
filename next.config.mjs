@@ -5,6 +5,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Legacy PHP homepage (both apex and www) is the same content as /.
+      { source: "/index.php", destination: "/", permanent: true },
       { source: "/artikler", destination: "/magasin", permanent: true },
       { source: "/artikler/:slug", destination: "/magasin/:slug", permanent: true },
       { source: "/boligartikler", destination: "/magasin", permanent: true },
