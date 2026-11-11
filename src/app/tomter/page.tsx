@@ -4,6 +4,7 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import { CatastroSummary } from "@/components/CatastroSummary";
 import { Footer } from "@/components/Footer";
 import { PlotsMap } from "@/components/PlotsMap";
+import { PlotEcoLifeStatus } from "@/components/PlotEcoLifeStatus";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getLandPlots, type LandPlot } from "@/lib/realtyflow";
 import styles from "./plots.module.css";
@@ -461,6 +462,15 @@ export default async function PlotsPage({
                   {(plotPolygon || plotParcel) && <div className={styles.fact}><dt>Catastro</dt><dd>{plotPolygon ? `Pol. ${plotPolygon}` : "Pol. -"} / {plotParcel ? `Parc. ${plotParcel}` : "Parc. -"}</dd></div>}
                   {catastroRef && <div className={styles.fact}><dt>Ref. catastral</dt><dd>{catastroRef}</dd></div>}
                 </dl>
+
+                <PlotEcoLifeStatus
+                  hasArea={plotArea > 0}
+                  hasZoning={Boolean(getPlotZoning(plot))}
+                  waterReported={plot.water === true}
+                  electricityReported={plot.electricity === true}
+                  roadReported={plot.road_access === true || plot.roadAccess === true}
+                  hasCatastro={Boolean(catastroRef || (plotPolygon && plotParcel))}
+                />
 
                 {plot.notes && <p className={styles.notes}>{plot.notes}</p>}
                 {(catastroRef || plot.lat || plot.lng) && (
