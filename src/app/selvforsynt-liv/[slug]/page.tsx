@@ -72,7 +72,13 @@ export default async function SelfSufficientGuide({ params }: Props) {
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "Article", headline: topic.title, description: topic.lead, mainEntityOfPage: articleUrl, inLanguage: "nb-NO", publisher: { "@type": "Organization", name: "Pinoso Eco Life" } },
+      { "@type": "Article", "@id": `${articleUrl}#article`, headline: topic.title, description: topic.lead, mainEntityOfPage: { "@id": `${articleUrl}#webpage` }, inLanguage: "nb-NO", author: { "@id": "https://www.pinosoecolife.com/#organization" }, publisher: { "@id": "https://www.pinosoecolife.com/#organization" } },
+      { "@type": "WebPage", "@id": `${articleUrl}#webpage`, url: articleUrl, name: topic.title, description: topic.lead, inLanguage: "nb-NO", isPartOf: { "@id": "https://www.pinosoecolife.com/#website" } },
+      { "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Forside", item: "https://www.pinosoecolife.com/" },
+        { "@type": "ListItem", position: 2, name: "Selvforsynt liv", item: "https://www.pinosoecolife.com/selvforsynt-liv" },
+        { "@type": "ListItem", position: 3, name: topic.title, item: articleUrl },
+      ] },
       { "@type": "FAQPage", mainEntity: topic.faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })) },
     ],
   };
