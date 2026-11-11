@@ -212,6 +212,7 @@ export default async function SelfSufficientGuide({ params }: Props) {
             </section>
           )}
           <div className={styles.guideActions}>
+            <Link href="/selvforsynt-liv/planlegger">Lag din Eco Life-plan <ArrowRight size={17} /></Link>
             <Link href="/tomter">Utforsk tomter <ArrowRight size={17} /></Link>
             <Link href="/#kontakt">Diskuter ditt Eco Life-prosjekt <ArrowRight size={17} /></Link>
           </div>
