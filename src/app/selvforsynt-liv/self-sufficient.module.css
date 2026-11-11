@@ -89,3 +89,28 @@
   .plotFigure figcaption { margin-bottom: .8rem; }
   .plotDisclaimer { font-size: .83rem; }
 }
+
+
+/* Navigable contents for the long-form guides. */
+.guideToc {
+  margin: 2rem 0 2.75rem;
+  background: #edf1e7;
+  border: 1px solid #c8d3c3;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+}
+.guideToc summary { color: #203a2a; font-weight: 750; cursor: pointer; font-size: 1.08rem; }
+.guideToc ol { margin: 1rem 0 .3rem; padding-left: 1.5rem; columns: 2; column-gap: 2rem; }
+.guideToc li { break-inside: avoid; margin-bottom: .4rem; font-size: 1rem; line-height: 1.55; }
+.guideToc a { text-underline-offset: 3px; }
+.articleBody section[id] { scroll-margin-top: 7rem; }
+.plotLegend { margin-top: 1.25rem; }
+.plotLegend h3 { font-size: 1.04rem; color: #20342a; margin: 0 0 .6rem; }
+.plotLegend ul { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .55rem 1rem; padding: 0; margin: 0; list-style: none; }
+.plotLegend li { display: flex; justify-content: space-between; align-items: baseline; gap: .8rem; padding: .55rem .7rem; border-radius: 7px; background: #fffdf8; font-size: .91rem; line-height: 1.45; }
+.plotLegend strong { color: #21392a; white-space: nowrap; }
+@media (max-width: 620px) {
+  .guideToc ol { columns: 1; }
+  .plotLegend ul { grid-template-columns: 1fr; }
+  .plotDiagram { max-height: 240px; }
+}
