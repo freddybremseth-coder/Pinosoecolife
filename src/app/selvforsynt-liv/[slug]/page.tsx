@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { SiteHeader } from "@/components/SiteHeader";
+import { GrowingCalendar } from "@/components/GrowingCalendar";
 import { selfSufficientTopics } from "@/lib/self-sufficient-content";
 import styles from "../self-sufficient.module.css";
 
@@ -66,6 +67,7 @@ export default async function SelfSufficientGuide({ params }: Props) {
               <p>{section.text}</p>
             </section>
           ))}
+          {slug === "dyrk-egen-mat" && <GrowingCalendar />}
           <section className={styles.checklist}>
             <h2>Dette bør du undersøke</h2>
             <ul>{topic.checklist.map((item) => <li key={item}>{item}</li>)}</ul>
