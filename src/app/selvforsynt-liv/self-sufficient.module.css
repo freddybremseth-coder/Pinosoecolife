@@ -26,6 +26,13 @@
 .articleBody p, .articleBody li { color: var(--muted); font-size: 1.09rem; line-height: 1.85; }
 .articleBody a { color: var(--olive-strong); }
 .notice { border-left: 4px solid var(--olive-strong); background: #f4f4eb; padding: 8px 24px 24px; margin: 50px 0; }
+.checklist { background: #f4f4eb; padding: 12px 28px 26px; border-radius: 14px; margin-top: 44px; }
+.checklist ul { padding-left: 22px; }
+.checklist li { margin-bottom: 10px; }
+.faq { margin-top: 48px; }
+.faq details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+.faq summary { cursor: pointer; font-weight: 700; color: var(--ink); font-size: 1.08rem; }
+.faq details p { margin-bottom: 4px; }
 .guideActions { flex-direction: row; flex-wrap: wrap; margin-top: 44px; }
 .guideActions a { flex: 1; min-width: 230px; }
 .related { padding-bottom: 100px; }

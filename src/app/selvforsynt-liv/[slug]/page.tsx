@@ -29,10 +29,19 @@ export default async function SelfSufficientGuide({ params }: Props) {
   const topic = selfSufficientTopics.find((entry) => entry.slug === slug);
   if (!topic) notFound();
   const otherTopics = selfSufficientTopics.filter((entry) => entry.slug !== slug).slice(0, 3);
+  const articleUrl = `https://www.pinosoecolife.com/selvforsynt-liv/${slug}`;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "Article", headline: topic.title, description: topic.lead, mainEntityOfPage: articleUrl, inLanguage: "nb-NO", publisher: { "@type": "Organization", name: "Pinoso Eco Life" } },
+      { "@type": "FAQPage", mainEntity: topic.faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })) },
+    ],
+  };
 
   return (
     <main>
       <SiteHeader />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <article>
         <header className={styles.guideHero}>
           <div className={styles.container}>
@@ -51,6 +60,19 @@ export default async function SelfSufficientGuide({ params }: Props) {
               <p>{section.text}</p>
             </section>
           ))}
+          <section className={styles.checklist}>
+            <h2>Dette bør du undersøke</h2>
+            <ul>{topic.checklist.map((item) => <li key={item}>{item}</li>)}</ul>
+          </section>
+          <section className={styles.faq}>
+            <h2>Vanlige spørsmål</h2>
+            {topic.faqs.map((faq) => (
+              <details key={faq.question}>
+                <summary>{faq.question}</summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </section>
           <aside className={styles.notice}>
             <h2>Før du investerer</h2>
             <p>Dette er generell orientering. Byggemuligheter, vannrettigheter, elektriske installasjoner og eventuelt dyrehold må bekreftes for den konkrete eiendommen av kompetente lokale fagpersoner og myndigheter.</p>
