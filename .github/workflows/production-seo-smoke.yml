@@ -1,0 +1,31 @@
+name: Public SEO smoke check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 7 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  production-seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Audit public pages, sitemap, robots and editorial links
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/production-seo-smoke.mjs | tee production-seo-report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-seo-smoke-report
+          path: production-seo-report.json
+          if-no-files-found: warn
+          retention-days: 30
