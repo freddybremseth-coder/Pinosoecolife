@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const topic = selfSufficientTopics.find((entry) => entry.slug === slug);
   if (!topic) return {};
   return {
-    title: `${topic.title} i Alicante-innlandet | Pinoso Eco Life`,
+    title: `${topic.title} i Alicante-innlandet`,
     description: topic.lead,
     alternates: { canonical: `/selvforsynt-liv/${slug}` },
   };
