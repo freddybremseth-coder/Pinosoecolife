@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const topic = selfSufficientTopics.find((entry) => entry.slug === slug);
   if (!topic) return {};
   return {
-    title: `${topic.title} i Alicante-innlandet | Pinoso Eco Life`,
+    title: `${topic.title} i Alicante-innlandet`,
     description: topic.lead,
     alternates: { canonical: `/selvforsynt-liv/${slug}` },
   };
@@ -123,9 +123,3 @@ export default async function SelfSufficientGuide({ params }: Props) {
         <h2>Utforsk flere sider ved livet på landet</h2>
         <div className={styles.grid}>
           {otherTopics.map((entry) => <Link className={styles.card} key={entry.slug} href={`/selvforsynt-liv/${entry.slug}`}><h3>{entry.title}</h3><p>{entry.lead}</p><span className={styles.cardLink}>Les mer <ArrowRight size={17} /></span></Link>)}
-        </div>
-      </section>
-      <Footer />
-    </main>
-  );
-}
