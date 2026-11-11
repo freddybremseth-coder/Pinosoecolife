@@ -31,7 +31,21 @@ export default async function SelfSufficientGuide({ params }: Props) {
   const { slug } = await params;
   const topic = selfSufficientTopics.find((entry) => entry.slug === slug);
   if (!topic) notFound();
-  const otherTopics = selfSufficientTopics.filter((entry) => entry.slug !== slug).slice(0, 3);
+  const relatedFirst = slug === "regenerativt-jordbruk"
+    ? ["dyrk-egen-mat", "vann", "planlegg-tomten"]
+    : slug === "dyrk-egen-mat" || slug === "planlegg-tomten" || slug === "vann"
+      ? ["regenerativt-jordbruk", "dyrk-egen-mat", "vann", "planlegg-tomten"]
+      : ["planlegg-tomten", "vann", "regenerativt-jordbruk"];
+  const otherTopics = selfSufficientTopics
+    .filter((entry) => entry.slug !== slug)
+    .sort((a, b) => {
+      const rank = (key: string) => {
+        const index = relatedFirst.indexOf(key);
+        return index === -1 ? 99 : index;
+      };
+      return rank(a.slug) - rank(b.slug);
+    })
+    .slice(0, 3);
   const publishedArticles = await fetchPublishedPosts("magasin");
   const relatedArticles = getGuideArticleSlugs(slug).flatMap((articleSlug) => {
     const article = publishedArticles.find((entry) => entry.slug === articleSlug);
@@ -61,7 +75,19 @@ export default async function SelfSufficientGuide({ params }: Props) {
         </header>
         <div className={styles.articleBody}>
           <h2>{topic.question}</h2>
-          <p>Et godt prosjekt starter med behovene dine og faktiske forhold på eiendommen. Mulighetene avhenger av klima, vann, regulering og infrastruktur – ikke bare hvor stor tomten er.</p>
+          <p>{slug === "regenerativt-jordbruk"
+            ? "Du kan begynne med en liten del av eiendommen og bygge kunnskap over flere sesonger. Under finner du konkrete tiltak, en 90-dagers startplan og måter å kontrollere om jorda faktisk blir bedre."
+            : slug === "dyrk-egen-mat"
+              ? "En god kjøkkenhage er tilpasset sesong, mikroklima og vannforsyning. Begynn med et håndterbart areal, observer stedet og utvid først når du kjenner forholdene."
+              : slug === "vann"
+                ? "Vann er ofte den viktigste begrensningen på en finca. Før du planlegger hage, trær eller tekniske systemer, bør du vite både hvor vannet kommer fra og hvilken bruk som er tillatt."
+                : slug === "planlegg-tomten"
+                  ? "Planleggingen starter med juridiske rammer, terreng og tilgang til infrastruktur. Først deretter er det tid for å plassere bolig, hage og andre funksjoner."
+                  : slug === "dyr-og-smabruk"
+                    ? "Et lite dyrehold kan være meningsfylt, men krever daglig ansvar, også på varme sommerdager og når eieren er bortreist."
+                    : slug === "solenergi"
+                      ? "Et godt energisystem dimensjoneres etter faktisk forbruk, døgnprofil og vinterbehov – ikke bare etter hvor mange soltimer regionen har."
+                      : "Et behagelig hus i innlandet må fungere både i sommervarme og på kalde vinterdager. Byggets form og klimaskjerm er like viktig som teknologien."}</p>
           {topic.sections.map((section) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
