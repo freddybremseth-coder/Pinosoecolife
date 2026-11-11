@@ -31,12 +31,14 @@ export default async function SelfSufficientGuide({ params }: Props) {
   const { slug } = await params;
   const topic = selfSufficientTopics.find((entry) => entry.slug === slug);
   if (!topic) notFound();
-  const relatedFirst = slug === "aret-pa-fincaen"
+  const relatedFirst = slug === "eksempel-10000m2"
+    ? ["planlegg-tomten", "vann", "regenerativt-jordbruk"]
+    : slug === "aret-pa-fincaen"
     ? ["dyrk-egen-mat", "vann", "regenerativt-jordbruk"]
     : slug === "regenerativt-jordbruk"
       ? ["dyrk-egen-mat", "vann", "aret-pa-fincaen"]
     : slug === "dyrk-egen-mat" || slug === "planlegg-tomten" || slug === "vann"
-      ? ["regenerativt-jordbruk", "aret-pa-fincaen", "dyrk-egen-mat", "vann", "planlegg-tomten"]
+      ? ["eksempel-10000m2", "regenerativt-jordbruk", "aret-pa-fincaen", "dyrk-egen-mat", "vann", "planlegg-tomten"]
       : ["planlegg-tomten", "vann", "regenerativt-jordbruk"];
   const otherTopics = selfSufficientTopics
     .filter((entry) => entry.slug !== slug)
@@ -89,9 +91,47 @@ export default async function SelfSufficientGuide({ params }: Props) {
                     ? "Et lite dyrehold kan være meningsfylt, men krever daglig ansvar, også på varme sommerdager og når eieren er bortreist."
                     : slug === "solenergi"
                       ? "Et godt energisystem dimensjoneres etter faktisk forbruk, døgnprofil og vinterbehov – ikke bare etter hvor mange soltimer regionen har."
-                      : slug === "aret-pa-fincaen"
+                      : slug === "eksempel-10000m2"
+                        ? "Her får du et tydelig arealbudsjett, en illustrasjon, en plan for utvikling i etapper og punktene som må avklares før en stor tomt kan realiseres."
+                        : slug === "aret-pa-fincaen"
                         ? "Året på landet handler om å planlegge etter lokale forhold, følge med på været og prioritere de oppgavene som ikke kan vente. Bruk månedskapitlene som en fleksibel sjekkliste."
                         : "Et behagelig hus i innlandet må fungere både i sommervarme og på kalde vinterdager. Byggets form og klimaskjerm er like viktig som teknologien."}</p>
+          {slug === "eksempel-10000m2" && (
+            <figure className={styles.plotFigure}>
+              <figcaption>
+                <strong>Et tenkt arealbudsjett: 10 000 m²</strong>
+                <span>Skjematisk fordeling av areal, ikke et kart eller en situasjonsplan. Byggetillatelse og faktisk bruk må avklares særskilt.</span>
+              </figcaption>
+              <svg className={styles.plotDiagram} viewBox="0 0 1000 600" role="img" aria-labelledby="plot-title plot-desc">
+                <title id="plot-title">Eksempelfordeling av en tomt på 10 000 kvadratmeter</title>
+                <desc id="plot-desc">45 prosent natur, 20 prosent eksisterende trær, 15 prosent mulig fruktareal, 7 prosent adkomst, 5 prosent kjøkkenhage, 5 prosent buffer og 3 prosent mulig boligfunksjon. Kun illustrative funksjoner.</desc>
+                <rect x="0" y="0" width="600" height="450" fill="#789b82" />
+                <rect x="600" y="0" width="400" height="300" fill="#a5b189" />
+                <rect x="0" y="450" width="600" height="150" fill="#c8b477" />
+                <rect x="600" y="300" width="200" height="210" fill="#c5a88f" />
+                <rect x="800" y="300" width="200" height="150" fill="#d5c58e" />
+                <rect x="800" y="450" width="200" height="150" fill="#95b5aa" />
+                <rect x="600" y="510" width="200" height="90" fill="#bb9ba0" />
+                <g fill="#20342a" textAnchor="middle" fontFamily="system-ui, sans-serif" fontWeight="700">
+                  <text x="300" y="216" fontSize="29">Natur og vegetasjon</text>
+                  <text x="300" y="254" fontSize="23">4 500 m²</text>
+                  <text x="800" y="132" fontSize="27">Eksisterende trær</text>
+                  <text x="800" y="169" fontSize="23">2 000 m²</text>
+                  <text x="300" y="526" fontSize="26">Nytt fruktareal · 1 500 m²</text>
+                  <text x="700" y="393" fontSize="21">Adkomst</text>
+                  <text x="700" y="424" fontSize="18">700 m²</text>
+                  <text x="900" y="369" fontSize="19">Kjøkkenhage</text>
+                  <text x="900" y="399" fontSize="18">500 m²</text>
+                  <text x="900" y="518" fontSize="19">Buffersone</text>
+                  <text x="900" y="548" fontSize="18">500 m²</text>
+                  <text x="700" y="551" fontSize="17">Boligsone*</text>
+                  <text x="700" y="576" fontSize="16">300 m²</text>
+                </g>
+                <path d="M600 0 V600 M0 450 H600 M600 300 H1000 M800 300 V600 M800 450 H1000 M600 510 H800" stroke="#ffffff" strokeWidth="5" fill="none" opacity="0.85" />
+              </svg>
+              <p className={styles.plotDisclaimer}>* «Boligsone» viser kun avsatt plass i tankeeksperimentet. Den innebærer ingen byggerett eller godkjent bygningsstørrelse.</p>
+            </figure>
+          )}
           {topic.sections.map((section) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
