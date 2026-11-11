@@ -7,7 +7,7 @@ import styles from "./self-sufficient.module.css";
 
 export const metadata = {
   title: "Selvforsynt liv i Spania | Solenergi, dyrking og store tomter",
-  description: "Utforsk et mer selvstendig liv i Alicante-innlandet: solceller, dyrking, vann, småbruk og planlegging av stor tomt. Praktiske guider uten urealistiske løfter.",
+  description: "Utforsk et mer selvstendig liv i Alicante-innlandet: solceller, dyrking, regenerativt jordbruk, vann, småbruk og planlegging av stor tomt. Praktiske guider uten urealistiske løfter.",
   alternates: { canonical: "/selvforsynt-liv" },
 };
 
@@ -25,7 +25,7 @@ export default function SelfSufficientLifePage() {
       </section>
       <section className={styles.container} id="temaer">
         <div className={styles.sectionHead}>
-          <p className={styles.eyebrow}>Seks veier inn i Eco Life</p>
+          <p className={styles.eyebrow}>Sju veier inn i Eco Life</p>
           <h2>Begynn med det som betyr mest for deg.</h2>
           <p>Du behøver ikke bli fullstendig selvforsynt. Kanskje er målet lavere energiforbruk, en kjøkkenhage eller bare mer plass til å leve.</p>
         </div>
