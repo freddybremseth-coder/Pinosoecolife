@@ -610,6 +610,7 @@
 .intentHeading .kicker {
   grid-column: 1 / -1;
   margin-bottom: -10px;
+  color: var(--olive-strong);
 }
 
 .intentHeading h2 {
@@ -631,7 +632,7 @@
 
 .intentGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -684,6 +685,10 @@
   margin-top: 24px;
   color: var(--olive-strong);
   font-size: .86rem;
+}
+
+@media (max-width: 1080px) and (min-width: 641px) {
+  .intentGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
