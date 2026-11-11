@@ -49,7 +49,7 @@ export function EcoLifePlanner() {
     budget ? `Maksimal tomtepris: ${Number(budget).toLocaleString("nb-NO")} €` : "Tomtebudsjett: Ikke angitt",
     "Forutsetter juridisk og teknisk kontroll. Ingen bygge- eller bruksrett er bekreftet.",
   ].join("\n");
-  const plotParams = new URLSearchParams({ minArea: String(minArea) });
+  const plotParams = new URLSearchParams({ minArea: String(minArea), source: "ecolife" });
   if (budget && Number(budget) > 0) plotParams.set("maxPrice", budget);
 
   function toggleGoal(goal: Goal) {

@@ -285,7 +285,7 @@ function isEcoLifeAreaPlot(plot: PlotWithCatastro) {
 export default async function PlotsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; minArea?: string; maxPrice?: string; zoning?: string; polygon?: string; parcel?: string }>;
+  searchParams: Promise<{ q?: string; minArea?: string; maxPrice?: string; zoning?: string; polygon?: string; parcel?: string; source?: string }>;
 }) {
   const params = await searchParams;
   const plots = (await getLandPlots()) as PlotWithCatastro[];
@@ -295,6 +295,7 @@ export default async function PlotsPage({
   const zoning = normalize(params.zoning);
   const polygon = params.polygon || "";
   const parcel = params.parcel || "";
+  const fromEcoLifePlanner = params.source === "ecolife";
 
   const publishedPlots = plots.filter((plot) => isEcoLifeAreaPlot(plot) && !isInactivePlot(plot));
   const filtered = publishedPlots.filter((plot) => {
@@ -304,7 +305,7 @@ export default async function PlotsPage({
       matchesPolygonParcel(plot, polygon, parcel) &&
       (!zoning || getPlotZoning(plot) === zoning) &&
       (!minArea || getPlotArea(plot) >= minArea) &&
-      (!maxPrice || Number(plot.price || 0) <= maxPrice)
+      (!maxPrice || (Number(plot.price || 0) > 0 && Number(plot.price) <= maxPrice))
     );
   });
   const mapped = filtered.filter((plot) => plot.lat && plot.lng);
@@ -336,6 +337,7 @@ export default async function PlotsPage({
 
       <div className={styles.filterShell}>
         <form className={styles.filters} action="/tomter">
+          {fromEcoLifePlanner && <input type="hidden" name="source" value="ecolife" />}
           <input name="q" defaultValue={params.q || ""} placeholder="Søk område, ref eller Catastro" />
           <input name="polygon" defaultValue={params.polygon || ""} placeholder="Polígono" inputMode="numeric" />
           <input name="parcel" defaultValue={params.parcel || ""} placeholder="Parcela" inputMode="numeric" />
@@ -345,6 +347,9 @@ export default async function PlotsPage({
             <option value="1000">1 000 m²</option>
             <option value="5000">5 000 m²</option>
             <option value="10000">10 000 m²</option>
+            <option value="15000">15 000 m²</option>
+            <option value="20000">20 000 m²</option>
+            <option value="30000">30 000 m²</option>
           </select>
           <select name="maxPrice" defaultValue={params.maxPrice || ""}>
             <option value="">Pris til</option>
@@ -352,6 +357,9 @@ export default async function PlotsPage({
             <option value="50000">€50 000</option>
             <option value="75000">€75 000</option>
             <option value="100000">€100 000</option>
+            {params.maxPrice && !["30000", "50000", "75000", "100000"].includes(params.maxPrice) && (
+              <option value={params.maxPrice}>€{Number(params.maxPrice).toLocaleString("nb-NO")}</option>
+            )}
           </select>
           <select name="zoning" defaultValue={params.zoning || ""}>
             <option value="">Regulering</option>
@@ -362,6 +370,17 @@ export default async function PlotsPage({
           <button type="submit">Vis tomter</button>
         </form>
       </div>
+
+      {fromEcoLifePlanner && (
+        <section className={styles.ecoLifeHandoff} aria-label="Resultater fra Eco Life-planleggeren">
+          <div>
+            <p className={styles.eyebrow}>Ditt Eco Life-søk</p>
+            <h2>Dette er en første sortering, ikke en godkjent tomtematch.</h2>
+            <p>Listen viser tomter med oppgitt areal fra {minArea.toLocaleString("nb-NO")} m²{maxPrice ? ` og pris opptil ${maxPrice.toLocaleString("nb-NO")} €` : ""}. Tilgang til vann og strøm, byggbarhet, dyrking og dyrehold er ikke vurdert som en del av treffene. Disse forholdene må dokumenteres for hver tomt.</p>
+          </div>
+          <Link href="/selvforsynt-liv/planlegger">Endre Eco Life-planen <ArrowRight size={17} /></Link>
+        </section>
+      )}
 
       <section className={styles.process}>
         <div className={styles.processIntro}>

@@ -80,6 +80,11 @@
   background: rgba(255, 253, 248, 0.96);
   box-shadow: 0 24px 60px rgba(23, 35, 28, 0.09);
 }
+.ecoLifeHandoff { width:min(1240px,calc(100% - 56px)); margin:36px auto 0; padding:28px 32px; background:#eef2e5; border:1px solid #cbd6bb; border-radius:16px; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+.ecoLifeHandoff h2 { color:var(--ink); font:500 clamp(1.5rem,2.6vw,2.2rem)/1.18 var(--font-display),Georgia,serif; margin:4px 0 10px; }
+.ecoLifeHandoff p:last-child { margin:0; color:var(--muted); line-height:1.7; }
+.ecoLifeHandoff a { color:var(--olive-strong); display:inline-flex; align-items:center; gap:8px; font-weight:700; white-space:nowrap; }
+@media(max-width:800px) { .ecoLifeHandoff { flex-direction:column; align-items:flex-start; padding:24px; } }
 
 .filters {
   display: grid;
