@@ -40,6 +40,33 @@ export default function SelfSufficientLifePage() {
           ))}
         </div>
       </section>
+      <section className={styles.container} aria-labelledby="eco-stories-title">
+        <div className={styles.sectionHead}>
+          <p className={styles.eyebrow}>Fra Magasin til praktisk kunnskap</p>
+          <h2 id="eco-stories-title">Historier som gir guidene liv.</h2>
+          <p>Les om erfaringene og mulighetene, og gå deretter videre til guiden som hjelper deg å vurdere ditt eget prosjekt.</p>
+        </div>
+        <div className={styles.grid}>
+          <Link className={styles.card} href="/magasin/10000-m2-hva-gjor-du-med-plassen">
+            <span className={styles.number}>MAGASIN · TOMT</span>
+            <h3>Hva gjør du med 10 000 m²?</h3>
+            <p>Fra plass og privatliv til en konkret plan for tomten.</p>
+            <span className={styles.cardLink}>Les artikkelen <ArrowRight size={17} /></span>
+          </Link>
+          <Link className={styles.card} href="/magasin/fra-supermarked-til-egen-hage">
+            <span className={styles.number}>MAGASIN · MAT</span>
+            <h3>Fra supermarked til egen hage</h3>
+            <p>Et realistisk første steg mot å dyrke mer av maten selv.</p>
+            <span className={styles.cardLink}>Les artikkelen <ArrowRight size={17} /></span>
+          </Link>
+          <Link className={styles.card} href="/magasin/fra-blank-tomt-til-eget-landskap">
+            <span className={styles.number}>MAGASIN · LANDSKAP</span>
+            <h3>Fra blank tomt til eget landskap</h3>
+            <p>Hvordan en eiendom kan utvikles over flere sesonger.</p>
+            <span className={styles.cardLink}>Les artikkelen <ArrowRight size={17} /></span>
+          </Link>
+        </div>
+      </section>
       <section className={`${styles.container} ${styles.band}`}>
         <div>
           <p className={styles.eyebrow}>Planlegg ditt Eco Life</p>
