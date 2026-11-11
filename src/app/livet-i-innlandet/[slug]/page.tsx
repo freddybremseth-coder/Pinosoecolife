@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { getAlternativeAreaSlugs, getAreaArticleSlugs } from "@/lib/ecolife-content-links";
 import { ecoLifeAreas, getEcoLifeArea } from "@/lib/ecolife-areas";
 import { fetchPublishedPosts } from "@/lib/website-content";
+import { selfSufficientTopics } from "@/lib/self-sufficient-content";
 import styles from "../../ecolife-editorial.module.css";
 import factStyles from "../../ecolife-area-facts.module.css";
 import { AREA_ROUTE_DESTINATIONS, ECO_LIFE_AREA_FACTS, areaDrivingDirections, areaMapEmbed, straightLineKm } from "@/lib/ecolife-area-facts";
@@ -72,6 +73,16 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
     ? "https://econet.carm.es/web/crem/inicio/-/crem/sicrem/PM2100/sec2_c1.html"
     : "https://datos.diputacionalicante.es/censo/";
   const leadContext = lifestyleContext[area.zone];
+  const guideSlugsByZone: Record<string, string[]> = {
+    vinland: ["dyrk-egen-mat", "vann", "regenerativt-jordbruk"],
+    landsby: ["aret-pa-fincaen", "planlegg-tomten", "dyrk-egen-mat"],
+    praktisk: ["planlegg-tomten", "solenergi", "baerekraftig-bolig"],
+    fjell: ["vann", "regenerativt-jordbruk", "aret-pa-fincaen"],
+  };
+  const localGuides = (guideSlugsByZone[area.zone] || []).flatMap((guideSlug) => {
+    const guide = selfSufficientTopics.find((topic) => topic.slug === guideSlug);
+    return guide ? [guide] : [];
+  });
   const publishedPosts = await fetchPublishedPosts("magasin");
   const relevantArticleSlugs = getAreaArticleSlugs(area.slug, 4);
   const relevantArticles = relevantArticleSlugs.flatMap((articleSlug) => {
@@ -236,6 +247,25 @@ export default async function EcoLifeAreaPage({ params }: { params: Promise<Para
           <div className={styles.factItem}><Check size={19} /><span>Tomten er egnet og dokumentasjonen kontrollert</span></div>
           <div className={styles.factItem}><Sprout size={19} /><span>Bolig og uteområder tilpasses tomt og lokale rammer</span></div>
         </aside>
+      </section>
+
+      <section className={styles.relatedSection} aria-label="Praktiske Eco Life-guider for området">
+        <div className={styles.sectionHeader}>
+          <p className={styles.sectionEyebrow}>Fra område til hverdagsplan</p>
+          <h2 className={styles.sectionTitle}>Slik kan du bruke en tomt i {area.name}</h2>
+          <p className={styles.sectionLead}>Disse guidene hjelper deg å vurdere dyrking, vann, energi og praktiske rammer. Hva som er mulig, må alltid undersøkes på den enkelte eiendommen.</p>
+        </div>
+        <div className={styles.editorialCards}>
+          {localGuides.map((guide) => (
+            <article className={styles.editorialCard} key={guide.slug}>
+              <span className={styles.cardEyebrow}>Praktisk Eco Life-guide</span>
+              <h3>{guide.title}</h3>
+              <p>{guide.lead}</p>
+              <Link className={styles.editorialLink} href={`/selvforsynt-liv/${guide.slug}`}>Les guiden <ArrowRight size={16} /></Link>
+            </article>
+          ))}
+        </div>
+        <Link className={styles.editorialLink} href="/selvforsynt-liv">Se alle ni guider om selvforsynt liv <ArrowRight size={16} /></Link>
       </section>
 
       {relevantArticles.length > 0 && (
