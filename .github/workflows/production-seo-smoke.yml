@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/production-seo-smoke.yml"
+      - "scripts/production-seo-smoke.mjs"
+      - "next.config.mjs"
   schedule:
     - cron: "17 7 * * 1"
 
