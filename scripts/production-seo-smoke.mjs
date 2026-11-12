@@ -64,7 +64,49 @@ async function checkPage(path) {
     record(`Page ${path}`, false, String(error));
   }
 }
+async function checkLegacyUrls() {
+  // Verify actual redirects rather than accepting the final 200 after auto-follow.
+  for (const origin of ["https://pinosoecolife.com", "https://www.pinosoecolife.com"]) {
+    const url = `${origin}/index.php`;
+    try {
+      const response = await fetch(url, {
+        redirect: "manual",
+        signal: AbortSignal.timeout(18000),
+        headers: { "user-agent": "PinosoEcoLifeProductionSmoke/1.0" },
+      });
+      const location = response.headers.get("location") || "";
+      const dest = location ? new URL(location, url) : null;
+      record(`Legacy index.php redirect ${origin}`,
+        [301, 308].includes(response.status) &&
+        !!dest && dest.pathname === "/" && dest.protocol === "https:",
+        `HTTP ${response.status}; Location: ${location || "(none)"}`);
+    } catch (error) {
+      record(`Legacy index.php redirect ${origin}`, false, String(error));
+    }
+  }
+  // Legacy numeric IDs cannot safely be mapped without verifying the old item.
+  // Keep a non-failing diagnostic record so Google Search Console exceptions
+  // are visible without treating a correct 404 as a broken current page.
+  for (const path of ["/property.php?id=2", "/property.php?id=3", "/blog-post.php?id=8"]) {
+    try {
+      const response = await fetch(new URL(path, base), {
+        redirect: "manual",
+        signal: AbortSignal.timeout(18000),
+        headers: { "user-agent": "PinosoEcoLifeProductionSmoke/1.0" },
+      });
+      const okay = [404, 410].includes(response.status);
+      results.push({
+        name: `Retired legacy URL ${path}`,
+        ok: okay,
+        note: `HTTP ${response.status}; informational only — old ID mapping not verified`,
+      });
+    } catch (error) {
+      results.push({ name: `Retired legacy URL ${path}`, ok: false, note: String(error) });
+    }
+  }
+}
 async function run() {
+  await checkLegacyUrls();
   let sitemapPaths = [];
   try {
     const { status, body } = await load("/sitemap.xml");
