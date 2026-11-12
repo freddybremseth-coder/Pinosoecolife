@@ -145,6 +145,12 @@ async function run() {
   } catch (error) {
     record("robots.txt", false, String(error));
   }
+  // Verify every URL submitted in the public sitemap, not only a curated subset.
+  // Limit concurrency to avoid overloading the production site's data feeds.
+  const sitemapOnlyPaths = [...new Set(sitemapPaths)].filter((path) => !mandatory.includes(path));
+  for (let i = 0; i < sitemapOnlyPaths.length; i += 4) {
+    await Promise.all(sitemapOnlyPaths.slice(i, i + 4).map(checkPage));
+  }
   for (let i = 0; i < mandatory.length; i += 4) {
     await Promise.all(mandatory.slice(i, i + 4).map(checkPage));
   }
