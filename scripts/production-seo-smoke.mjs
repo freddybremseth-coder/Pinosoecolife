@@ -68,7 +68,7 @@ async function checkPage(path) {
     const actual = canonicalHref ? new URL(canonicalHref, base) : null;
     record(`Canonical ${path}`,
       canonicalTags.length === 1 && !!actual &&
-      actual.pathname.replace(/\/$/, "") === expected.pathname.replace(/\\/$/, "") &&
+      actual.pathname.replace(/\/$/, "") === expected.pathname.replace(/\/$/, "") &&
       actual.host === expected.host && actual.protocol === "https:",
       canonicalHref || "Missing canonical");
     if (path.startsWith("/selvforsynt-liv/") && path !== "/selvforsynt-liv/planlegger") {
