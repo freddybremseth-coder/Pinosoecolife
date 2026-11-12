@@ -28,6 +28,34 @@ jobs:
         run: |
           set -o pipefail
           node scripts/production-seo-smoke.mjs | tee production-seo-report.json
+      - name: Summarize SEO result in Actions overview
+        if: always()
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, appendFileSync, existsSync } from 'node:fs';
+          const reportPath = 'production-seo-report.json';
+          if (!existsSync(reportPath)) {
+            appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## SEO production smoke check\\nNo JSON report was produced; inspect job logs.\\n');
+            process.exit(0);
+          }
+          const report = JSON.parse(readFileSync(reportPath, 'utf8'));
+          const failures = (report.checks || []).filter((check) => !check.ok);
+          const lines = [
+            '## Pinoso Eco Life – public SEO audit',
+            `**Checked:** ${report.testedAt}  `,
+            `**Passed:** ${report.passed} · **Failed:** ${report.failed}`,
+            '',
+            ...(failures.length ? [
+              '### Failed checks',
+              ...failures.map((item) => `- **${item.name}**: ${item.note}`),
+            ] : ['No failed checks reported.']),
+            '',
+            'The JSON artifact contains all checks and legacy PHP diagnostics.',
+            'This audit does not prove Google Search Console indexing.',
+          ];
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\\n') + '\\n');
+          NODE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
