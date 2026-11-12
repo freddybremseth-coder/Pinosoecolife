@@ -36,7 +36,7 @@ jobs:
           import { readFileSync, appendFileSync, existsSync } from 'node:fs';
           const reportPath = 'production-seo-report.json';
           if (!existsSync(reportPath)) {
-            appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## SEO production smoke check\\nNo JSON report was produced; inspect job logs.\\n');
+            appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## SEO production smoke check\nNo JSON report was produced; inspect job logs.\n');
             process.exit(0);
           }
           const report = JSON.parse(readFileSync(reportPath, 'utf8'));
@@ -54,7 +54,7 @@ jobs:
             'The JSON artifact contains all checks and legacy PHP diagnostics.',
             'This audit does not prove Google Search Console indexing.',
           ];
-          appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\\n') + '\\n');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
           NODE
       - uses: actions/upload-artifact@v4
         if: always()
