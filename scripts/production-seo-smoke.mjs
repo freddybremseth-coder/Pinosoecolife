@@ -65,28 +65,34 @@ async function checkPage(path) {
   }
 }
 async function checkLegacyUrls() {
-  // Verify actual redirects rather than accepting the final 200 after auto-follow.
+  // The apex domain may redirect to www before the legacy PHP rewrite applies.
   for (const origin of ["https://pinosoecolife.com", "https://www.pinosoecolife.com"]) {
-    const url = `${origin}/index.php`;
+    let current = `${origin}/index.php`;
+    const hops = [];
     try {
-      const response = await fetch(url, {
-        redirect: "manual",
-        signal: AbortSignal.timeout(18000),
-        headers: { "user-agent": "PinosoEcoLifeProductionSmoke/1.0" },
-      });
-      const location = response.headers.get("location") || "";
-      const dest = location ? new URL(location, url) : null;
+      for (let i = 0; i < 4; i++) {
+        const response = await fetch(current, {
+          redirect: "manual",
+          signal: AbortSignal.timeout(18000),
+          headers: { "user-agent": "PinosoEcoLifeProductionSmoke/1.0" },
+        });
+        const location = response.headers.get("location") || "";
+        hops.push(`${response.status} ${new URL(current).pathname} -> ${location}`);
+        if (![301, 308].includes(response.status) || !location) break;
+        current = new URL(location, current).href;
+        if (new URL(current).pathname === "/") break;
+      }
+      const final = new URL(current);
       record(`Legacy index.php redirect ${origin}`,
-        [301, 308].includes(response.status) &&
-        !!dest && dest.pathname === "/" && dest.protocol === "https:",
-        `HTTP ${response.status}; Location: ${location || "(none)"}`);
+        hops.length > 0 && hops.every((hop) => /^(301|308) /.test(hop)) &&
+        final.protocol === "https:" && final.pathname === "/",
+        hops.join(" | "));
     } catch (error) {
       record(`Legacy index.php redirect ${origin}`, false, String(error));
     }
   }
-  // Legacy numeric IDs cannot safely be mapped without verifying the old item.
-  // Keep a non-failing diagnostic record so Google Search Console exceptions
-  // are visible without treating a correct 404 as a broken current page.
+  // Old numeric IDs are diagnostics, not current page failures.
+  const retired = [];
   for (const path of ["/property.php?id=2", "/property.php?id=3", "/blog-post.php?id=8"]) {
     try {
       const response = await fetch(new URL(path, base), {
@@ -94,19 +100,15 @@ async function checkLegacyUrls() {
         signal: AbortSignal.timeout(18000),
         headers: { "user-agent": "PinosoEcoLifeProductionSmoke/1.0" },
       });
-      const okay = [404, 410].includes(response.status);
-      results.push({
-        name: `Retired legacy URL ${path}`,
-        ok: okay,
-        note: `HTTP ${response.status}; informational only — old ID mapping not verified`,
-      });
+      retired.push({ path, status: response.status, note: "Old ID mapping not established; do not force a homepage redirect" });
     } catch (error) {
-      results.push({ name: `Retired legacy URL ${path}`, ok: false, note: String(error) });
+      retired.push({ path, error: String(error) });
     }
   }
+  return retired;
 }
 async function run() {
-  await checkLegacyUrls();
+  const retiredLegacyUrls = await checkLegacyUrls();
   let sitemapPaths = [];
   try {
     const { status, body } = await load("/sitemap.xml");
@@ -153,7 +155,7 @@ async function run() {
   const passed = results.filter((item) => item.ok).length;
   console.log(JSON.stringify({
     base, testedAt: new Date().toISOString(),
-    passed, failed: failures.length, checks: results,
+    passed, failed: failures.length, checks: results, retiredLegacyUrls,
     note: "Only checks publicly served URLs. Google Search Console indexing and rankings are not inferred.",
   }, null, 2));
   if (failures.length) process.exitCode = 1;
