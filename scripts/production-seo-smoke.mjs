@@ -53,6 +53,12 @@ async function checkPage(path) {
     record(`Page ${path}`, status === 200 && html, `HTTP ${status} ${url}`);
     if (status !== 200 || !html) return;
     record(`H1 ${path}`, (body.match(/<h1(?:\s|>)/gi) || []).length === 1, "Expect exactly one H1");
+    // These public landing pages should never accidentally be marked noindex.
+    const robotsMeta = [...body.matchAll(/<meta\\b[^>]*name=["']robots["'][^>]*>/gi)]
+      .map((match) => match[0]).join(" ");
+    const noindex = /content=["'][^"']*noindex/i.test(robotsMeta) ||
+      /noindex/i.test(headers.get("x-robots-tag") || "");
+    record(`Indexable ${path}`, !noindex, noindex ? robotsMeta || headers.get("x-robots-tag") : "No noindex directive");
     if (path.startsWith("/selvforsynt-liv/") && path !== "/selvforsynt-liv/planlegger") {
       const canonical = body.match(/<link[^>]*rel=["']canonical["'][^>]*>/i)?.[0] ||
         body.match(/<link[^>]*href=["'][^"']+["'][^>]*rel=["']canonical["'][^>]*>/i)?.[0] || "";
@@ -114,6 +120,10 @@ async function run() {
     const { status, body } = await load("/sitemap.xml");
     record("sitemap.xml", status === 200 && body.includes("<urlset"), `HTTP ${status}`);
     sitemapPaths = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => normalize(match[1])).filter(Boolean);
+    record("Sitemap has no duplicate URLs", sitemapPaths.length === new Set(sitemapPaths).size,
+      `${sitemapPaths.length} entries; ${new Set(sitemapPaths).size} unique paths`);
+    record("Sitemap excludes obsolete PHP pages", !sitemapPaths.some((path) =>
+      /\\.php(?:$|\\?)/i.test(path)), "Old PHP URLs must not be submitted to Google");
     for (const path of mandatory.filter((p) => p.startsWith("/selvforsynt-liv"))) {
       record(`Sitemap includes ${path}`, sitemapPaths.includes(path), "Guide or guide landing is indexed in sitemap");
     }
