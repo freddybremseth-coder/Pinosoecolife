@@ -33,9 +33,13 @@ export async function generateMetadata({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
   const params = await searchParams;
-  const isFiltered = Object.values(params).some((value) =>
-    Array.isArray(value) ? value.some(Boolean) : Boolean(value),
-  );
+  // Only genuine search/filter parameters should make a listing non-indexable.
+  // Tracking and Vercel share parameters must not change SEO metadata.
+  const filterKeys = ["q","minArea","maxPrice","zoning","polygon","parcel"] as const;
+  const isFiltered = filterKeys.some((key) => {
+    const value = params[key];
+    return Array.isArray(value) ? value.some(Boolean) : Boolean(value);
+  });
 
   return {
     title: "Tomter i innlandet i Alicante og Murcia",
