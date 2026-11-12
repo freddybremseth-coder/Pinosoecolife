@@ -60,15 +60,15 @@ async function checkPage(path) {
       /noindex/i.test(headers.get("x-robots-tag") || "");
     record(`Indexable ${path}`, !noindex, noindex ? robotsMeta || headers.get("x-robots-tag") : "No noindex directive");
     // Check the exact canonical URL on every major landing page, not only guides.
-    const canonicalTags = [...body.matchAll(/<link\\b[^>]*>/gi)]
+    const canonicalTags = [...body.matchAll(/<link\b[^>]*>/gi)]
       .map((match) => match[0])
-      .filter((tag) => /\\brel=["']canonical["']/i.test(tag));
-    const canonicalHref = canonicalTags[0]?.match(/\\bhref=["']([^"']+)["']/i)?.[1] || "";
+      .filter((tag) => /\brel=["']canonical["']/i.test(tag));
+    const canonicalHref = canonicalTags[0]?.match(/\bhref=["']([^"']+)["']/i)?.[1] || "";
     const expected = new URL(path, base);
     const actual = canonicalHref ? new URL(canonicalHref, base) : null;
     record(`Canonical ${path}`,
       canonicalTags.length === 1 && !!actual &&
-      actual.pathname.replace(/\\/$/, "") === expected.pathname.replace(/\\/$/, "") &&
+      actual.pathname.replace(/\/$/, "") === expected.pathname.replace(/\\/$/, "") &&
       actual.host === expected.host && actual.protocol === "https:",
       canonicalHref || "Missing canonical");
     if (path.startsWith("/selvforsynt-liv/") && path !== "/selvforsynt-liv/planlegger") {
