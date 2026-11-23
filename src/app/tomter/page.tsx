@@ -307,7 +307,11 @@ export default async function PlotsPage({
   const parcel = params.parcel || "";
   const fromEcoLifePlanner = params.source === "ecolife";
 
-  const publishedPlots = plots.filter((plot) => isEcoLifeAreaPlot(plot) && !isInactivePlot(plot));
+  // Defense in depth: never render an unpublished RealtyFlow record even if
+  // upstream filtering changes or a cached API response contains draft data.
+  const publishedPlots = plots.filter(
+    (plot) => plot.website_published !== false && isEcoLifeAreaPlot(plot) && !isInactivePlot(plot),
+  );
   const filtered = publishedPlots.filter((plot) => {
     const haystack = plotText(plot);
     return (
