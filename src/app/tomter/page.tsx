@@ -416,6 +416,36 @@ export default async function PlotsPage({
         </div>
       </section>
 
+      <section aria-labelledby="tomtekart-google-title" style={{ width: "100%", maxWidth: "1320px", margin: "0 auto", padding: "32px clamp(16px, 4vw, 48px)" }}>
+        <p className={styles.eyebrow}>Utforsk tomtene visuelt</p>
+        <h2 id="tomtekart-google-title" className={styles.processTitle}>Våre tomter på Google Maps</h2>
+        <p style={{ maxWidth: "760px", marginBottom: "20px" }}>
+          Se tilgjengelige tomteområder i kartet. Klikk på en markering for mer informasjon.
+          Opplysninger om pris, byggbarhet og tilgjengelighet må bekreftes før en beslutning.
+        </p>
+        <iframe
+          title="Pinoso Eco Life – kart over tomter"
+          src="https://www.google.com/maps/d/embed?mid=12RW6scFNZqQtRP1RU0TJvZoZHMtiiRo&ehbc=2E312F"
+          width="100%"
+          height="560"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          style={{
+            display: "block",
+            width: "100%",
+            height: "clamp(360px, 55vw, 620px)",
+            border: 0,
+            borderRadius: "16px",
+          }}
+          allowFullScreen
+        />
+        <p style={{ marginTop: "12px" }}>
+          <a href="https://www.google.com/maps/d/viewer?mid=12RW6scFNZqQtRP1RU0TJvZoZHMtiiRo" target="_blank" rel="noopener noreferrer">
+            Åpne kartet i Google Maps ↗
+          </a>
+        </p>
+      </section>
+
       <div className={styles.summaryWrap}>
         <CatastroSummary withCatastro={withCatastro.length} mapped={mapped.length} total={filtered.length} />
       </div>
