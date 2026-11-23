@@ -251,7 +251,7 @@ const outsideEcoLifeTerms = [
   "daimes",
 ];
 
-const inactivePlotTerms = ["sold", "solgt", "reservado", "reserved", "reservert", "kjopt", "kjøpt"];
+const inactivePlotTerms = ["sold", "solgt", "vendido", "vendida", "vendidos", "vendidas", "reservado", "reservada", "reserved", "reservert", "on hold", "on_hold", "kjopt", "kjøpt"];
 
 function plotText(plot: PlotWithCatastro) {
   return normalize(
@@ -278,6 +278,11 @@ function isInactivePlot(plot: PlotWithCatastro) {
 }
 
 function isEcoLifeAreaPlot(plot: PlotWithCatastro) {
+  // Google My Maps/KML plots were all confirmed by the owner as suitable for Pinoso Eco Life,
+  // including Elche and Mutxamel. Do not apply the older municipality blacklist to this source.
+  const source = normalize(plot.source);
+  if (source === "kml" || source === "google_my_maps_kmz") return true;
+
   const haystack = plotText(plot);
   if (outsideEcoLifeTerms.some((term) => haystack.includes(normalize(term)))) return false;
 
