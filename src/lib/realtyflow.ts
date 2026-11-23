@@ -87,6 +87,7 @@ export type LandPlot = {
   lat?: number;
   lng?: number;
   source?: string;
+  website_published?: boolean | null;
   cadastral_reference?: string;
   cadastralReference?: string;
   referencia_catastral?: string;
